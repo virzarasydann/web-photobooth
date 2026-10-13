@@ -1,44 +1,22 @@
-# web-photobooth
+#  Web Photo Booth
 
-This template should help get you started developing with Vue 3 in Vite.
+**Web Photo Booth** adalah aplikasi berbasis web yang mensimulasikan pengalaman menggunakan mesin fotobox (photo booth) tradisional langsung dari browser. Aplikasi ini memanfaatkan API kamera perangkat pengguna untuk mengambil foto secara real-time, menerapkan filter visual, menambahkan bingkai (frame), dan memungkinkan pengguna untuk mengunduh hasilnya secara instan tanpa perlu menginstal aplikasi tambahan.
 
-## Recommended IDE Setup
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
-## Recommended Browser Setup
+##  Tech Stack
 
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd)
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+Proyek ini dibangun menggunakan teknologi modern untuk performa dan pengalaman pengembangan yang optimal:
 
-## Customize configuration
+- **Framework:** [Vue 3](https://vuejs.org/) (Composition API & `<script setup>`)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) untuk utility-first styling yang cepat dan responsif.
 
-See [Vite Configuration Reference](https://vite.dev/config/).
 
-## Project Setup
+##  Cara Menjalankan Proyek
 
-```sh
-bun install
-```
+Pastikan kamu sudah menginstal [Node.js](https://nodejs.org/) di komputer kamu.
 
-### Compile and Hot-Reload for Development
-
-```sh
-bun dev
-```
-
-### Compile and Minify for Production
-
-```sh
-bun run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-bun lint
-```
+1. **Clone repository ini:**
+   ```bash
+   git clone https://github.com/username-kamu/web-photobooth.git
+   cd web-photobooth
