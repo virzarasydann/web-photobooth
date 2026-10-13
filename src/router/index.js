@@ -41,6 +41,12 @@ const router = createRouter({
         // Tambahkan route lain di sini
       ],
     },
+    {
+      path: '/register',
+      name: 'register',
+      component: () =>
+        import('../components/Auth/Register.vue'),
+    },
     // {
     //   path: '/about',
     //   name: 'about',
