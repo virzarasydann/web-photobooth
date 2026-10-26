@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// import HomeView from '../views/HomeView.vue'
 import LandingView from '../views/LandingView.vue'
-import AboutView from '../views/AboutView.vue'
+// import AboutView from '../views/AboutView.vue'
 import Test from '../components/test.vue'
 import AuthenticatedRoleLayout from '@/layouts/AuthenticatedRoleLayout.vue'
 import RoleView from '../views/SuperAdmin/RoleView.vue'
@@ -28,16 +28,15 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: () =>
-        import('../components/Auth/Login.vue'),
+        import('../views/Auth/LoginView.vue'),
     },
-    
 
     {
       path: '/',
       component: AuthenticatedRoleLayout, // Layout dengan Sidebar
       children: [
         { path: 'role', component: RoleView },
-        
+
         // Tambahkan route lain di sini
       ],
     },
@@ -45,7 +44,7 @@ const router = createRouter({
       path: '/register',
       name: 'register',
       component: () =>
-        import('../components/Auth/Register.vue'),
+        import('../views/Auth/RegisterView.vue'),
     },
     // {
     //   path: '/about',

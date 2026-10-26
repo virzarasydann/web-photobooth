@@ -1,5 +1,5 @@
 <script setup>
-import LandingLayout from '../components/LandingLayout.vue'
+import LandingLayout from './Landing/LandingLayout.vue'
 </script>
 
 <template>
