@@ -34,11 +34,11 @@ const router = createRouter({
 
     {
       path: '/',
-      component: AuthenticatedRoleLayout, // Layout dengan Sidebar
+      component: AuthenticatedRoleLayout, 
       children: [
         { path: 'role', component: RoleView },
         
-        // Tambahkan route lain di sini
+        
       ],
     },
     {
