@@ -1,7 +1,8 @@
 <script setup>
-import LandingLayout from '../layouts/Landing/LandingLayout.vue'
+import LandingView from '@/views/LandingView.vue';
+
 </script>
 
 <template>
-  <LandingLayout />
+  <LandingView />
 </template>
