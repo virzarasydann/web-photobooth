@@ -2,16 +2,19 @@ import { createRouter, createWebHistory } from 'vue-router'
 // import HomeView from '../views/HomeView.vue'
 import LandingView from '../views/LandingView.vue'
 // import AboutView from '../views/AboutView.vue'
+import LandingLayout from '@/layouts/Landing/LandingLayout.vue'
 import Test from '../components/test.vue'
 import AuthenticatedRoleLayout from '@/layouts/AuthenticatedRoleLayout.vue'
 import RoleView from '../views/SuperAdmin/RoleView.vue'
+import PhotoboothGuest from '@/views/Guest/PhotoboothGuest.vue'
+import EditorView from '@/views/EditorView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
       name: 'landing',
-      component: LandingView,
+      component: LandingLayout,
     },
     {
       path: '/test',
@@ -32,14 +35,23 @@ const router = createRouter({
     },
 
     {
+      path: '/photobooth/guest',
+      name: 'photobooth-guest',
+      component: PhotoboothGuest,
+    },
+    {
+      path: '/editor',
+      name: 'editor-view',
+      component: EditorView,
+    },
+
+    {
       path: '/',
-      component: AuthenticatedRoleLayout, 
+      component: AuthenticatedRoleLayout,
       children: [
         { path: 'role', component: RoleView },
 
         // Tambahkan route lain di sini
-        
-        
       ],
     },
     {
