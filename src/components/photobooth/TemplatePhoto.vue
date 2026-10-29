@@ -1,8 +1,8 @@
 <template>
   <section class="bg-white rounded-2xl  max-h-max">
     <div class="mx-3.5 pb-2">
-      <div class="mt-2 flex justify-between items-center">
-        <h1 class="font-semibold text-2xl">
+      <div class="mt-2 flex items-center">
+        <h1 class="font-semibold text-2xl ">
           PILIH TEMPLATE DESAIN
         </h1>
       </div>
@@ -25,12 +25,12 @@
         ref="ListTemplateModalRef"
       ></ListTemplateModal>
     </div>
-    <div class="flex justify-center h-1/2">
+    <div class="flex justify-center">
       <img
         :src="ListTemplateModalRef.TemplateImage"
         alt=""
         srcset=""
-        class=""
+        class="max-h-screen"
       />
     </div>
   </section>
