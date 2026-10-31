@@ -1,0 +1,14 @@
+.btn-timer{
+
+    
+    
+    margin-inline: 5px;
+    
+    border-width: 1px;
+    border-style: solid;
+    padding-inline: 10px;
+    border-radius: 10px;
+    border-color: #DCE7E8;
+    font-weight: 500;
+    cursor: pointer;
+}

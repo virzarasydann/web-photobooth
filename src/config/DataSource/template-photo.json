@@ -1,0 +1,95 @@
+[
+  {
+    "id": 1,
+    "name": "Custom Template",
+    "description": "Photobooth Template",
+    "backgroundUrl": "/template/template-1.png",
+    "slot": 4,
+    "slotsConfig": [
+      {
+        "slotIndex": 1,
+        "x": 62,
+        "y": 132,
+        "width": 197,
+        "height": 147
+      },
+      {
+        "slotIndex": 2,
+        "x": 43,
+        "y": 298,
+        "width": 219,
+        "height": 160
+      },
+      {
+        "slotIndex": 3,
+        "x": 45,
+        "y": 468,
+        "width": 208,
+        "height": 154
+      },
+      {
+        "slotIndex": 4,
+        "x": 48,
+        "y": 645,
+        "width": 211,
+        "height": 168
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Pastel Ribbon",
+    "description": "Sweet 2x2 Quad",
+    "backgroundUrl": "/template/template-2.png",
+    "aspectRatio": "aspect-[3/4]",
+    "slot": 4
+  },
+  {
+    "id": 3,
+    "name": "Denim Y2K",
+    "description": "Trendy 6-Foto",
+    "backgroundUrl": "/template/template-3.png",
+    "aspectRatio": "aspect-[3/4]",
+    "slot": 6
+  },
+  {
+    "id": 3,
+    "name": "Denim Y2K",
+    "description": "Trendy 6-Foto",
+    "backgroundUrl": "/template/template-3.png",
+    "aspectRatio": "aspect-[3/4]",
+    "slot": 6
+  },
+  {
+    "id": 3,
+    "name": "Denim Y2K",
+    "description": "Trendy 6-Foto",
+    "backgroundUrl": "/template/template-3.png",
+    "aspectRatio": "aspect-[3/4]",
+    "slot": 6
+  },
+  {
+    "id": 3,
+    "name": "Denim Y2K",
+    "description": "Trendy 6-Foto",
+    "backgroundUrl": "/template/template-3.png",
+    "aspectRatio": "aspect-[3/4]",
+    "slot": 6
+  },
+  {
+    "id": 3,
+    "name": "Denim Y2K",
+    "description": "Trendy 6-Foto",
+    "backgroundUrl": "/template/template-3.png",
+    "aspectRatio": "aspect-[3/4]",
+    "slot": 6
+  },
+  {
+    "id": 3,
+    "name": "Denim Y2K",
+    "description": "Trendy 6-Foto",
+    "backgroundUrl": "/template/template-3.png",
+    "aspectRatio": "aspect-[3/4]",
+    "slot": 6
+  }
+]
