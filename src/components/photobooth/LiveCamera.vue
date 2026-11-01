@@ -18,20 +18,25 @@
           autoplay
           playsinline
           muted
-          class="w-full"
+          class="w-full h-auto object-cover"
         ></video>
         <img
           v-else
           src="@/assets/photobooth/viewport.png"
           alt="Viewport"
+          class="w-full h-auto object-cover"
+          
         />
       </div>
 
-      <div
-        class="mt-4 bg-[#2F523E] text-center  p-2 rounded-2xl"
-      >
-        <button type="button" class="cursor-pointer text-[#FFFFFF] font-semibold">Ambil Foto</button>
-      </div>
+      <button
+  type="button"
+  @click="onTakePhoto"
+  class="mt-4 w-full bg-[#2F523E] text-center p-2 rounded-2xl cursor-pointer text-[#FFFFFF] font-semibold"
+>
+  Ambil Foto
+</button>
+      
     </div>
   </section>
 </template>
@@ -41,6 +46,44 @@ import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 const videoRef = ref(null)
 const mediaStream = ref(null)
+
+const canvas = document.createElement('canvas')
+const emit = defineEmits(['onCapture'])
+
+const onTakePhoto = () => {
+  if (!videoRef.value) return
+  
+  
+  const captured = videoRef.value
+  
+  
+  canvas.width = captured.videoWidth
+  canvas.height = captured.videoHeight
+  
+  
+  const context = canvas.getContext('2d')
+  context.save()
+  
+  
+  context.translate(canvas.width, 0)
+  
+ 
+  context.scale(-1, 1)
+  
+  
+  context.drawImage(captured, 0, 0, canvas.width, canvas.height)
+  
+
+  context.restore()
+  
+  
+  
+  
+  emit('onCapture', {
+    url:canvas.toDataURL('image/png')
+  })
+}
+
 
 const startWebcam = async () => {
   try {
@@ -52,7 +95,8 @@ const startWebcam = async () => {
     mediaStream.value = stream
 
     await nextTick()
-
+    
+    console.log(videoRef.value)
     if (videoRef.value) {
       videoRef.value.srcObject = stream
     }
