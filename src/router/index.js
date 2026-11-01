@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 // import HomeView from '../views/HomeView.vue'
-import LandingView from '../views/LandingView.vue'
 // import AboutView from '../views/AboutView.vue'
 import LandingLayout from '@/layouts/Landing/LandingLayout.vue'
 import Test from '../components/test.vue'
@@ -15,6 +14,11 @@ const router = createRouter({
       path: '/',
       name: 'landing',
       component: LandingLayout,
+    },
+    {
+      path: '/paket-view',
+      name: 'paketview',
+      component: () => import('../views/PaketView.vue'),
     },
     {
       path: '/test',
@@ -72,8 +76,7 @@ const router = createRouter({
     {
       path: '/capture',
       name: 'capture',
-      component: () =>
-        import('../views/CaptureView.vue'),
+      component: () => import('../views/CaptureView.vue'),
     },
   ],
 })
