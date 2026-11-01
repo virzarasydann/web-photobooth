@@ -1,10 +1,8 @@
 <template>
-  <section class="bg-white rounded-2xl  max-h-max">
+  <section class="bg-white rounded-2xl max-h-max">
     <div class="mx-3.5 pb-2">
       <div class="mt-2 flex items-center">
-        <h1 class="font-semibold text-2xl ">
-          PILIH TEMPLATE DESAIN
-        </h1>
+        <h1 class="font-semibold text-2xl">PILIH TEMPLATE DESAIN</h1>
       </div>
 
       <div
@@ -22,24 +20,133 @@
 
       <ListTemplateModal
         v-model:is-open="isOpenModal"
-        ref="ListTemplateModalRef"
+        @onSelectTemplate="parsingObject"
       ></ListTemplateModal>
     </div>
-    <div class="flex justify-center">
-      <img
-        :src="ListTemplateModalRef.TemplateImage"
-        alt=""
-        srcset=""
-        class="max-h-screen"
-      />
+
+   
+    <div class="flex justify-center p-4 overflow-auto">
+      <div ref="containerRef"></div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, onMounted, onUnmounted } from 'vue'
 import ListTemplateModal from './ListTemplateModal.vue'
+import defaultTemplates from '@/config/DataSource/template-photo.json'
+import Konva from 'konva'
+
+const props = defineProps({
+  captured: {
+    type: Array,
+    default: () => []
+  }
+})
 
 const isOpenModal = ref(false)
-const ListTemplateModalRef = ref('')
+const containerRef = ref(null)
+const objectTemplate = ref(null) 
+
+let stage = null
+let layer = null
+
+const loadImage = (src) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.crossOrigin = 'Anonymous'
+    img.onload = () => resolve(img)
+    img.onerror = (err) => reject(err)
+    img.src = src
+  })
+}
+
+const renderCanvas = async () => {
+  if (!containerRef.value || !objectTemplate.value) return
+
+  const template = objectTemplate.value
+
+
+  let bgImgObj
+  try {
+    bgImgObj = await loadImage(template.backgroundUrl)
+  } catch (e) {
+    console.error('Gagal memuat background template:', e)
+    return
+  }
+
+
+  if (!stage) {
+    stage = new Konva.Stage({
+      container: containerRef.value,
+      width: bgImgObj.width,
+      height: bgImgObj.height
+    })
+    layer = new Konva.Layer()
+    stage.add(layer)
+  } else {
+    stage.width(bgImgObj.width)
+    stage.height(bgImgObj.height)
+    layer.destroyChildren()
+  }
+
+  
+  if (template.slotsConfig && Array.isArray(template.slotsConfig)) {
+    for (let i = 0; i < template.slotsConfig.length; i++) {
+      const slot = template.slotsConfig[i]
+      const photoUrl = props.captured[i]
+
+      if (photoUrl) {
+        try {
+          const photoImgObj = await loadImage(photoUrl)
+          const konvaPhoto = new Konva.Image({
+            image: photoImgObj,
+            x: slot.x,
+            y: slot.y,
+            width: slot.width,
+            height: slot.height
+          })
+          layer.add(konvaPhoto)
+        } catch (err) {
+          console.error(`Gagal render foto ke slot ${slot.slotIndex}:`, err)
+        }
+      }
+    }
+  }
+
+
+  const konvaBg = new Konva.Image({
+    image: bgImgObj,
+    x: 0,
+    y: 0,
+    width: bgImgObj.width,
+    height: bgImgObj.height
+  })
+  layer.add(konvaBg)
+
+  layer.batchDraw()
+}
+
+const parsingObject = (object) => {
+  objectTemplate.value = object
+}
+
+
+watch(
+  () => [props.captured, objectTemplate.value],
+  () => {
+    renderCanvas()
+  },
+  { deep: true }
+)
+
+onMounted(() => {
+  renderCanvas()
+})
+
+onUnmounted(() => {
+  if (stage) {
+    stage.destroy()
+  }
+})
 </script>
