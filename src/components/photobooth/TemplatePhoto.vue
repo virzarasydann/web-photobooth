@@ -34,7 +34,7 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
 import ListTemplateModal from './ListTemplateModal.vue'
-import defaultTemplates from '@/config/DataSource/template-photo.json'
+
 import Konva from 'konva'
 
 const props = defineProps({
@@ -46,10 +46,11 @@ const props = defineProps({
 
 const isOpenModal = ref(false)
 const containerRef = ref(null)
-const objectTemplate = ref(null) 
+const objectTemplate = ref(null)
 
 let stage = null
 let layer = null
+let resizeObserver = null
 
 const loadImage = (src) => {
   return new Promise((resolve, reject) => {
@@ -66,7 +67,6 @@ const renderCanvas = async () => {
 
   const template = objectTemplate.value
 
-
   let bgImgObj
   try {
     bgImgObj = await loadImage(template.backgroundUrl)
@@ -75,20 +75,32 @@ const renderCanvas = async () => {
     return
   }
 
+  
+  const nativeWidth = bgImgObj.width
+  const nativeHeight = bgImgObj.height
+
+  
+  const containerWidth = containerRef.value.offsetWidth || nativeWidth
+  
+  
+  const scale = Math.min(containerWidth / nativeWidth, 1)
 
   if (!stage) {
     stage = new Konva.Stage({
       container: containerRef.value,
-      width: bgImgObj.width,
-      height: bgImgObj.height
+      width: nativeWidth * scale,
+      height: nativeHeight * scale
     })
     layer = new Konva.Layer()
     stage.add(layer)
   } else {
-    stage.width(bgImgObj.width)
-    stage.height(bgImgObj.height)
+    stage.width(nativeWidth * scale)
+    stage.height(nativeHeight * scale)
     layer.destroyChildren()
   }
+
+  
+  stage.scale({ x: scale, y: scale })
 
   
   if (template.slotsConfig && Array.isArray(template.slotsConfig)) {
@@ -114,13 +126,13 @@ const renderCanvas = async () => {
     }
   }
 
-
+ 
   const konvaBg = new Konva.Image({
     image: bgImgObj,
     x: 0,
     y: 0,
-    width: bgImgObj.width,
-    height: bgImgObj.height
+    width: nativeWidth,
+    height: nativeHeight
   })
   layer.add(konvaBg)
 
@@ -130,7 +142,6 @@ const renderCanvas = async () => {
 const parsingObject = (object) => {
   objectTemplate.value = object
 }
-
 
 watch(
   () => [props.captured, objectTemplate.value],
@@ -142,9 +153,19 @@ watch(
 
 onMounted(() => {
   renderCanvas()
+
+  if (containerRef.value) {
+    resizeObserver = new ResizeObserver(() => {
+      renderCanvas()
+    })
+    resizeObserver.observe(containerRef.value)
+  }
 })
 
 onUnmounted(() => {
+  if (resizeObserver) {
+    resizeObserver.disconnect()
+  }
   if (stage) {
     stage.destroy()
   }

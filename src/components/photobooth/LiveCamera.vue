@@ -29,11 +29,13 @@
         />
       </div>
 
-      <div
-        class="mt-4 bg-[#2F523E] text-center  p-2 rounded-2xl cursor-pointer  " @click="onTakePhoto" 
-      >
-        <button @click="onTakePhoto" type="button" class="cursor-pointer text-[#FFFFFF] font-semibold">Ambil Foto</button>
-      </div>
+      <button
+  type="button"
+  @click="onTakePhoto"
+  class="mt-4 w-full bg-[#2F523E] text-center p-2 rounded-2xl cursor-pointer text-[#FFFFFF] font-semibold"
+>
+  Ambil Foto
+</button>
       
     </div>
   </section>
@@ -60,9 +62,21 @@ const onTakePhoto = () => {
   
   
   const context = canvas.getContext('2d')
+  context.save()
   
   
-  context.drawImage(captured, 0, 0)
+  context.translate(canvas.width, 0)
+  
+ 
+  context.scale(-1, 1)
+  
+  
+  context.drawImage(captured, 0, 0, canvas.width, canvas.height)
+  
+
+  context.restore()
+  
+  
   
   
   emit('onCapture', {
