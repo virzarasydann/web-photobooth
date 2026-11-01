@@ -1,25 +1,26 @@
 <template>
   <div
-    data-section="list-template-modal"
+    data-section="wrapper-parent"
     v-if="isOpen"
-    class="fixed inset-0 bg-black/50 z-50 p-4 flex items-center justify-center gap-6"
+    class="fixed inset-0 bg-black/50 z-50 p-4 flex md:flex-row flex-col items-center justify-center gap-6"
     @click.self="isOpen = false"
   >
     <div
-      class="bg-[#FFFFFF] w-full max-w-2xl max-h-[80vh] overflow-y-auto border border-[#2F523E] rounded-2xl p-6 flex flex-col gap-4 "
+      data-section="wrapper-title" class="bg-[#FFFFFF] w-full max-w-full md:max-w-2xl max-h-[80vh] overflow-y-auto border border-[#2F523E] rounded-2xl p-6 flex flex-col gap-4 "
     >
       <div
-        class="flex items-center justify-between border-b border-gray-200 pb-3"
+        class="flex items-center w-full justify-between border-b border-gray-200 pb-3"
       >
-        <h3 class="font-bold text-lg text-[#2F523E]">
-          Pilih Template
-        </h3>
+        
         <p
           v-if="clickSuccess"
-          class="text-[#2F523E] font-semibold"
+          class="text-[#2F523E] font-semibold text-xs md:text-xl"
         >
           Template Berhasil Dipilih
         </p>
+        <h3 v-else class="font-bold text-lg text-[#2F523E]">
+          Pilih Template
+        </h3>
        
         <button
           type="button"
@@ -31,18 +32,18 @@
       </div>
 
       <div
-        class="flex flex-row flex-wrap gap-4 items-center"
+        data-section="wrapper-template-card" class="flex flex-row flex-wrap gap-4 items-center w-full"
       >
         <button
           type="button"
-          class="group bg-[#FFFFFF] border-2 border-[#DCE7E8] rounded-2xl w-[calc(33.333%-0.8rem)] cursor-pointer p-2 hover:border-[#2F523E] transition-colors"
+          class="group bg-[#FFFFFF] w-full md:w-[calc(33.333%-0.8rem)] border-2 border-[#DCE7E8] rounded-2xl  cursor-pointer md:p-2 hover:border-[#2F523E] transition-colors"
           v-for="item in TemplateJson"
           :key="item.id"
-          @click="onClick(item.backgroundUrl)"
+          @click="onClick(item)"
         >
-          <div class="flex flex-col px-2 py-1">
+          <div class="flex flex-col md:px-2 md:py-1 ">
             <div
-              class="bg-[#DCE7E8] w-fit mx-auto group-hover:bg-[#2F523E] group-hover:text-white transition-colors rounded-lg px-3 mt-1"
+              class="bg-[#DCE7E8] w-fit mx-auto group-hover:bg-[#2F523E] group-hover:text-white transition-colors rounded-lg md:px-3 mt-1"
             >
               <p class="text-xs font-medium">
                 {{ item.slot }} Foto
@@ -53,8 +54,8 @@
                 {{ item.name }}
               </p>
             </div>
-            <div>
-              <p class="text-xs font-light text-gray-600">
+            <div class="w-full">
+              <p class="text-xs font-light text-gray-600 break-all line-clamp-2">
                 {{ item.description }}
               </p>
             </div>
@@ -64,7 +65,7 @@
     </div>
 
     <div
-      class="bg-white w-full max-w-md max-h-[80vh] overflow-y-auto rounded-2xl p-6 flex flex-row flex-wrap gap-4 justify-center items-center"
+      data-section="wrapper-image" class="bg-white w-full max-w-md max-h-[80vh] overflow-y-auto rounded-2xl p-6 flex flex-row flex-wrap gap-4 justify-center items-center"
     >
       <img
         v-if="TemplateImage"
@@ -90,15 +91,15 @@ const isOpen = defineModel('isOpen', {
   type: Boolean,
   default: false,
 })
-defineExpose({TemplateImage})
+const emit = defineEmits(['onSelectTemplate'])
 
 
 let timer = null 
 
-const onClick = async (backgroundUrl) => {
-  TemplateImage.value = backgroundUrl
+const onClick = async (templateObject) => {
+  TemplateImage.value = templateObject.backgroundUrl
 
-  
+  emit('onSelectTemplate', templateObject)
   clickSuccess.value = false
 
   
