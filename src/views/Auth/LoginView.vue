@@ -4,7 +4,7 @@ import { RouterLink, useRouter } from 'vue-router'
 
 const router = useRouter()
 
-const username = ref('')
+const Email = ref('')
 const password = ref('')
 const showPassword = ref(false)
 const loading = ref(false)
@@ -22,8 +22,8 @@ const inputClass =
 
 async function submit() {
   error.value = ''
-  if (!username.value.trim() || !password.value) {
-    error.value = 'Username dan password wajib diisi.'
+  if (!Email.value.trim() || !password.value) {
+    error.value = 'Email dan password wajib diisi.'
     return
   }
   loading.value = true
@@ -114,17 +114,17 @@ async function submit() {
         </p>
 
         <label
-          for="username"
+          for="Email"
           class="mb-1 block text-[0.8rem] font-medium"
         >
-          Username
+          Email
         </label>
         <input
-          id="username"
-          v-model="username"
+          id="Email"
+          v-model="Email"
           type="text"
-          autocomplete="username"
-          placeholder="Masukkan Username"
+          autocomplete="Email"
+          placeholder="Masukkan Email"
           :class="inputClass"
         />
 
