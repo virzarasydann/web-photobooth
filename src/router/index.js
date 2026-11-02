@@ -6,8 +6,11 @@ import LandingLayout from '@/layouts/Landing/LandingLayout.vue'
 import Test from '../components/test.vue'
 import AuthenticatedRoleLayout from '@/layouts/AuthenticatedRoleLayout.vue'
 import RoleView from '../views/SuperAdmin/RoleView.vue'
+// 1. IMPORT KOMPONEN MANAJEMEN AKUN DI SINI
+import ManajemenAkunView from '../views/SuperAdmin/ManajemenAkunView.vue'
 import PhotoboothGuest from '@/views/Guest/PhotoboothGuest.vue'
 import EditorView from '@/views/EditorView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -26,14 +29,12 @@ const router = createRouter({
       name: 'about',
       component: () => import('../views/AboutView.vue'),
     },
-
     {
       path: '/login',
       name: 'login',
       component: () =>
         import('../views/Auth/LoginView.vue'),
     },
-
     {
       path: '/photobooth/guest',
       name: 'photobooth-guest',
@@ -44,14 +45,18 @@ const router = createRouter({
       name: 'editor-view',
       component: EditorView,
     },
-
     {
       path: '/',
       component: AuthenticatedRoleLayout,
       children: [
         { path: 'role', component: RoleView },
-
-        // Tambahkan route lain di sini
+        
+        // 2. TAMBAHKAN ROUTE MANAJEMEN AKUN DI DALAM CHILDREN
+        { 
+          path: 'manajemen-akun', 
+          name: 'manajemen-akun', 
+          component: ManajemenAkunView 
+        },
       ],
     },
     {
@@ -60,15 +65,6 @@ const router = createRouter({
       component: () =>
         import('../views/Auth/RegisterView.vue'),
     },
-    // {
-    //   path: '/about',
-    //   name: 'about',
-    //   // route level code-splitting
-    //   // this generates a separate chunk (About.[hash].js) for this route
-    //   // which is lazy-loaded when the route is visited.
-    //   component: () => import('../views/AboutView.vue'),
-    // },
-
     {
       path: '/capture',
       name: 'capture',
