@@ -1,11 +1,7 @@
 <script setup>
-
-import CameraPhotobooth from '@/components/photobooth/CameraPhotobooth.vue';
-
-
+import CameraPhotobooth from '@/components/photobooth/CameraPhotobooth.vue'
 </script>
+
 <template>
-
-
-    <CameraPhotobooth></CameraPhotobooth>
+  <CameraPhotobooth />
 </template>
