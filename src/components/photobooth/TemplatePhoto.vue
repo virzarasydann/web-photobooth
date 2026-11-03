@@ -1,52 +1,149 @@
 <template>
-  <section class="bg-white rounded-2xl max-h-max">
-    <div class="mx-3.5 pb-2">
-      <div class="mt-2 flex items-center">
-        <h1 class="font-semibold text-2xl">PILIH TEMPLATE DESAIN</h1>
+  <section class="h-full min-h-0 flex flex-col justify-between py-1">
+    <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-gray-100 shrink-0">
+      <div>
+        <h2 class="font-bold text-base md:text-lg text-[#1C2B22]">Desain Strip Foto</h2>
+        <p class="text-[11px] md:text-xs text-gray-500">
+          {{ template?.name || 'Template Desain' }} • {{ template?.slot || 4 }} Slot Foto
+        </p>
       </div>
 
-      <div
-        class="mt-3 bg-[#2F523E] text-center p-2 rounded-2xl cursor-pointer"
-        data-section="button-modal"
+      <button
+        type="button"
+        @click="modalTemplate = true"
+        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-[#2F523E] hover:text-white transition-all cursor-pointer shadow-2xs active:scale-95"
       >
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 13.5V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m12-3V3.75m0 9.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 3.75V16.5m-6-9V3.75m0 3.75a1.5 1.5 0 0 1 0 3m0-3a1.5 1.5 0 0 0 0 3m0 9.75V10.5" />
+        </svg>
+        <span>Ganti Template</span>
+      </button>
+    </div>
+
+    <div class="flex items-center justify-between py-1.5 shrink-0">
+      <span class="font-semibold text-gray-600 text-[11px] md:text-xs">
+        {{ retakeIndex !== null ? 'Pilih slot lain atau batalkan:' : 'Klik foto untuk foto ulang:' }}
+      </span>
+
+      <div class="flex items-center gap-2">
+        <button
+          v-for="idx in (template?.slot || 4)"
+          :key="idx"
+          type="button"
+          :disabled="!daftarFoto[idx - 1]"
+          @click="$emit('pilihSlot', idx - 1)"
+          class="relative w-11 h-9 sm:w-12 sm:h-10 rounded-lg overflow-hidden border-2 transition-all flex items-center justify-center shadow-2xs"
+          :class="[
+            retakeIndex === idx - 1
+              ? 'border-[#CD692C] ring-2 ring-[#CD692C] ring-offset-2 scale-110 shadow-md cursor-pointer bg-[#FAF0E8]'
+              : daftarFoto[idx - 1]
+              ? 'border-[#2F523E]/50 hover:border-[#2F523E] hover:scale-105 cursor-pointer bg-white'
+              : daftarFoto.length === idx - 1
+              ? 'border-[#CD692C] border-dashed bg-white animate-pulse'
+              : 'border-[#DCE7E8] border-dashed bg-white/60 text-gray-400 cursor-not-allowed'
+          ]"
+          :title="daftarFoto[idx - 1] ? 'Klik untuk foto ulang slot ke-' + idx : 'Slot belum terisi'"
+        >
+          <img
+            v-if="daftarFoto[idx - 1]"
+            :src="daftarFoto[idx - 1]"
+            :alt="'Foto ' + idx"
+            class="w-full h-full object-cover"
+          />
+
+          <div
+            v-if="retakeIndex === idx - 1"
+            class="absolute inset-0 bg-[#CD692C]/40 flex items-center justify-center text-white font-black text-xs"
+          >
+            ↺
+          </div>
+
+          <span v-else-if="!daftarFoto[idx - 1]" class="text-[10px] font-bold text-gray-400">
+            #{{ idx }}
+          </span>
+
+          <span
+            v-if="daftarFoto[idx - 1] && retakeIndex !== idx - 1"
+            class="absolute top-0.5 left-0.5 px-1 py-0.2 rounded bg-black/60 text-white text-[8px] font-bold leading-tight"
+          >
+            {{ idx }}
+          </span>
+        </button>
+      </div>
+    </div>
+
+    <div
+      ref="canvasWrapperRef"
+      class="flex-1 min-h-0 w-full flex justify-center items-center py-2 overflow-hidden my-1"
+    >
+      <div ref="containerRef" class="drop-shadow-2xl flex items-center justify-center transition-transform"></div>
+    </div>
+
+    <div class="flex flex-col gap-1.5 pt-2 border-t border-gray-100 shrink-0">
+      <div v-if="daftarFoto.length > 0" class="flex flex-col sm:flex-row items-center gap-2">
         <button
           type="button"
-          @click="isOpenModal = true"
-          class="cursor-pointer text-[#FFFFFF] font-semibold"
+          @click="unduhFoto"
+          class="w-full sm:flex-1 py-2.5 px-4 rounded-xl text-xs md:text-sm font-bold text-white bg-[#CD692C] hover:bg-[#B85820] transition-all cursor-pointer shadow-sm flex items-center justify-center gap-2 active:scale-98"
         >
-          Tekan untuk menampilkan seluruh template
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+          <span>Unduh Strip Foto (.PNG)</span>
+        </button>
+
+        <button
+          type="button"
+          @click="cetakFoto"
+          class="w-full sm:w-auto py-2.5 px-4 rounded-xl text-xs md:text-sm font-bold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-gray-50 transition-all cursor-pointer shadow-2xs flex items-center justify-center gap-1.5 active:scale-98"
+        >
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
+          </svg>
+          <span>Cetak</span>
         </button>
       </div>
 
-      <ListTemplateModal
-        v-model:is-open="isOpenModal"
-        @onSelectTemplate="parsingObject"
-      ></ListTemplateModal>
+      <p class="text-[10px] md:text-[11px] text-gray-500 text-center">
+        {{ daftarFoto.length > 0 ? 'Format Strip Foto HD siap disimpan atau dicetak' : 'Tekan Ambil Foto (atau Spasi) pada kamera untuk mengisi slot' }}
+      </p>
     </div>
 
-   
-    <div class="flex justify-center p-4 overflow-auto">
-      <div ref="containerRef"></div>
-    </div>
+    <ListTemplateModal
+      v-model:is-open="modalTemplate"
+      :templateAktif="template"
+      @pilihTemplate="gantiTemplate"
+    />
   </section>
 </template>
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
+import TemplateJson from '@/config/DataSource/template-photo.json'
 import ListTemplateModal from './ListTemplateModal.vue'
-
 import Konva from 'konva'
 
 const props = defineProps({
-  captured: {
+  daftarFoto: {
     type: Array,
     default: () => []
+  },
+  templateAktif: {
+    type: Object,
+    default: null
+  },
+  retakeIndex: {
+    type: Number,
+    default: null
   }
 })
 
-const isOpenModal = ref(false)
+const emit = defineEmits(['pilihTemplate', 'reset', 'pilihSlot'])
+
+const modalTemplate = ref(false)
 const containerRef = ref(null)
-const objectTemplate = ref(null)
+const canvasWrapperRef = ref(null)
+const template = ref(props.templateAktif || TemplateJson[0] || null)
 
 let stage = null
 let layer = null
@@ -63,27 +160,28 @@ const loadImage = (src) => {
 }
 
 const renderCanvas = async () => {
-  if (!containerRef.value || !objectTemplate.value) return
+  if (!containerRef.value || !template.value) return
 
-  const template = objectTemplate.value
+  const currentTemplate = template.value
 
   let bgImgObj
   try {
-    bgImgObj = await loadImage(template.backgroundUrl)
+    bgImgObj = await loadImage(currentTemplate.backgroundUrl)
   } catch (e) {
     console.error('Gagal memuat background template:', e)
     return
   }
 
-  
-  const nativeWidth = bgImgObj.width
-  const nativeHeight = bgImgObj.height
+  const nativeWidth = bgImgObj.width || 320
+  const nativeHeight = bgImgObj.height || 960
 
-  
-  const containerWidth = containerRef.value.offsetWidth || nativeWidth
-  
-  
-  const scale = Math.min(containerWidth / nativeWidth, 1)
+  const wrapper = canvasWrapperRef.value || containerRef.value?.parentElement
+  const availWidth = Math.max(120, (wrapper?.clientWidth || 260) - 16)
+  const availHeight = Math.max(160, (wrapper?.clientHeight || 360) - 16)
+
+  const widthScale = availWidth / nativeWidth
+  const heightScale = availHeight / nativeHeight
+  const scale = Math.min(widthScale, heightScale, 1.2)
 
   if (!stage) {
     stage = new Konva.Stage({
@@ -99,14 +197,12 @@ const renderCanvas = async () => {
     layer.destroyChildren()
   }
 
-  
   stage.scale({ x: scale, y: scale })
 
-  
-  if (template.slotsConfig && Array.isArray(template.slotsConfig)) {
-    for (let i = 0; i < template.slotsConfig.length; i++) {
-      const slot = template.slotsConfig[i]
-      const photoUrl = props.captured[i]
+  if (currentTemplate.slotsConfig && Array.isArray(currentTemplate.slotsConfig)) {
+    for (let i = 0; i < currentTemplate.slotsConfig.length; i++) {
+      const slot = currentTemplate.slotsConfig[i]
+      const photoUrl = props.daftarFoto[i]
 
       if (photoUrl) {
         try {
@@ -122,11 +218,34 @@ const renderCanvas = async () => {
         } catch (err) {
           console.error(`Gagal render foto ke slot ${slot.slotIndex}:`, err)
         }
+      } else {
+        const emptyRect = new Konva.Rect({
+          x: slot.x,
+          y: slot.y,
+          width: slot.width,
+          height: slot.height,
+          fill: '#F4F7F7',
+          stroke: '#D3E0E1',
+          strokeWidth: 1,
+          dash: [4, 4]
+        })
+        layer.add(emptyRect)
+
+        const slotText = new Konva.Text({
+          x: slot.x,
+          y: slot.y + slot.height / 2 - 8,
+          width: slot.width,
+          text: `Slot ${slot.slotIndex || i + 1}`,
+          fontSize: 12,
+          fontFamily: 'sans-serif',
+          fill: '#94A3B8',
+          align: 'center'
+        })
+        layer.add(slotText)
       }
     }
   }
 
- 
   const konvaBg = new Konva.Image({
     image: bgImgObj,
     x: 0,
@@ -139,12 +258,56 @@ const renderCanvas = async () => {
   layer.batchDraw()
 }
 
-const parsingObject = (object) => {
-  objectTemplate.value = object
+const gantiTemplate = (obj) => {
+  template.value = obj
+  emit('pilihTemplate', obj)
+}
+
+const unduhFoto = () => {
+  if (!stage) return
+  const dataURL = stage.toDataURL({ pixelRatio: 2 })
+  const link = document.createElement('a')
+  link.download = `photobooth-strip-${Date.now()}.png`
+  link.href = dataURL
+  document.body.appendChild(link)
+  link.click()
+  document.body.removeChild(link)
+}
+
+const cetakFoto = () => {
+  if (!stage) return
+  const dataURL = stage.toDataURL({ pixelRatio: 2 })
+  const win = window.open('', '_blank')
+  if (win) {
+    win.document.write(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Cetak Strip Foto</title>
+          <style>
+            @page { margin: 0; size: auto; }
+            body { margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #fff; }
+            img { max-height: 96vh; width: auto; object-fit: contain; }
+          </style>
+        </head>
+        <body>
+          <img src="${dataURL}" onload="window.print(); window.close();" />
+        </body>
+      </html>
+    `)
+    win.document.close()
+  }
 }
 
 watch(
-  () => [props.captured, objectTemplate.value],
+  () => props.templateAktif,
+  (val) => {
+    if (val) template.value = val
+  }
+)
+
+watch(
+  () => [props.daftarFoto, template.value],
   () => {
     renderCanvas()
   },
@@ -154,11 +317,12 @@ watch(
 onMounted(() => {
   renderCanvas()
 
-  if (containerRef.value) {
+  const targetEl = canvasWrapperRef.value || containerRef.value
+  if (targetEl) {
     resizeObserver = new ResizeObserver(() => {
       renderCanvas()
     })
-    resizeObserver.observe(containerRef.value)
+    resizeObserver.observe(targetEl)
   }
 })
 
