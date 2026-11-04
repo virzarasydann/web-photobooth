@@ -1,0 +1,17 @@
+[
+    {
+        "id": 1,
+        "templateId": 2,
+        "createdAt": "2026-10-29 19:42"
+    },
+    {
+        "id": 2,
+        "templateId": 1,
+        "createdAt": "2026-10-30 14:10"
+    },
+    {
+        "id": 3,
+        "templateId": 3,
+        "createdAt": "2026-11-01 09:25"
+    }
+]
