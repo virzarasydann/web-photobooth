@@ -1,6 +1,6 @@
 <template>
   <section class="h-full min-h-0 flex flex-col justify-between py-1">
-    <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-gray-100 shrink-0">
+    <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0">
       <div class="flex items-center gap-2">
         <h2 class="font-bold text-base md:text-lg text-[#1C2B22]">Live Camera</h2>
       </div>
@@ -35,8 +35,11 @@
       </button>
     </div>
 
-    <div class="flex-1 min-h-[180px] w-full flex items-center justify-center my-2 overflow-hidden">
-      <div class="relative aspect-[4/3] w-auto h-full max-w-full max-h-full flex items-center justify-center bg-black rounded-2xl overflow-hidden shadow-xl border border-black/20">
+    <div class="flex-1 min-h-0 w-full flex items-center justify-center my-auto py-1 overflow-hidden">
+      <div
+        class="relative w-auto h-full max-w-full max-h-[360px] md:max-h-[400px] lg:max-h-[440px] xl:max-h-[500px] 2xl:max-h-[560px] aspect-video flex items-center justify-center bg-black rounded-2xl overflow-hidden shadow-xl border border-black/20 transition-all duration-300 mx-auto"
+        :style="{ aspectRatio: cameraAspect || '16/9' }"
+      >
         <img
           v-if="retakePhotoUrl && !isCounting"
           :src="retakePhotoUrl"
@@ -49,15 +52,17 @@
           class="transition-all duration-300"
           :class="[
             retakePhotoUrl && !isCounting
-              ? 'absolute top-3 right-3 w-28 h-21 sm:w-36 sm:h-27 rounded-xl overflow-hidden border-2 border-white shadow-2xl z-20 bg-black'
+              ? 'absolute top-3 right-3 w-32 sm:w-40 rounded-xl overflow-hidden border-2 border-white shadow-2xl z-20 bg-black'
               : 'w-full h-full flex items-center justify-center'
           ]"
+          :style="retakePhotoUrl && !isCounting ? { aspectRatio: cameraAspect } : undefined"
         >
           <video
             ref="videoRef"
             autoplay
             playsinline
             muted
+            @loadedmetadata="onVideoMetadata"
             class="w-full h-full object-cover transition-transform duration-200"
             :class="{ '-scale-x-100': isMirrored }"
             :style="{ filter: filterMap[selectedFilter] || 'none' }"
@@ -100,6 +105,78 @@
             <span class="w-2.5 h-2.5 border-b-2 border-r-2 border-white/70"></span>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-1.5 py-1.5 px-0.5 shrink-0 border-t border-[#DCE7E8]/70 mt-1">
+      <div class="flex items-center justify-between text-[11px] font-semibold text-gray-600 px-1">
+        <span>
+          {{ retakeIndex !== null ? 'Sedang Foto Ulang:' : 'Slot Foto Booth:' }}
+        </span>
+        <span class="text-[10px] text-gray-400">
+          {{ daftarFoto.length }} / {{ maxPhotos }} Terisi
+        </span>
+      </div>
+
+      <div class="grid grid-cols-4 gap-2 sm:gap-2.5 lg:gap-3 w-full">
+        <button
+          v-for="idx in maxPhotos"
+          :key="idx"
+          type="button"
+          :disabled="!daftarFoto[idx - 1] && daftarFoto.length !== idx - 1"
+          @click="daftarFoto[idx - 1] ? $emit('pilihSlot', idx - 1) : null"
+          class="relative h-20 sm:h-24 lg:h-26 xl:h-28 2xl:h-32 rounded-xl lg:rounded-2xl overflow-hidden border-2 transition-all flex flex-col items-center justify-center shadow-2xs group"
+          :class="[
+            retakeIndex === idx - 1
+              ? 'border-[#CD692C] ring-2 ring-[#CD692C] ring-offset-2 scale-102 shadow-md cursor-pointer bg-[#FAF0E8]'
+              : daftarFoto[idx - 1]
+              ? 'border-[#DCE7E8] hover:border-[#2F523E] hover:scale-102 cursor-pointer bg-white'
+              : daftarFoto.length === idx - 1
+              ? 'border-[#2F523E] border-dashed bg-white/80 ring-2 ring-[#2F523E]/20'
+              : 'border-[#DCE7E8] border-dashed bg-white/40 text-gray-400 cursor-not-allowed'
+          ]"
+          :title="daftarFoto[idx - 1] ? 'Klik untuk foto ulang slot ke-' + idx : (daftarFoto.length === idx - 1 ? 'Slot yang akan diambil berikutnya' : 'Slot belum terisi')"
+        >
+          <img
+            v-if="daftarFoto[idx - 1]"
+            :src="daftarFoto[idx - 1]"
+            :alt="'Foto ' + idx"
+            class="w-full h-full object-cover transition-transform group-hover:scale-105 duration-200"
+          />
+
+          <div
+            v-if="retakeIndex === idx - 1"
+            class="absolute inset-0 bg-[#CD692C]/50 backdrop-blur-2xs flex flex-col items-center justify-center text-white font-bold"
+          >
+            <span class="text-base sm:text-lg font-black">↺</span>
+            <span class="text-[10px] tracking-tight uppercase">Ulang</span>
+          </div>
+
+          <span
+            v-if="daftarFoto[idx - 1] && retakeIndex !== idx - 1"
+            class="absolute top-1 left-1 px-1.5 py-0.5 rounded-md bg-black/60 backdrop-blur-xs text-white text-[9px] font-bold tracking-tight"
+          >
+            Slot {{ idx }}
+          </span>
+
+          <div
+            v-else-if="!daftarFoto[idx - 1] && daftarFoto.length === idx - 1"
+            class="flex flex-col items-center justify-center gap-1 text-[#2F523E]"
+          >
+            <div class="w-6 h-6 rounded-full bg-[#EAF2EE] flex items-center justify-center font-bold text-xs shadow-2xs">
+              {{ idx }}
+            </div>
+            <span class="text-[9px] font-bold uppercase tracking-wider">Aktif</span>
+          </div>
+
+          <div
+            v-else-if="!daftarFoto[idx - 1]"
+            class="flex flex-col items-center justify-center gap-0.5 text-gray-400"
+          >
+            <span class="text-xs font-bold text-gray-400">#{{ idx }}</span>
+            <span class="text-[9px] text-gray-400">Kosong</span>
+          </div>
+        </button>
       </div>
     </div>
 
@@ -200,6 +277,10 @@
 import { ref, onMounted, onUnmounted, nextTick } from 'vue'
 
 const props = defineProps({
+  daftarFoto: {
+    type: Array,
+    default: () => []
+  },
   maxPhotos: {
     type: Number,
     default: 4
@@ -222,7 +303,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['capture', 'retakeLast', 'reset', 'cancelRetake'])
+const emit = defineEmits(['capture', 'retakeLast', 'reset', 'cancelRetake', 'pilihSlot'])
 
 const videoRef = ref(null)
 const mediaStream = ref(null)
@@ -232,6 +313,13 @@ const countdown = ref(null)
 const isFlash = ref(false)
 const isMirrored = ref(true)
 const selectedFilter = ref('normal')
+const cameraAspect = ref(16 / 9)
+
+const onVideoMetadata = () => {
+  if (videoRef.value && videoRef.value.videoWidth && videoRef.value.videoHeight) {
+    cameraAspect.value = videoRef.value.videoWidth / videoRef.value.videoHeight
+  }
+}
 
 const filterOptions = [
   { id: 'normal', label: 'Normal' },
@@ -353,8 +441,11 @@ const triggerCapture = () => {
 const takeSnapshot = () => {
   if (!videoRef.value) return
   const video = videoRef.value
-  canvas.width = video.videoWidth || 1280
-  canvas.height = video.videoHeight || 720
+  const width = video.videoWidth || 1280
+  const height = video.videoHeight || 720
+
+  canvas.width = width
+  canvas.height = height
   const ctx = canvas.getContext('2d')
   ctx.save()
 
@@ -368,7 +459,7 @@ const takeSnapshot = () => {
     ctx.filter = filterCss
   }
 
-  ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+  ctx.drawImage(video, 0, 0, width, height)
   ctx.restore()
 
   emit('capture', {
@@ -379,7 +470,11 @@ const takeSnapshot = () => {
 const startCamera = async () => {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({
-      video: { width: 1280, height: 720, facingMode: 'user' },
+      video: {
+        width: { ideal: 1920 },
+        height: { ideal: 1080 },
+        facingMode: 'user'
+      },
       audio: false
     })
 
@@ -387,6 +482,25 @@ const startCamera = async () => {
     await nextTick()
     if (videoRef.value) {
       videoRef.value.srcObject = stream
+      videoRef.value.onloadedmetadata = () => {
+        if (videoRef.value.videoWidth && videoRef.value.videoHeight) {
+          cameraAspect.value = videoRef.value.videoWidth / videoRef.value.videoHeight
+        }
+      }
+    }
+
+    const [videoTrack] = stream.getVideoTracks()
+    if (videoTrack) {
+      const capabilities = videoTrack.getCapabilities?.() || {}
+      if (capabilities.zoom) {
+        try {
+          await videoTrack.applyConstraints({
+            advanced: [{ zoom: capabilities.zoom.min || 1 }]
+          })
+        } catch (e) {
+          console.debug('Pengaturan hardware zoom:', e)
+        }
+      }
     }
   } catch (error) {
     console.error('Akses webcam tidak tersedia:', error)

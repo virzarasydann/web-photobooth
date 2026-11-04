@@ -1,6 +1,6 @@
 <template>
   <section class="h-full min-h-0 flex flex-col justify-between py-1">
-    <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-gray-100 shrink-0">
+    <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0">
       <div>
         <h2 class="font-bold text-base md:text-lg text-[#1C2B22]">Desain Strip Foto</h2>
         <p class="text-[11px] md:text-xs text-gray-500">
@@ -20,58 +20,6 @@
       </button>
     </div>
 
-    <div class="flex items-center justify-between py-1.5 shrink-0">
-      <span class="font-semibold text-gray-600 text-[11px] md:text-xs">
-        {{ retakeIndex !== null ? 'Pilih slot lain atau batalkan:' : 'Klik foto untuk foto ulang:' }}
-      </span>
-
-      <div class="flex items-center gap-2">
-        <button
-          v-for="idx in (template?.slot || 4)"
-          :key="idx"
-          type="button"
-          :disabled="!daftarFoto[idx - 1]"
-          @click="$emit('pilihSlot', idx - 1)"
-          class="relative w-11 h-9 sm:w-12 sm:h-10 rounded-lg overflow-hidden border-2 transition-all flex items-center justify-center shadow-2xs"
-          :class="[
-            retakeIndex === idx - 1
-              ? 'border-[#CD692C] ring-2 ring-[#CD692C] ring-offset-2 scale-110 shadow-md cursor-pointer bg-[#FAF0E8]'
-              : daftarFoto[idx - 1]
-              ? 'border-[#2F523E]/50 hover:border-[#2F523E] hover:scale-105 cursor-pointer bg-white'
-              : daftarFoto.length === idx - 1
-              ? 'border-[#CD692C] border-dashed bg-white animate-pulse'
-              : 'border-[#DCE7E8] border-dashed bg-white/60 text-gray-400 cursor-not-allowed'
-          ]"
-          :title="daftarFoto[idx - 1] ? 'Klik untuk foto ulang slot ke-' + idx : 'Slot belum terisi'"
-        >
-          <img
-            v-if="daftarFoto[idx - 1]"
-            :src="daftarFoto[idx - 1]"
-            :alt="'Foto ' + idx"
-            class="w-full h-full object-cover"
-          />
-
-          <div
-            v-if="retakeIndex === idx - 1"
-            class="absolute inset-0 bg-[#CD692C]/40 flex items-center justify-center text-white font-black text-xs"
-          >
-            ↺
-          </div>
-
-          <span v-else-if="!daftarFoto[idx - 1]" class="text-[10px] font-bold text-gray-400">
-            #{{ idx }}
-          </span>
-
-          <span
-            v-if="daftarFoto[idx - 1] && retakeIndex !== idx - 1"
-            class="absolute top-0.5 left-0.5 px-1 py-0.2 rounded bg-black/60 text-white text-[8px] font-bold leading-tight"
-          >
-            {{ idx }}
-          </span>
-        </button>
-      </div>
-    </div>
-
     <div
       ref="canvasWrapperRef"
       class="flex-1 min-h-0 w-full flex justify-center items-center py-2 overflow-hidden my-1"
@@ -79,12 +27,12 @@
       <div ref="containerRef" class="drop-shadow-2xl flex items-center justify-center transition-transform"></div>
     </div>
 
-    <div class="flex flex-col gap-1.5 pt-2 border-t border-gray-100 shrink-0">
+    <div class="flex flex-col gap-1.5 pt-2 border-t border-[#DCE7E8] shrink-0">
       <div v-if="daftarFoto.length > 0" class="flex flex-col sm:flex-row items-center gap-2">
         <button
           type="button"
           @click="unduhFoto"
-          class="w-full sm:flex-1 py-2.5 px-4 rounded-xl text-xs md:text-sm font-bold text-white bg-[#CD692C] hover:bg-[#B85820] transition-all cursor-pointer shadow-sm flex items-center justify-center gap-2 active:scale-98"
+          class="w-full sm:flex-1 py-2 sm:py-2.5 px-3.5 rounded-xl text-xs font-semibold text-white bg-[#CD692C] hover:bg-[#B85820] transition-all cursor-pointer shadow-xs flex items-center justify-center gap-1.5 active:scale-98"
         >
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
@@ -95,7 +43,7 @@
         <button
           type="button"
           @click="cetakFoto"
-          class="w-full sm:w-auto py-2.5 px-4 rounded-xl text-xs md:text-sm font-bold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-gray-50 transition-all cursor-pointer shadow-2xs flex items-center justify-center gap-1.5 active:scale-98"
+          class="w-full sm:w-auto py-2 sm:py-2.5 px-3.5 rounded-xl text-xs font-semibold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-gray-50 transition-all cursor-pointer shadow-2xs flex items-center justify-center gap-1.5 active:scale-98"
         >
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
@@ -159,6 +107,33 @@ const loadImage = (src) => {
   })
 }
 
+const hitungCrop = (image, targetWidth, targetHeight) => {
+  const imgWidth = image.naturalWidth || image.width
+  const imgHeight = image.naturalHeight || image.height
+  const imageAspect = imgWidth / imgHeight
+  const targetAspect = targetWidth / targetHeight
+
+  let cropWidth = imgWidth
+  let cropHeight = imgHeight
+  let cropX = 0
+  let cropY = 0
+
+  if (imageAspect > targetAspect) {
+    cropWidth = imgHeight * targetAspect
+    cropX = (imgWidth - cropWidth) / 2
+  } else {
+    cropHeight = imgWidth / targetAspect
+    cropY = (imgHeight - cropHeight) / 2
+  }
+
+  return {
+    x: cropX,
+    y: cropY,
+    width: cropWidth,
+    height: cropHeight
+  }
+}
+
 const renderCanvas = async () => {
   if (!containerRef.value || !template.value) return
 
@@ -181,7 +156,7 @@ const renderCanvas = async () => {
 
   const widthScale = availWidth / nativeWidth
   const heightScale = availHeight / nativeHeight
-  const scale = Math.min(widthScale, heightScale, 1.2)
+  const scale = Math.min(widthScale, heightScale, 2.0)
 
   if (!stage) {
     stage = new Konva.Stage({
@@ -212,7 +187,8 @@ const renderCanvas = async () => {
             x: slot.x,
             y: slot.y,
             width: slot.width,
-            height: slot.height
+            height: slot.height,
+            crop: hitungCrop(photoImgObj, slot.width, slot.height)
           })
           layer.add(konvaPhoto)
         } catch (err) {
