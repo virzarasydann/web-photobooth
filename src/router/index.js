@@ -4,6 +4,7 @@ import Test from '../components/test.vue'
 import AuthenticatedRoleLayout from '@/layouts/AuthenticatedRoleLayout.vue'
 import RoleView from '../views/SuperAdmin/RoleView.vue'
 import ManajemenAkunView from '../views/SuperAdmin/ManajemenAkunView.vue'
+import GalleryPhotoView from '../views/SuperAdmin/GalleryPhotoView.vue'
 import PhotoboothGuest from '@/views/Guest/PhotoboothGuest.vue'
 import PhotoboothMember from '@/views/Member/PhotoboothMember.vue'
 import EditorView from '@/views/EditorView.vue'
@@ -81,6 +82,12 @@ const router = createRouter({
           path: 'manajemen-akun', 
           name: 'manajemen-akun', 
           component: ManajemenAkunView 
+        },
+
+        { 
+          path: 'galeri-foto', 
+          name: 'galeri-foto', 
+          component: GalleryPhotoView 
         },
       ],
     },
