@@ -2,19 +2,92 @@
 import { container } from '@/utils/container.js'
 import AppButton from '../button/AppButton.vue'
 import BrandLogo from '@/components/common/Layout/Landing-Page-Public/BrandLogo.vue'
-import { nextTick } from 'vue'
-import { useRouter } from 'vue-router'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
+const route = useRoute()
+
+const menuAktif = ref('beranda')
+
+let sedangScrollOtomatis = false
+
+function cekPosisiScroll() {
+  if (route.path !== '/' || sedangScrollOtomatis) return
+
+  const batas = window.innerHeight * 0.4
+  const caraKerja = document.getElementById(
+    'cara-kerja-section',
+  )
+  const galeri = document.getElementById('galeri')
+
+  if (
+    galeri &&
+    galeri.getBoundingClientRect().top <= batas
+  ) {
+    menuAktif.value = 'galeri'
+  } else if (
+    caraKerja &&
+    caraKerja.getBoundingClientRect().top <= batas
+  ) {
+    menuAktif.value = 'cara-kerja-section'
+  } else {
+    menuAktif.value = 'beranda'
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('scroll', cekPosisiScroll)
+  cekPosisiScroll()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', cekPosisiScroll)
+})
+
+watch(
+  () => route.path,
+  () => {
+    menuAktif.value = 'beranda'
+    setTimeout(cekPosisiScroll, 200)
+  },
+)
+
+function kunciSebentar() {
+  sedangScrollOtomatis = true
+  setTimeout(() => {
+    sedangScrollOtomatis = false
+    cekPosisiScroll()
+  }, 1000)
+}
+
+function goToBeranda() {
+  menuAktif.value = 'beranda'
+  if (route.path === '/') {
+    kunciSebentar()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+    history.replaceState(null, '', '/')
+  } else {
+    router.push('/')
+  }
+}
 
 async function goToSection(id) {
   let el = document.getElementById(id)
+
   if (!el) {
     await router.push('/')
-    await nextTick()
-    el = document.getElementById(id)
+    for (let i = 0; i < 20 && !el; i++) {
+      await new Promise((resolve) =>
+        setTimeout(resolve, 50),
+      )
+      el = document.getElementById(id)
+    }
   }
+
   if (el) {
+    menuAktif.value = id
+    kunciSebentar()
     el.scrollIntoView({
       behavior: 'smooth',
       block: 'start',
@@ -100,7 +173,14 @@ async function goToSection(id) {
             <li>
               <RouterLink
                 to="/"
-                class="block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] no-underline hover:bg-white/15 [&.router-link-exact-active]:bg-white [&.router-link-exact-active]:font-semibold [&.router-link-exact-active]:text-[#153A2B]"
+                class="block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] no-underline hover:bg-white/15"
+                :class="
+                  route.path === '/' &&
+                  menuAktif === 'beranda'
+                    ? 'bg-white font-semibold text-[#153A2B]'
+                    : 'text-white'
+                "
+                @click.prevent="goToBeranda"
               >
                 Beranda
               </RouterLink>
@@ -109,7 +189,12 @@ async function goToSection(id) {
             <li>
               <a
                 href="/#cara-kerja-section"
-                class="block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] text-white no-underline hover:bg-white/15"
+                class="block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] no-underline hover:bg-white/15"
+                :class="
+                  menuAktif === 'cara-kerja-section'
+                    ? 'bg-white font-semibold text-[#153A2B]'
+                    : 'text-white'
+                "
                 @click.prevent="
                   goToSection('cara-kerja-section')
                 "
@@ -120,7 +205,12 @@ async function goToSection(id) {
             <li>
               <a
                 href="/#galeri"
-                class="block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] text-white no-underline hover:bg-white/15"
+                class="block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] no-underline hover:bg-white/15"
+                :class="
+                  menuAktif === 'galeri'
+                    ? 'bg-white font-semibold text-[#153A2B]'
+                    : 'text-white'
+                "
                 @click.prevent="goToSection('galeri')"
               >
                 Galeri

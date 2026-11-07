@@ -24,14 +24,6 @@ import { container } from '@/utils/container.js'
     <section class="pt-10 pb-14 md:pt-14 md:pb-20">
       <div :class="container">
         <div class="mx-auto max-w-[42rem] text-center">
-          <span
-            class="mb-5 inline-flex items-center gap-2 rounded-full bg-white px-4 py-1.5 text-[0.78rem] font-medium text-[#153A2B] shadow-[0_2px_8px_rgba(21,58,43,0.08)]"
-          >
-            <span
-              class="h-2 w-2 rounded-full bg-[#FCC046]"
-            ></span>
-            Pilihan Paket &amp; Sesi Foto
-          </span>
           <h1
             class="mb-4 text-[clamp(2rem,5vw,3.25rem)] leading-[1.1] font-extrabold text-[#153A2B]"
           >
@@ -145,7 +137,7 @@ import { container } from '@/utils/container.js'
     <section class="pb-14 md:pb-20">
       <div :class="container">
         <div
-          class="overflow-hidden rounded-[1.75rem] border border-[#dce8e2] bg-white px-6 py-10 md:px-12 md:py-14"
+          class="overflow-hidden rounded-[1.75rem] border border-[#dce8e2] bg-[url(@/assets/img/bg-paket-wave.png)] bg-cover bg-center bg-no-repeat px-6 py-10 md:px-12 md:py-14"
         >
           <div
             class="grid grid-cols-1 items-center gap-10 min-[62rem]:grid-cols-2 min-[62rem]:gap-12"
@@ -207,36 +199,15 @@ import { container } from '@/utils/container.js'
               </div>
             </div>
 
-            <div
-              class="flex items-center justify-center gap-4"
-            >
+            <div class="flex items-center justify-center">
               <figure
-                class="w-[48%] max-w-[15rem] -rotate-3 rounded-2xl bg-white p-3 shadow-[0_10px_24px_rgba(21,58,43,0.15)]"
+                class="w-[70%] max-w-[18rem] -rotate-5 rounded-2xl bg-white border border-[#153A2B] p-3 shadow-[0_10px_24px_rgba(21,58,43,0.15)]"
               >
                 <img
-                  src="@/assets/img/img-public-page-V2/img-ilustration-party.png"
+                  src="@/assets/img/ilustration-animation-1.png"
                   alt="Contoh photostrip Midnight Party"
                   class="h-64 w-full rounded-xl object-cover"
                 />
-                <figcaption
-                  class="pt-3 text-center text-[0.6rem] font-bold tracking-wider text-[#153A2B] uppercase"
-                >
-                  Sleepy Ruben Nostalgia Strip • #082
-                </figcaption>
-              </figure>
-              <figure
-                class="mt-10 w-[48%] max-w-[15rem] rotate-3 rounded-2xl bg-white p-3 shadow-[0_10px_24px_rgba(21,58,43,0.15)]"
-              >
-                <img
-                  src="@/assets/img/img-public-page-V2/img-ilustration-partner.png"
-                  alt="Contoh photostrip Classic Monochrome"
-                  class="h-64 w-full rounded-xl object-cover"
-                />
-                <figcaption
-                  class="pt-3 text-center text-[0.6rem] font-bold tracking-wider text-[#153A2B] uppercase"
-                >
-                  Sleepy Ruben Kotabaru Kiosk • 2024
-                </figcaption>
               </figure>
             </div>
           </div>
