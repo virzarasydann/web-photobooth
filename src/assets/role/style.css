@@ -1,0 +1,10 @@
+.wrapper-toggle input[type="checkbox"]{
+    width: 40px;
+    height: 22px;
+    border-radius: 999px;
+    
+    appearance: none;
+    background-color: grey;
+    
+}
+
