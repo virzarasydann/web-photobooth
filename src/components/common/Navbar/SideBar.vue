@@ -212,6 +212,21 @@
     </div>
 
     <div class="flex flex-col gap-2 pt-2 border-t border-[#DCE7E8] shrink-0">
+      <button
+        type="button"
+        @click.stop="emit('openChat'); isMobileOpen = false"
+        class="flex items-center rounded-full bg-[#2F523E] font-semibold text-white shadow-lg transition hover:bg-[#244430] hover:shadow-xl active:scale-[0.98] cursor-pointer"
+        :class="isCompact ? 'w-10 h-10 mx-auto justify-center' : 'w-full min-h-14 justify-center gap-3 px-5 py-3 text-lg'"
+        title="Buka Bantuan AI"
+        aria-label="Buka Bantuan AI"
+      >
+        <svg class="h-7 w-7 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20.25 11.25c0 4.142-3.694 7.5-8.25 7.5a9.5 9.5 0 0 1-3.72-.748L3.75 19.5l1.498-3.745A7.067 7.067 0 0 1 3.75 11.25c0-4.142 3.694-7.5 8.25-7.5s8.25 3.358 8.25 7.5Z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 11.25h.008v.008h-.008v-.008Zm3.375 0h.008v.008H12v-.008Zm3.375 0h.008v.008h-.008v-.008Z" />
+        </svg>
+        <span v-if="!isCompact">Bantuan</span>
+      </button>
+
       <div
         v-if="!isCompact"
         class="flex items-center gap-2.5 p-2 bg-white rounded-xl border border-[#DCE7E8] shadow-2xs"
@@ -275,6 +290,7 @@ const isMobileOpen = defineModel('isMobileOpen', {
   type: Boolean,
   default: false
 })
+const emit = defineEmits(['openChat'])
 
 const router = useRouter()
 const route = useRoute()
