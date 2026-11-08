@@ -14,12 +14,12 @@ export default defineConfig({
     },
   },
   server: {
-    host: true, 
+    host: true,
     allowedHosts: [
-      'virza-thinkpad-x240.tail0551f6.ts.net', 
-      'prithalize.my.id',   
-      'www.prithalize.my.id',                       
-      'localhost'
-    ]
-  }
+      'virza-thinkpad-x240.tail0551f6.ts.net',
+      'prithalize.my.id',
+      'www.prithalize.my.id',
+      'localhost',
+    ],
+  },
 })

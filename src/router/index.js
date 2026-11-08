@@ -75,7 +75,8 @@ const router = createRouter({
         {
           path: 'galeri',
           name: 'galeri-foto',
-          component: () => import('@/views/Member/GaleriView.vue'),
+          component: () =>
+            import('@/views/Member/GaleriView.vue'),
         },
         { path: 'role', component: RoleView },
         {
@@ -87,6 +88,13 @@ const router = createRouter({
           path: 'riwayat',
           name: 'riwayat-log-ai',
           component: HistoryLogView
+          component: ManajemenAkunView,
+        },
+
+        {
+          path: 'galeri-foto',
+          name: 'galeri-foto',
+          component: GalleryPhotoView,
         },
 
 
