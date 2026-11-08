@@ -30,7 +30,7 @@
         </template>
       </CardComponent>
 
-      <CardComponent variant="white" title="ROLE AKTIF" description="Dapat login & sesi photobooth"  :number="roles.filter((object)=>{ return object.status == 'Aktif'}).length">
+      <CardComponent variant="white" title="ROLE AKTIF" description="Dapat login & sesi photobooth" :number="roles.filter((object)=>{ return object.status == 'Aktif'}).length">
         <template #icon>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@
     <div class="flex justify-end mb-3">
       <button
         type="button"
-        @click="isModalOpen = true"
+        @click="openAddModal"
         class="bg-[#DCE7E8] w-32 p-2 mr-3 rounded-t-2xl rounded-b-2xl cursor-pointer"
       >
         Tambah
@@ -85,34 +85,38 @@
             <td class="table-data-name">
               <div class="wrapper-toggle inline-block w-20 ">
                 <input type="checkbox" class="">
-                
               </div>
               {{ role.status }}
             </td>
             <td>
-              <button
-                class="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 cursor-pointer"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="w-4 h-4"
+              <div class="flex gap-2">
+                <button
+                  type="button"
+                  @click="openEditModal(role)"
+                  class="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 cursor-pointer"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                  />
-                </svg>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-4 h-4"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                    />
+                  </svg>
+                </button>
+               
+              </div>
             </td>
           </tr>
           <tr v-if="roles.length === 0">
             <td
-              colspan="3"
+              colspan="4"
               class="px-4 py-8 text-center text-gray-500"
             >
               Tidak ada data role.
@@ -125,9 +129,9 @@
 
   <BaseModal
     v-model:isOpen="isModalOpen"
-    title="Tambah Role"
+    :title="modalMode === 'add' ? 'Tambah Role' : 'Edit Role'"
   >
-    <form action="" method="post" @submit.prevent>
+    <form action="" method="post" @submit.prevent="handleSubmit">
       <div class="form-group gap-4 w-full">
         <label for="role">Nama Role:</label>
         <input
@@ -135,7 +139,7 @@
           type="text"
           id="role"
           name="role"
-          v-model="newRoleName"
+          v-model="formData.name"
         />
       </div>
     </form>
@@ -144,33 +148,70 @@
       <input
         class="cursor-pointer bg-[#2F523E] w-28 p-2 rounded-2xl"
         type="button"
-        value="Submit"
-        @click="handleAddRole"
+        value="Simpan"
+        @click="handleSubmit"
       />
     </template>
   </BaseModal>
+
+  
 </template>
 
 <script setup>
 import '@/assets/role/style.css'
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import RoleJson from '../../config/DataSource/role.json'
 import BaseModal from '@/components/BaseModal.vue'
 import CardComponent from '../../components/common/card/CardComponent.vue'
+
 const roles = ref(RoleJson)
 const isModalOpen = ref(false)
-const newRoleName = ref('')
 
-const handleAddRole = () => {
-  if (newRoleName.value.trim() !== '') {
+const modalMode = ref('add')
+const selectedRoleId = ref(null)
+
+
+const formData = reactive({
+  name: '',
+})
+
+const openAddModal = () => {
+  modalMode.value = 'add'
+  selectedRoleId.value = null
+  formData.name = ''
+  isModalOpen.value = true
+}
+
+const openEditModal = (role) => {
+  modalMode.value = 'edit'
+  selectedRoleId.value = role.id
+  formData.name = role.name
+  isModalOpen.value = true
+}
+
+const handleSubmit = () => {
+  if (formData.name.trim() === '') {
+    return
+  }
+
+  if (modalMode.value === 'add') {
     roles.value.push({
       id: Date.now(),
-      name: newRoleName.value,
+      name: formData.name.trim(),
+      status: 'Aktif',
     })
-    newRoleName.value = ''
-    isModalOpen.value = false
+  } else {
+    const index = roles.value.findIndex((r) => r.id === selectedRoleId.value)
+    if (index !== -1) {
+      roles.value[index].name = formData.name.trim()
+    }
   }
+
+  formData.name = ''
+  isModalOpen.value = false
 }
+
+
 </script>
 
 <style scoped>
