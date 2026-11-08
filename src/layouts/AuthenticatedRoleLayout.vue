@@ -1,6 +1,7 @@
 <template>
   <div class="h-screen w-screen max-h-screen overflow-hidden flex bg-[#F5F6F8] font-sans text-[#1C2B22]">
-    <SideBar v-model:isMobileOpen="isMobileOpen" />
+    <SideBar v-model:isMobileOpen="isMobileOpen" @open-chat="isChatOpen = true" />
+    <ChatWidget v-if="isChatOpen" @close="isChatOpen = false" />
 
     <div class="flex-1 flex flex-col h-full min-w-0 overflow-hidden bg-[#F5F6F8]">
       <header class="lg:hidden h-12 bg-[#F5F6F8] border-b border-[#DCE7E8] px-4 flex items-center justify-between shrink-0 z-30">
@@ -45,10 +46,12 @@
 import { ref } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import SideBar from '@/components/common/Navbar/SideBar.vue'
+import ChatWidget from '@/components/photobooth/ChatWidget.vue'
 import BrandLogo from '@/components/common/Layout/Landing-Page-Public/BrandLogo.vue'
 import { usePhotoboothAudioStore } from '@/stores/photoboothAudio.js'
 
 const route = useRoute()
 const isMobileOpen = ref(false)
+const isChatOpen = ref(false)
 const audioStore = usePhotoboothAudioStore()
 </script>
