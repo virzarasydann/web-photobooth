@@ -75,19 +75,20 @@ const router = createRouter({
         {
           path: 'galeri',
           name: 'galeri-foto',
-          component: () => import('@/views/Member/GaleriView.vue'),
+          component: () =>
+            import('@/views/Member/GaleriView.vue'),
         },
         { path: 'role', component: RoleView },
-        { 
-          path: 'manajemen-akun', 
-          name: 'manajemen-akun', 
-          component: ManajemenAkunView 
+        {
+          path: 'manajemen-akun',
+          name: 'manajemen-akun',
+          component: ManajemenAkunView,
         },
 
-        { 
-          path: 'galeri-foto', 
-          name: 'galeri-foto', 
-          component: GalleryPhotoView 
+        {
+          path: 'galeri-foto',
+          name: 'galeri-foto',
+          component: GalleryPhotoView,
         },
       ],
     },
