@@ -53,43 +53,106 @@
     "slot": 6
   },
   {
-    "id": 3,
-    "name": "Denim Y2K",
-    "description": "Trendy 6-Foto",
-    "backgroundUrl": "/template/template-3.png",
-    "aspectRatio": "aspect-[3/4]",
-    "slot": 6
+    "id": 4,
+    "name": "Custom Template",
+    "description": "Photobooth Template",
+    "backgroundUrl": "/template/template-4.png",
+    "slot": 4,
+    "slotsConfig": [
+      {
+        "slotIndex": 1,
+        "x": 109,
+        "y": 309,
+        "width": 498,
+        "height": 377
+      },
+      {
+        "slotIndex": 2,
+        "x": 112,
+        "y": 721,
+        "width": 499,
+        "height": 373
+      },
+      {
+        "slotIndex": 3,
+        "x": 112,
+        "y": 1137,
+        "width": 494,
+        "height": 378
+      },
+      {
+        "slotIndex": 4,
+        "x": 108,
+        "y": 1559,
+        "width": 499,
+        "height": 388
+      }
+    ]
   },
   {
-    "id": 3,
-    "name": "Denim Y2K",
-    "description": "Trendy 6-Foto",
-    "backgroundUrl": "/template/template-3.png",
-    "aspectRatio": "aspect-[3/4]",
-    "slot": 6
+    "id": 5,
+    "name": "Template Baru",
+    "description": "",
+    "backgroundUrl": "/template/Gemini_Generated_Image_2gklik2gklik2gkl.jpg",
+    "slot": 3,
+    "slotsConfig": [
+      {
+        "slotIndex": 1,
+        "shape": "rect",
+        "x": 248,
+        "y": 208,
+        "width": 349,
+        "height": 273
+      },
+      {
+        "slotIndex": 2,
+        "shape": "rect",
+        "x": 245,
+        "y": 499,
+        "width": 353,
+        "height": 260
+      },
+      {
+        "slotIndex": 3,
+        "shape": "rect",
+        "x": 249,
+        "y": 781,
+        "width": 349,
+        "height": 268
+      }
+    ]
   },
   {
-    "id": 3,
-    "name": "Denim Y2K",
-    "description": "Trendy 6-Foto",
-    "backgroundUrl": "/template/template-3.png",
-    "aspectRatio": "aspect-[3/4]",
-    "slot": 6
-  },
-  {
-    "id": 3,
-    "name": "Denim Y2K",
-    "description": "Trendy 6-Foto",
-    "backgroundUrl": "/template/template-3.png",
-    "aspectRatio": "aspect-[3/4]",
-    "slot": 6
-  },
-  {
-    "id": 3,
-    "name": "Denim Y2K",
-    "description": "Trendy 6-Foto",
-    "backgroundUrl": "/template/template-3.png",
-    "aspectRatio": "aspect-[3/4]",
-    "slot": 6
+    "id": 6,
+    "name": "Template Baru",
+    "description": "",
+    "backgroundUrl": "/template/Gemini_Generated_Image_ls509ls509ls509l.jpg",
+    "slot": 3,
+    "slotsConfig": [
+      {
+        "slotIndex": 1,
+        "shape": "rect",
+        "x": 203,
+        "y": 76,
+        "width": 246,
+        "height": 209
+      },
+      {
+        "slotIndex": 2,
+        "shape": "rect",
+        "x": 212,
+        "y": 296,
+        "width": 235,
+        "height": 177
+      },
+      {
+        "slotIndex": 3,
+        "shape": "rect",
+        "x": 213,
+        "y": 504,
+        "width": 234,
+        "height": 178
+      }
+    ]
   }
 ]
