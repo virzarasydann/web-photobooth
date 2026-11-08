@@ -8,6 +8,7 @@ import HistoryLogView from '../views/SuperAdmin/HistoryLogView.vue'
 import PhotoboothGuest from '@/views/Guest/PhotoboothGuest.vue'
 import PhotoboothMember from '@/views/Member/PhotoboothMember.vue'
 import EditorView from '@/views/EditorView.vue'
+import GaleriView from '@/views/Member/GaleriView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -87,14 +88,14 @@ const router = createRouter({
         {
           path: 'riwayat',
           name: 'riwayat-log-ai',
-          component: HistoryLogView
-          component: ManajemenAkunView,
+          component: HistoryLogView,
+          
         },
 
         {
-          path: 'galeri-foto',
+          path: 'galeri',
           name: 'galeri-foto',
-          component: GalleryPhotoView,
+          component: GaleriView,
         },
 
 
