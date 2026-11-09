@@ -1,10 +1,50 @@
 .wrapper-toggle input[type="checkbox"]{
-    width: 40px;
+    width: 50px;
     height: 22px;
-    border-radius: 999px;
-    
+    border-radius: 20px;
+    position: relative;
     appearance: none;
-    background-color: grey;
+    background-color: #6B7280;
     
 }
+
+.wrapper-toggle input[type="checkbox"]::before{
+    content: '';
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: absolute;
+    appearance: none;
+    background-color: white;
+    left: 3px;
+    top: 3px;
+    
+    
+}
+
+.wrapper-toggle input[type="checkbox"]:checked{
+   
+    background-color: #2F523E;
+  
+    
+}
+
+.wrapper-toggle input[type="checkbox"]:checked::before{
+   
+    content: '';
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    position: absolute;
+    appearance: none;
+    background-color: white;
+    left: 30px;
+    top: 3px;
+    
+  
+    
+}
+
+
+
 
