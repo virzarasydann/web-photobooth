@@ -71,7 +71,8 @@
           <!-- kotak gambar template -->
           <div @click="bukaDetail(foto)"
             class="relative rounded-3xl overflow-hidden bg-[#E6ECE8] cursor-pointer hover:shadow-lg transition">
-            <img :src="ambilGambar(foto)" :alt="ambilTemplate(foto).name" class="w-full" />
+            <div v-if="sedangMemuat" class="w-full aspect-square bg-[#DCE7E8] animate-pulse"></div>
+            <img v-else :src="ambilGambar(foto)" :alt="ambilTemplate(foto).name" class="w-full" />
 
             <!-- label jumlah foto di pojok kanan atas -->
             <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-white text-sm font-semibold shadow">
@@ -235,11 +236,18 @@ const successMessage = ref('')
 
 // tempat simpan gambar dari api
 const daftarGambar = ref([])
+const sedangMemuat = ref(true)
 
 // ambil gambar dari api saat halaman dibuka
 onMounted(async function () {
-  const response = await fetch('https://jsonplaceholder.typicode.com/photos?_limit=12')
-  daftarGambar.value = await response.json()
+  try {
+    const response = await fetch('https://jsonplaceholder.typicode.com/photos?_limit=12')
+    daftarGambar.value = await response.json()
+  } catch (error) {
+    console.log('Gagal ambil gambar dari api')
+  }
+
+  sedangMemuat.value = false
 })
 
 // cari gambar yang id-nya sama dengan foto
@@ -462,4 +470,4 @@ async function unduhFoto() {
   // tutup popup
   popupUnduhTerbuka.value = false
 }
-</script>
+</script>s
