@@ -72,7 +72,7 @@
           <div @click="bukaDetail(foto)"
             class="relative rounded-3xl overflow-hidden bg-[#E6ECE8] cursor-pointer hover:shadow-lg transition">
             <div v-if="sedangMemuat" class="w-full aspect-square bg-[#DCE7E8] animate-pulse"></div>
-            <img v-else :src="ambilGambar(foto)" :alt="ambilTemplate(foto).name" class="w-full" />
+            <img v-else :src="ambilGambar(foto)" :alt="ambilNama(foto)" class="w-full" />
 
             <!-- label jumlah foto di pojok kanan atas -->
             <span class="absolute top-4 right-4 px-3 py-1 rounded-full bg-white text-sm font-semibold shadow">
@@ -92,7 +92,7 @@
           </div>
 
           <!-- nama template dan tanggal -->
-          <p class="mt-3 text-center font-bold">{{ ambilTemplate(foto).name }}</p>
+          <p class="mt-3 text-center font-bold">{{ ambilNama(foto) }}</p>
           <p class="text-center text-sm text-gray-500">{{ ubahFormatTanggal(foto.createdAt) }}</p>
         </div>
       </div>
@@ -121,12 +121,12 @@
 
       <div class="flex flex-col md:flex-row items-center gap-10 md:gap-16">
         <!-- gambar di kiri -->
-        <img :src="ambilGambar(fotoDetail)" :alt="ambilTemplate(fotoDetail).name"
+        <img :src="ambilGambar(fotoDetail)" :alt="ambilNama(fotoDetail)"
           class="max-h-[80vh] w-full max-w-sm md:max-w-md rounded-3xl shadow-2xl object-contain" />
 
         <!-- nama, tanggal, dan tombol di kanan -->
         <div class="w-full md:w-80">
-          <h2 class="text-3xl md:text-4xl font-bold text-white">{{ ambilTemplate(fotoDetail).name }}</h2>
+          <h2 class="text-3xl md:text-4xl font-bold text-white">{{ ambilNama(fotoDetail) }}</h2>
           <p class="mt-2 text-gray-300">{{ ubahFormatTanggal(fotoDetail.createdAt) }}</p>
 
           <div class="mt-8 flex flex-col gap-3">
@@ -170,7 +170,7 @@
   <BaseModal v-model:isOpen="popupCetakTerbuka" tipe="konfirmasi" title="Cetak Foto Fisik?"
     :gambar="fotoDetail ? ambilGambar(fotoDetail) : ''" tombolKonfirmasi="Ya, Cetak"
     warnaTombol="bg-[#2F523E] text-white hover:bg-[#233F2F]" @konfirmasi="cetakFoto">
-    Cetak foto <span v-if="fotoDetail" class="font-bold text-[#1C2B22]">{{ ambilTemplate(fotoDetail).name }}</span>
+    Cetak foto <span v-if="fotoDetail" class="font-bold text-[#1C2B22]">{{ ambilNama(fotoDetail) }}</span>
     sekarang ke printer kiosk photobooth?
   </BaseModal>
 
@@ -183,7 +183,7 @@
       Yakin menghapus semua <span class="font-bold text-[#1C2B22]">{{ daftarFoto.length }} sesi foto</span>?
     </span>
     <span v-else-if="fotoYangDihapus">
-      Yakin menghapus foto <span class="font-bold text-[#1C2B22]">{{ ambilTemplate(fotoYangDihapus).name }}</span>?
+      Yakin menghapus foto <span class="font-bold text-[#1C2B22]">{{ ambilNama(fotoYangDihapus) }}</span>?
     </span>
     Tindakan ini tidak dapat dibatalkan.
   </BaseModal>
@@ -193,7 +193,7 @@
     :gambar="fotoDetail ? ambilGambar(fotoDetail) : ''" tombolKonfirmasi="Unduh Foto"
     warnaTombol="bg-[#FCC046] text-[#1C2B22] hover:bg-[#F0B336]" @konfirmasi="unduhFoto">
     Simpan file resolusi tinggi <span v-if="fotoDetail" class="font-bold text-[#1C2B22]">{{
-      ambilTemplate(fotoDetail).name }}</span>
+      ambilNama(fotoDetail) }}</span>
     langsung ke perangkat Anda.
   </BaseModal>
 </template>
@@ -258,6 +258,18 @@ function ambilGambar(foto) {
     }
   }
   return ambilTemplate(foto).backgroundUrl
+}
+
+function ambilNama(foto) {
+  for (const gambar of daftarGambar.value) {
+    if (gambar.id === foto.id) {
+      return gambar.title
+    }
+  }
+  if (sedangMemuat.value) {
+    return ''
+  }
+  return ambilTemplate(foto).name
 }
 
 
@@ -470,4 +482,4 @@ async function unduhFoto() {
   // tutup popup
   popupUnduhTerbuka.value = false
 }
-</script>s
+</script>
