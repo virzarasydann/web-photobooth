@@ -39,3 +39,7 @@ __screenshots__/
 
 # Vite
 *.timestamp-*-*.mjs
+
+# Superpowers agent plans and reports (local only)
+docs/superpowers/
+anti-slop/
