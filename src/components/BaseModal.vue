@@ -58,6 +58,8 @@
 </template>
 
 <script setup>
+import { onMounted, onUnmounted } from 'vue'
+
 const isOpen = defineModel('isOpen', {
   type: Boolean,
   default: false,
@@ -87,6 +89,20 @@ defineProps({
 })
 
 defineEmits(['konfirmasi'])
+
+const handleEscape = (event) => {
+  if (event.key === 'Escape' && isOpen.value) {
+    isOpen.value = false
+  }
+}
+
+onMounted(() => {
+  window.addEventListener('keydown', handleEscape)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleEscape)
+})
 </script>
 
 <style scoped>
