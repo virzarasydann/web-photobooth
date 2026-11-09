@@ -5,6 +5,7 @@ import BottomarMobile from '@/components/common/Navbar/BottomarMobile.vue'
 import PaketTabs from '@/components/common/Layout/PaketView/KategoriPaketView.vue'
 import PaketCard from '@/components/common/Layout/PaketView/PaketCardView.vue'
 import PaketFitur from '@/components/common/Layout/PaketView/PaketFitur.vue'
+import PaketJson from '@/config/DataSource/deskripsi-paket.json'
 import FooterSection from '@/components/common/Layout/Landing-Page-Public/FooterSection.vue'
 import { container } from '@/utils/container.js'
 </script>
@@ -49,8 +50,8 @@ import { container } from '@/utils/container.js'
             populer
             ikon="kamera"
             label="Sesi Mandiri"
-            nama="Paket Kopli & Nostalgia"
-            deskripsi="Cocok untuk foto solo bernuansa retro atau kilas memori santai harian."
+            :nama="PaketJson[0].name"
+            :deskripsi="PaketJson[0].description"
             harga="Rp 35.000"
             satuan="/ sesi"
             catatan="Web Kios Reguler"
@@ -78,8 +79,8 @@ import { container } from '@/utils/container.js'
           <PaketCard
             ikon="berdua"
             label="Double Joy"
-            nama="Paket Berdua / Sahabat"
-            deskripsi="Pilihan manis untuk pasangan, sahabat karib, atau kencan akhir pekan."
+            :nama="PaketJson[1].name"
+            :deskripsi="PaketJson[1].description"
             harga="Rp 60.000"
             satuan="/ 2 sesi"
             catatan="Hemat Rp 10.000"
@@ -107,8 +108,8 @@ import { container } from '@/utils/container.js'
           <PaketCard
             ikon="ramai"
             label="Community Booth"
-            nama="Paket Pesta & Komunitas"
-            deskripsi="Seru-seruan bareng circle, kumpul keluarga, atau traktiran wisuda."
+            :nama="PaketJson[2].name"
+            :deskripsi="PaketJson[2].description"
             harga="Rp 120.000"
             satuan="/ multi-sesi"
             catatan="4 Sesi Sekaligus"
@@ -243,17 +244,17 @@ import { container } from '@/utils/container.js'
                 <th
                   class="px-5 py-4 text-center font-semibold"
                 >
-                  Kopli &amp; Nostalgia
+                  {{ PaketJson[0].name }}
                 </th>
                 <th
                   class="px-5 py-4 text-center font-semibold"
                 >
-                  Berdua / Sahabat
+                  {{ PaketJson[1].name }}
                 </th>
                 <th
                   class="px-5 py-4 text-center font-semibold"
                 >
-                  Pesta Komunitas
+                  {{ PaketJson[2].name }}
                 </th>
               </tr>
             </thead>
