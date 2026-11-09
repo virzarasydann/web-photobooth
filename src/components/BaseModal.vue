@@ -35,7 +35,7 @@
 
   <div v-if="isOpen && tipe === 'biasa'" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
     @click.self="isOpen = false">
-    <div class="bg-[#FFFFFF] max-w-2xl min-h-96 border-3 border-[#2F523E] rounded-2xl flex flex-col w-full">
+    <div class="bg-[#FFFFFF] md:max-w-2xl max-w-max min-h-96 border-3 border-[#2F523E] rounded-2xl flex flex-col w-full">
       <div class="modal-header">
         <h1>{{ title }}</h1>
         <button type="button" @click="isOpen = false" class="cursor-pointer bg-[#2F523E] w-11 p-2 rounded-2xl">
