@@ -5,6 +5,7 @@ import AuthenticatedRoleLayout from '@/layouts/AuthenticatedRoleLayout.vue'
 import RoleView from '../views/SuperAdmin/RoleView.vue'
 import ManajemenAkunView from '../views/SuperAdmin/ManajemenAkunView.vue'
 import HistoryLogView from '../views/SuperAdmin/HistoryLogView.vue'
+import ManagementPaketView from '../views/SuperAdmin/ManagementPaketView.vue'
 import PhotoboothGuest from '@/views/Guest/PhotoboothGuest.vue'
 import PhotoboothMember from '@/views/Member/PhotoboothMember.vue'
 import EditorView from '@/views/EditorView.vue'
@@ -80,6 +81,11 @@ const router = createRouter({
             import('@/views/Member/GaleriView.vue'),
         },
         { path: 'role', component: RoleView },
+        {
+          path: 'management-paket',
+          name: 'management-paket',
+          component: ManagementPaketView,
+        },
         {
           path: 'manajemen-akun',
           name: 'manajemen-akun',
