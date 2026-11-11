@@ -5,7 +5,7 @@
     @click.self="isOpen = false"
   >
     <div
-      class="bg-[#FFFFFF] max-w-2xl min-h-96 border-3 border-[#2F523E] rounded-2xl flex flex-col w-full"
+      class="bg-[#FFFFFF] max-w-2xl min-h-96 max-h-[calc(100dvh-2rem)] min-w-0 border-3 border-[#2F523E] rounded-2xl flex flex-col w-full"
     >
       <div class="modal-header">
         <h1>{{ title }}</h1>
@@ -18,7 +18,7 @@
         </button>
       </div>
       <hr />
-      <div class="modal-body w-xl mx-auto flex-1">
+      <div class="modal-body w-full min-w-0 mx-auto flex-1 overflow-y-auto">
         <slot></slot>
       </div>
       <hr />
@@ -52,6 +52,8 @@ defineProps({
 
 <style scoped>
 .modal-body {
+  box-sizing: border-box;
+  max-width: 100%;
   margin-top: 10px;
 }
 .modal-header button[type='button'] {

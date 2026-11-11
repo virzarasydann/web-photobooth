@@ -327,12 +327,16 @@ th {
 }
 
 .account-management-modal {
+  box-sizing: border-box;
   align-items: flex-start;
   overflow-y: auto;
   padding: 0.75rem;
 }
 
 :deep(.account-management-modal > div) {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 36rem;
   min-height: 0;
   max-height: calc(100dvh - 1.5rem);
   overflow: hidden;
@@ -341,10 +345,20 @@ th {
 :deep(.account-management-modal .modal-body) {
   box-sizing: border-box;
   width: 100%;
-  max-width: 36rem;
+  max-width: 100%;
   min-height: 0;
+  min-width: 0;
+  margin-inline: 0;
   overflow-y: auto;
   padding-inline: 1rem;
+}
+
+:deep(.account-management-modal form),
+:deep(.account-management-modal input),
+:deep(.account-management-modal select) {
+  box-sizing: border-box;
+  max-width: 100%;
+  min-width: 0;
 }
 
 @media (min-width: 640px) {
