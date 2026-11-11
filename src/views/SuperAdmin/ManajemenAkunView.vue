@@ -137,7 +137,11 @@
     </div>
   </section>
 
-  <BaseModal v-model:isOpen="isModalOpen" :title="modalMode === 'add' ? 'Tambah Akun' : 'Edit Akun'">
+  <BaseModal
+    v-model:isOpen="isModalOpen"
+    :title="modalMode === 'add' ? 'Tambah Akun' : 'Edit Akun'"
+    class="account-management-modal"
+  >
     <form action="" method="post" @submit.prevent>
       <div
         v-if="errorMessage"
@@ -320,5 +324,42 @@ th {
 .table-data-name {
   color: #2f523e;
   font-weight: bold;
+}
+
+.account-management-modal {
+  align-items: flex-start;
+  overflow-y: auto;
+  padding: 0.75rem;
+}
+
+:deep(.account-management-modal > div) {
+  min-height: 0;
+  max-height: calc(100dvh - 1.5rem);
+  overflow: hidden;
+}
+
+:deep(.account-management-modal .modal-body) {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 36rem;
+  min-height: 0;
+  overflow-y: auto;
+  padding-inline: 1rem;
+}
+
+@media (min-width: 640px) {
+  .account-management-modal {
+    align-items: center;
+    padding: 1rem;
+  }
+
+  :deep(.account-management-modal > div) {
+    min-height: 24rem;
+    max-height: calc(100dvh - 2rem);
+  }
+
+  :deep(.account-management-modal .modal-body) {
+    padding-inline: 1.5rem;
+  }
 }
 </style>
