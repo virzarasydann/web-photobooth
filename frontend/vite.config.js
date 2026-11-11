@@ -22,4 +22,14 @@ export default defineConfig({
       'localhost',
     ],
   },
+  preview: {
+    host: true,
+    port: 5173,
+    allowedHosts: [
+      'virza-thinkpad-x240.tail0551f6.ts.net',
+      'prithalize.my.id',
+      'www.prithalize.my.id',
+      'localhost',
+    ],
+  },
 })
