@@ -12,6 +12,7 @@ Proyek ini dibangun menggunakan teknologi modern untuk performa dan pengalaman p
 - **Framework Backend:** [Nest JS](https://nestjs.com) 
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/) untuk utility-first styling yang cepat dan responsif.
 - **Styling Template** [Konva JS](https://konvajs.org) untuk pembuatan custom template terhadap photobooth
+- **
 
 
 ##  Inisialisasi Proyek

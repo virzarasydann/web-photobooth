@@ -26,6 +26,7 @@ deploy.sh
 *.sln
 *.sw?
 
+.env
 *.tsbuildinfo
 
 .eslintcache
