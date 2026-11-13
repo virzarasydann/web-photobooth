@@ -4,8 +4,12 @@ import Test from '../components/test.vue'
 import AuthenticatedRoleLayout from '@/layouts/AuthenticatedRoleLayout.vue'
 import RoleView from '../views/SuperAdmin/RoleView.vue'
 import ManajemenAkunView from '../views/SuperAdmin/ManajemenAkunView.vue'
+<<<<<<< Updated upstream
 import HistoryLogView from '../views/SuperAdmin/HistoryLogView.vue'
 import ManagementPaketView from '../views/SuperAdmin/ManagementPaketView.vue'
+=======
+import GalleryPhotoView from '../views/SuperAdmin/GalleryPhotoView.vue'
+>>>>>>> Stashed changes
 import PhotoboothGuest from '@/views/Guest/PhotoboothGuest.vue'
 import PhotoboothMember from '@/views/Member/PhotoboothMember.vue'
 import EditorView from '@/views/EditorView.vue'
@@ -89,6 +93,7 @@ const router = createRouter({
         {
           path: 'manajemen-akun',
           name: 'manajemen-akun',
+<<<<<<< Updated upstream
           component: ManajemenAkunView
         },
         {
@@ -96,6 +101,9 @@ const router = createRouter({
           name: 'riwayat-log-ai',
           component: HistoryLogView,
           
+=======
+          component: ManajemenAkunView,
+>>>>>>> Stashed changes
         },
 
         {
@@ -103,8 +111,6 @@ const router = createRouter({
           name: 'galeri-foto',
           component: GaleriView,
         },
-
-
       ],
     },
     {
