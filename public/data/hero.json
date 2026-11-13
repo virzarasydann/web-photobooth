@@ -1,0 +1,26 @@
+{
+  "judulAwal": "Sentuhan Hangat di Tiap",
+  "judulSorot": "Potongan Strip",
+  "judulAkhir": "Kenangan.",
+  "deskripsi": "Tunjukkan gayamu, abadikan momen seru bersama teman, keluarga, atau orang tersayang, dan buat kenangan yang bisa kamu lihat kembali kapan saja.",
+  "tombol": [
+    {
+      "teks": "Mulai",
+      "link": "/photobooth/guest",
+      "varian": "primary",
+      "ikon": "kamera"
+    },
+    {
+      "teks": "Masuk",
+      "link": "/login",
+      "varian": "outline"
+    },
+    {
+      "teks": "Daftar",
+      "link": "/register",
+      "varian": "soft"
+    }
+  ],
+  "gambar": "/img/hero/banner.png",
+  "altGambar": "Anak tersenyum memegang papan SMILE dengan strip foto"
+}

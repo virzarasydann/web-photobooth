@@ -1,6 +1,15 @@
 <script setup>
-import AppButton from '../../button/AppButton.vue'
+import { computed } from 'vue'
+import AppButton from '@/components/common/button/AppButton.vue'
 import { container } from '@/utils/container.js'
+import { useAmbilData } from '@/utils/ambilData.js'
+import CtaSkeleton from './CtaSkeleton.vue'
+
+const { data, loading, error, muat } = useAmbilData(
+  '/data/cta.json',
+)
+
+const kosong = computed(() => !data.value?.judul)
 </script>
 
 <template>
@@ -14,7 +23,27 @@ import { container } from '@/utils/container.js'
           class="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-[#3a6551] opacity-60 blur-2xl"
         ></div>
 
+        <CtaSkeleton v-if="loading" />
+
+        <!-- Latar gelap, jadi pesan error ditulis di sini -->
         <div
+          v-else-if="error || kosong"
+          class="relative py-6 text-center"
+        >
+          <p class="mb-4 text-[#c9dbd1]">
+            {{ error || 'Data belum tersedia.' }}
+          </p>
+          <button
+            type="button"
+            class="cursor-pointer rounded-full bg-[#FCC046] px-5 py-2 text-[0.85rem] font-bold text-[#153A2B]"
+            @click="muat"
+          >
+            Coba lagi
+          </button>
+        </div>
+
+        <div
+          v-else
           class="relative flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between"
         >
           <div class="max-w-[36rem]">
@@ -34,21 +63,19 @@ import { container } from '@/utils/container.js'
               >
                 <path d="m15 18-6-6 6-6" />
               </svg>
-              Gratis &amp; Tanpa Instalasi
+              {{ data.label }}
             </span>
 
             <h2
               class="mb-3 text-[clamp(1.8rem,4vw,2.75rem)] leading-[1.1] font-extrabold text-white"
             >
-              Siap untuk Mengabadikan Momen Manismu?
+              {{ data.judul }}
             </h2>
 
             <p
               class="text-[0.98rem] leading-relaxed text-[#c9dbd1]"
             >
-              Nyalakan kamera, panggil orang tersayang, dan
-              biarkan Sleepy Ruben mencetak tawa hangatmu
-              hari ini.
+              {{ data.deskripsi }}
             </p>
           </div>
 
@@ -56,16 +83,12 @@ import { container } from '@/utils/container.js'
             class="flex shrink-0 flex-wrap items-center gap-3"
           >
             <AppButton
-              variant="primary"
-              to="/photobooth/guest"
+              v-for="tombol in data.tombol"
+              :key="tombol.teks"
+              :variant="tombol.varian"
+              :to="tombol.link"
             >
-              Mulai Sekarang
-            </AppButton>
-            <AppButton
-              variant="outline-light"
-              to="/register"
-            >
-              Daftar Akun
+              {{ tombol.teks }}
             </AppButton>
           </div>
         </div>

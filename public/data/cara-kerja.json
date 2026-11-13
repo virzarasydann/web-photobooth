@@ -1,0 +1,60 @@
+{
+  "label": "Langkah Praktis",
+  "judul": "Cara Kerja Sleepy Ruben",
+  "deskripsi": "Tiga langkah mudah tanpa instalasi rumit. Buka browser, atur pose terbaikmu, dan dapatkan cetakan digital bernuansa nostalgia.",
+  "langkah": [
+    {
+      "nomor": "01",
+      "judul": "Masuk & Atur Pose",
+      "deskripsi": "Izinkan akses kamera laptop atau smartphone. Hitungan mundur 3 detik memberi waktu untuk merapikan senyum dan pose terbaik bersama teman.",
+      "ikon": "video",
+      "warnaIkon": "#D8E1E3",
+      "warnaTeksIkon": "#153A2B",
+      "gelap": false,
+      "fitur": {
+        "ikon": "jam",
+        "teks": "Countdown Otomatis"
+      }
+    },
+    {
+      "nomor": "02",
+      "judul": "Desain Strip Kustom",
+      "deskripsi": "Pilih warna bingkai favorit—mulai dari Forest Green, Vintage Mustard, hingga Terracotta Stamp. Tambahkan stiker retro dan teks penanda tanggal.",
+      "ikon": "palet",
+      "warnaIkon": "#C3ECD6",
+      "warnaTeksIkon": "#153A2B",
+      "gelap": false,
+      "fitur": {
+        "ikon": "kuas",
+        "teks": "Pilihan Filter & Frame Lengkap"
+      }
+    },
+    {
+      "nomor": "03",
+      "judul": "Unduh & Cetak Instan",
+      "deskripsi": "Dapatkan berkas strip beresolusi tinggi (PNG/PDF) untuk dicetak di kertas foto instan, dibagikan ke media sosial, atau disimpan di galeri awan pribadimu.",
+      "ikon": "unduh",
+      "warnaIkon": "#FFDBCB",
+      "warnaTeksIkon": "#5A2200",
+      "gelap": false,
+      "fitur": {
+        "ikon": "printer",
+        "teks": "Format Cetak Siap Pakai (300 DPI)"
+      }
+    },
+    {
+      "nomor": "04",
+      "judul": "Login untuk Template Lebih Banyak",
+      "deskripsi": "Ingin pilihan template yang lebih lengkap dan hasil fotomu tersimpan rapi di arsip? Kami sarankan masuk ke akunmu terlebih dahulu. Belum punya akun? Daftar hanya butuh beberapa menit.",
+      "ikon": "gembok",
+      "warnaIkon": "#FFE9B0",
+      "warnaTeksIkon": "#5A3A00",
+      "gelap": true,
+      "fitur": {
+        "ikon": "pengguna",
+        "teks": "Masuk Sekarang",
+        "link": "/login"
+      }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "deskripsi": "Ruang kecil untuk tawa besar. Pilih tema, jepret pose favoritmu, dan simpan kenangan yang bisa kamu lihat kembali kapan saja.",
+  "menu": {
+    "judul": "Menu",
+    "item": [
+      { "teks": "Beranda", "link": "/" },
+      { "teks": "Cara Kerja", "scroll": "cara-kerja-section" },
+      { "teks": "Galeri", "scroll": "galeri" },
+      { "teks": "Masuk", "link": "/login" },
+      { "teks": "Daftar", "link": "/register" }
+    ]
+  },
+  "kontak": {
+    "judul": "Kontak",
+    "item": [
+      { "teks": "Telkom University" },
+      {
+        "teks": "halo@photobooth.id",
+        "href": "mailto:halo@photobooth.id"
+      },
+      { "teks": "@photobooth.id" }
+    ]
+  },
+  "hakCipta": "© 2026 Photobooth. Tugas Besar Pengembangan Web."
+}

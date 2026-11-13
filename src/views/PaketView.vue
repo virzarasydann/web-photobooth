@@ -6,7 +6,7 @@ import PaketTabs from '@/components/common/Layout/PaketView/KategoriPaketView.vu
 import PaketCard from '@/components/common/Layout/PaketView/PaketCardView.vue'
 import PaketFitur from '@/components/common/Layout/PaketView/PaketFitur.vue'
 import PaketJson from '@/config/DataSource/deskripsi-paket.json'
-import FooterSection from '@/components/common/Layout/Landing-Page-Public/FooterSection.vue'
+import FooterSection from '@/components/common/Layout/Landing-Page-Public/footer/FooterSection.vue'
 import { container } from '@/utils/container.js'
 </script>
 

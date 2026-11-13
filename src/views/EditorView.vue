@@ -1,4 +1,9 @@
+<!-- <script>
+import SideBar from '@/components/common/Navbar/SideBar.vue'
+</script> -->
+
 <template>
+  <!-- <SideBar /> -->
   <div
     class="mx-auto flex max-w-7xl flex-col gap-6 p-6 font-sans text-[#153A2B]"
   >
