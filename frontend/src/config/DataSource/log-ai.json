@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "userId": 1,
+        "prompt": "Gaya foto apa yang cocok buat foto berdua sama sahabat?",
+        "response": "Coba pose saling rangkul sambil tertawa, atau pose membentuk hati pakai tangan berdua.",
+        "createdAt": "2026-11-05 10:12"
+    },
+    {
+        "id": 2,
+        "userId": 2,
+        "prompt": "Template mana yang cocok buat foto ulang tahun?",
+        "response": "Template Pastel Ribbon cocok untuk ulang tahun karena warnanya cerah dan ceria.",
+        "createdAt": "2026-11-05 13:40"
+    },
+    {
+        "id": 3,
+        "userId": 1,
+        "prompt": "Bikinin caption lucu buat foto photobooth dong",
+        "response": "Senyum dulu, galau belakangan!",
+        "createdAt": "2026-11-06 19:05"
+    },
+    {
+        "id": 4,
+        "userId": 3,
+        "prompt": "Gimana cara foto ulang kalau hasilnya jelek?",
+        "response": "Tekan tombol Foto Ulang pada halaman hasil, lalu ambil foto kembali.",
+        "createdAt": "2026-11-07 08:30"
+    }
+]

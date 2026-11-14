@@ -1,0 +1,23 @@
+[
+  { 
+    "id": 1, 
+    "name": "Ridho Ramadhan", 
+    "email": "ridho@example.com", 
+    "id_role": 1, 
+    "isActive": true 
+  },
+  { 
+    "id": 2, 
+    "name": "Aryasatya Kalevi", 
+    "email": "arya@example.com", 
+    "id_role": 2, 
+    "isActive": true 
+  },
+  { 
+    "id": 3, 
+    "name": "Guest User", 
+    "email": "guest@example.com", 
+    "id_role": 3, 
+    "isActive": false 
+  }
+]

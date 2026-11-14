@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Super Admin",
+    "status": "Aktif"
+  },
+  {
+    "id": 2,
+    "name": "Admin",
+    "status": "Aktif"
+  },
+  {
+    "id": 3,
+    "name": "User",
+    "status": "Aktif"
+  },
+  {
+    "id": 4,
+    "name": "Guest",
+    "status": "Aktif"
+  }
+]

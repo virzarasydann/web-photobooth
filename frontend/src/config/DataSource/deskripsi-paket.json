@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "name": "Paket User",
+    "description": "Pakai photobooth kapan saja dan semua hasil foto tersimpan otomatis di galeri database.",
+    "status": "Aktif"
+  },
+  {
+    "id": 2,
+    "name": "Paket Admin",
+    "description": "Pakai photobooth dengan template bawaan, bisa buat template baru dan pakai custom template sendiri.",
+    "status": "Aktif"
+  },
+  {
+    "id": 3,
+    "name": "Paket Event",
+    "description": "Kelola sesi foto untuk acara dan unduh semua hasil dalam satu galeri bersama.",
+    "status": "Aktif"
+  }
+]
