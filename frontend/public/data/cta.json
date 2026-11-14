@@ -1,0 +1,17 @@
+{
+  "label": "Gratis & Tanpa Instalasi",
+  "judul": "Siap untuk Mengabadikan Momen Manismu?",
+  "deskripsi": "Nyalakan kamera, panggil orang tersayang, dan biarkan Sleepy Ruben mencetak tawa hangatmu hari ini.",
+  "tombol": [
+    {
+      "teks": "Mulai Sekarang",
+      "link": "/photobooth/guest",
+      "varian": "primary"
+    },
+    {
+      "teks": "Daftar Akun",
+      "link": "/register",
+      "varian": "outline-light"
+    }
+  ]
+}
