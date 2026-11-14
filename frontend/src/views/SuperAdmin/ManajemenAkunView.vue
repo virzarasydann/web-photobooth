@@ -7,34 +7,12 @@
 
     <div data-section="wrapper-card-component" class="flex flex-row gap-3">
       <CardComponent
+        v-for="card in summaryCards"
+        :key="card.title"
         variant="white"
-        title="TOTAL PENGGUNA"
-        description="Total akun yang terdaftar"
-        :number="accounts.length"
-      >
-        <template #icon>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="size-4"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z"
-            />
-          </svg>
-        </template>
-      </CardComponent>
-
-      <CardComponent
-        variant="white"
-        title="AKUN AKTIF"
-        description="Dapat login & sesi photobooth"
-        :number="activeAccountCount"
+        :title="card.title"
+        :description="card.description"
+        :number="card.number"
       >
         <template #icon>
           <svg
@@ -67,74 +45,105 @@
       </button>
     </div>
 
-    <div class="rounded-tl-lg rounded-tr-lg overflow-hidden border border-gray-200 shadow-sm">
-      <table class="w-full">
-        <thead class="bg-[#DCE7E8]">
-          <tr>
-            <th>NO</th>
-            <th>NAMA AKUN</th>
-            <th>EMAIL</th>
-            <th>ROLE</th>
-            <th>STATUS</th>
-            <th>AKSI</th>
-          </tr>
-        </thead>
-        <tbody class="bg-white">
-          <tr v-for="(akun, index) in accounts" :key="akun.id">
-            <td class="table-data-number">
-              {{ String(index + 1).padStart(2, '0') }}
-            </td>
-            <td class="table-data-name">
-              {{ akun.name }}
-            </td>
-            <td>
-              {{ akun.email }}
-            </td>
-            <td class="font-semibold text-gray-700">
-              {{ getRoleName(akun.id_role) }}
-            </td>
-            <td>
-              <span :class="akun.isActive ? 'text-green-600' : 'text-red-500'" class="font-bold">
-                {{ akun.isActive ? 'Aktif' : 'Nonaktif' }}
-              </span>
-            </td>
-            <td>
-              <div class="flex gap-2">
+    <FetchJson
+      src="DataSource/user.json"
+      v-model="accounts"
+      v-slot="{ isLoading, loadError, reload }"
+    >
+      <div class="rounded-tl-lg rounded-tr-lg overflow-auto border border-gray-200 shadow-sm">
+        <table class="w-full">
+          <thead class="bg-[#DCE7E8]">
+            <tr>
+              <th>NO</th>
+              <th>NAMA AKUN</th>
+              <th>EMAIL</th>
+              <th>ROLE</th>
+              <th>STATUS</th>
+              <th>AKSI</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white">
+            <tr v-if="isLoading">
+              <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                Memuat data akun...
+              </td>
+            </tr>
+            <tr v-else-if="loadError">
+              <td colspan="6" class="px-4 py-8 text-center">
+                <p class="font-semibold text-red-600">{{ loadError }}</p>
                 <button
-                  @click="openEditModal(akun)"
-                  class="px-3 py-1 bg-blue-500 text-white rounded text-sm hover:bg-blue-600 cursor-pointer transition"
+                  type="button"
+                  @click="reload"
+                  class="mt-2 cursor-pointer rounded-2xl bg-[#2F523E] px-4 py-2 text-white"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="w-4 h-4"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
+                  Muat ulang
+                </button>
+              </td>
+            </tr>
+            <template v-else>
+              <tr v-for="(akun, index) in accounts" :key="akun.id">
+                <td class="table-data-number">
+                  {{ String(index + 1).padStart(2, '0') }}
+                </td>
+                <td class="table-data-name">
+                  {{ akun.name }}
+                </td>
+                <td>
+                  {{ akun.email }}
+                </td>
+                <td class="font-semibold text-gray-700">
+                  {{ getRoleName(akun.id_role) }}
+                </td>
+                <td>
+                  <div class="wrapper-toggle inline-block w-20">
+                    <input
+                      v-model="akun.isActive"
+                      class="cursor-pointer"
+                      type="checkbox"
+                      :aria-label="`Status ${akun.name}`"
                     />
-                  </svg>
-                </button>
-                <button
-                  @click="toggleStatus(akun.id)"
-                  :class="akun.isActive ? 'bg-red-500 hover:bg-red-600' : 'bg-green-500 hover:bg-green-600'"
-                  class="px-3 py-1 text-white rounded text-sm cursor-pointer transition"
-                >
-                  {{ akun.isActive ? 'Nonaktifkan' : 'Aktifkan' }}
-                </button>
-              </div>
-            </td>
-          </tr>
-          <tr v-if="accounts.length === 0">
-            <td colspan="6" class="px-4 py-8 text-center text-gray-500">Tidak ada data akun.</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+                  </div>
+                  <span
+                    :class="akun.isActive ? 'text-green-600' : 'text-red-500'"
+                    class="font-bold"
+                  >
+                    {{ akun.isActive ? 'Aktif' : 'Nonaktif' }}
+                  </span>
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    @click="openEditModal(akun)"
+                    class="flex max-w-fit cursor-pointer items-center gap-1 rounded-2xl border border-gray-700 bg-white px-2 py-1 text-xs text-black"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="size-4"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125"
+                      />
+                    </svg>
+                    <span>Edit</span>
+                  </button>
+                </td>
+              </tr>
+              <tr v-if="accounts.length === 0">
+                <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                  Tidak ada data akun.
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+    </FetchJson>
   </section>
 
   <BaseModal v-model:isOpen="isModalOpen" :title="modalMode === 'add' ? 'Tambah Akun' : 'Edit Akun'">
@@ -201,17 +210,30 @@
 </template>
 
 <script setup>
+import '@/assets/role/style.css'
 import { computed, ref, reactive } from 'vue'
 import BaseModal from '@/components/BaseModal.vue'
 import CardComponent from '@/components/common/card/CardComponent.vue'
-import UserJson from '@/config/DataSource/user.json'
+import FetchJson from '@/components/common/FetchJson/FetchJson.vue'
 import RoleJson from '@/config/DataSource/role.json'
 
-const accounts = ref(UserJson)
+const accounts = ref([])
 const rolesData = ref(RoleJson)
 const activeAccountCount = computed(
   () => accounts.value.filter((account) => account.isActive).length,
 )
+const summaryCards = computed(() => [
+  {
+    title: 'TOTAL PENGGUNA',
+    description: 'Total akun yang terdaftar',
+    number: accounts.value.length,
+  },
+  {
+    title: 'AKUN AKTIF',
+    description: 'Dapat login & sesi photobooth',
+    number: activeAccountCount.value,
+  },
+])
 
 const isModalOpen = ref(false)
 const errorMessage = ref('')
@@ -283,12 +305,6 @@ const handleSubmit = () => {
   isModalOpen.value = false
 }
 
-const toggleStatus = (id) => {
-  const akun = accounts.value.find((account) => account.id === id)
-  if (akun) {
-    akun.isActive = !akun.isActive
-  }
-}
 </script>
 
 <style scoped>
