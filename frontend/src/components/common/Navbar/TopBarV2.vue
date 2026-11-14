@@ -2,11 +2,24 @@
 import { container } from '@/utils/container.js'
 import AppButton from '../button/AppButton.vue'
 import BrandLogo from '@/components/common/Layout/Landing-Page-Public/BrandLogo.vue'
+import ButtonStart from '../button/ButtonStart.vue'
+import MenuMobile from './MenuMobile.vue'
 import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 const router = useRouter()
 const route = useRoute()
+
+// Menu yang scroll ke section di halaman landing
+const menuSection = [
+  { id: 'cara-kerja-section', label: 'Cara Kerja' },
+  { id: 'galeri', label: 'Galeri' },
+]
+
+// Class yang sama untuk semua item menu
+const kelasMenu =
+  'block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] no-underline hover:bg-white/15'
+const kelasAktif = 'bg-white font-semibold text-[#153A2B]'
 
 const menuAktif = ref('beranda')
 
@@ -97,6 +110,18 @@ async function goToSection(id) {
     console.warn(`Elemen dengan id="${id}" tidak ditemukan`)
   }
 }
+
+// Menu dari sidebar mobile menjalankan fungsi yang sama
+// dengan menu di navbar laptop
+function klikMenuMobile(id) {
+  if (id === 'beranda') {
+    goToBeranda()
+  } else if (id === 'paket') {
+    router.push('/paket-view')
+  } else {
+    goToSection(id)
+  }
+}
 </script>
 
 <template>
@@ -117,33 +142,13 @@ async function goToSection(id) {
         <BrandLogo size="sm" />
       </RouterLink>
 
-      <AppButton
-        variant="primary"
-        size="sm"
-        to="/photobooth/guest"
-      >
-        <!-- Ikon kamera -->
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="h-[1.05rem] w-[1.05rem]"
-          aria-hidden="true"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <line x1="14.31" y1="8" x2="20.05" y2="17.94" />
-          <line x1="9.69" y1="8" x2="21.17" y2="8" />
-          <line x1="7.38" y1="12" x2="13.12" y2="2.06" />
-          <line x1="9.69" y1="16" x2="3.95" y2="6.06" />
-          <line x1="14.31" y1="16" x2="2.83" y2="16" />
-          <line x1="16.62" y1="12" x2="10.88" y2="21.94" />
-        </svg>
-        Mulai
-      </AppButton>
+      <div class="flex items-center gap-2">
+        <ButtonStart size="sm" />
+        <MenuMobile
+          :menu-aktif="menuAktif"
+          @pilih="klikMenuMobile"
+        />
+      </div>
     </div>
   </header>
 
@@ -155,8 +160,6 @@ async function goToSection(id) {
         <!-- Logo -->
         <RouterLink
           to="/"
-          src="@/assets/img/logo.png"
-          alt="Logo Photobooth"
           class="shrink-0 no-underline mx-auto mb-3 block h-12 w-auto md:mx-0"
           aria-label="Sleepy Ruben - Beranda"
         >
@@ -173,54 +176,39 @@ async function goToSection(id) {
             <li>
               <RouterLink
                 to="/"
-                class="block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] no-underline hover:bg-white/15"
-                :class="
+                :class="[
+                  kelasMenu,
                   route.path === '/' &&
                   menuAktif === 'beranda'
-                    ? 'bg-white font-semibold text-[#153A2B]'
-                    : 'text-white'
-                "
+                    ? kelasAktif
+                    : 'text-white',
+                ]"
                 @click.prevent="goToBeranda"
               >
                 Beranda
               </RouterLink>
             </li>
 
-            <li>
+            <li v-for="menu in menuSection" :key="menu.id">
               <a
-                href="/#cara-kerja-section"
-                class="block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] no-underline hover:bg-white/15"
-                :class="
-                  menuAktif === 'cara-kerja-section'
-                    ? 'bg-white font-semibold text-[#153A2B]'
-                    : 'text-white'
-                "
-                @click.prevent="
-                  goToSection('cara-kerja-section')
-                "
+                :href="`/#${menu.id}`"
+                :class="[
+                  kelasMenu,
+                  menuAktif === menu.id
+                    ? kelasAktif
+                    : 'text-white',
+                ]"
+                @click.prevent="goToSection(menu.id)"
               >
-                Cara Kerja
-              </a>
-            </li>
-            <li>
-              <a
-                href="/#galeri"
-                class="block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] no-underline hover:bg-white/15"
-                :class="
-                  menuAktif === 'galeri'
-                    ? 'bg-white font-semibold text-[#153A2B]'
-                    : 'text-white'
-                "
-                @click.prevent="goToSection('galeri')"
-              >
-                Galeri
+                {{ menu.label }}
               </a>
             </li>
 
             <li>
               <RouterLink
                 to="/paket-view"
-                class="block rounded-[50rem] px-2 py-[0.35rem] text-[0.9rem] tracking-[0.3px] no-underline hover:bg-white/15 [&.router-link-exact-active]:bg-white [&.router-link-exact-active]:font-semibold [&.router-link-exact-active]:text-[#153A2B]"
+                :class="kelasMenu"
+                class="[&.router-link-exact-active]:bg-white [&.router-link-exact-active]:font-semibold [&.router-link-exact-active]:text-[#153A2B]"
               >
                 Paket
               </RouterLink>
@@ -237,47 +225,7 @@ async function goToSection(id) {
           <AppButton variant="soft" to="/register">
             Daftar
           </AppButton>
-          <AppButton
-            variant="primary"
-            to="/photobooth/guest"
-          >
-            <!-- Ikon kamera -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="h-[1.1rem] w-[1.1rem]"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line
-                x1="14.31"
-                y1="8"
-                x2="20.05"
-                y2="17.94"
-              />
-              <line x1="9.69" y1="8" x2="21.17" y2="8" />
-              <line
-                x1="7.38"
-                y1="12"
-                x2="13.12"
-                y2="2.06"
-              />
-              <line x1="9.69" y1="16" x2="3.95" y2="6.06" />
-              <line x1="14.31" y1="16" x2="2.83" y2="16" />
-              <line
-                x1="16.62"
-                y1="12"
-                x2="10.88"
-                y2="21.94"
-              />
-            </svg>
-            Mulai
-          </AppButton>
+          <ButtonStart />
         </div>
       </div>
     </header>

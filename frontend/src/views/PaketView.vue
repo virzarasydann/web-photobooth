@@ -1,20 +1,10 @@
 <script setup>
 import TopBarV2 from '@/components/common/Navbar/TopBarV2.vue'
 import BottomarMobile from '@/components/common/Navbar/BottomarMobile.vue'
-<<<<<<< Updated upstream
-// import AppButton from '@/components/common/button/AppButton.vue'
-import PaketTabs from '@/components/common/Layout/PaketView/KategoriPaketView.vue'
-import PaketCard from '@/components/common/Layout/PaketView/PaketCardView.vue'
-import PaketFitur from '@/components/common/Layout/PaketView/PaketFitur.vue'
-import PaketJson from '@/config/DataSource/deskripsi-paket.json'
-import FooterSection from '@/components/common/Layout/Landing-Page-Public/FooterSection.vue'
-import { container } from '@/utils/container.js'
-=======
 import DaftarPaketSection from '@/components/common/Layout/PaketView/DaftarPaketSection.vue'
 import KualitasCetakSection from '@/components/common/Layout/PaketView/KualitasCetakSection.vue'
 import KomparasiPaketSection from '@/components/common/Layout/PaketView/KomparasiPaketSection.vue'
 import FooterSection from '@/components/common/Layout/Landing-Page-Public/footer/FooterSection.vue'
->>>>>>> Stashed changes
 </script>
 
 <template>
