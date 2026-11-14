@@ -17,6 +17,12 @@ defineProps(['size'])
       "
     >
       Sleepy Ruben
+      <span
+        class="text-[#2F523E] ml-1 text-[0.95rem] font-medium-bold"
+      >
+        <br />
+        Photobooth
+      </span>
     </span>
   </span>
 </template>

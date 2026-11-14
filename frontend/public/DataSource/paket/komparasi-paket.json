@@ -1,0 +1,39 @@
+{
+  "judul": "Komparasi Fitur Paket",
+  "deskripsi": "Pilih tingkat kenyamanan yang paling sesuai dengan kebutuhan acaramu.",
+  "judulKolom": "Fitur & Layanan",
+  "baris": [
+    {
+      "fitur": "Format & Ukuran Cetak",
+      "nilai": [
+        "2×6\" Vertikal Strip",
+        "2×6\" atau 2×2\" Kolase",
+        "Semua Format Klasik"
+      ]
+    },
+    {
+      "fitur": "Jumlah Cetak Fisik",
+      "nilai": [
+        "2 Rangkap Strip",
+        "4 Rangkap Strip",
+        "8 Rangkap Strip"
+      ]
+    },
+    {
+      "fitur": "Kertas Dye-Sublimation Matte",
+      "nilai": ["✓", "✓", "✓"]
+    },
+    {
+      "fitur": "Berkas Digital HD & Animasi GIF",
+      "nilai": ["✓", "✓", "✓"]
+    },
+    {
+      "fitur": "Kustomisasi Watermark / Border Event",
+      "nilai": [
+        "-",
+        "Stempel Tanggal",
+        "Pilihan Frame Tema"
+      ]
+    }
+  ]
+}

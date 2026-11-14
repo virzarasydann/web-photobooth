@@ -1,0 +1,37 @@
+{
+  "label": "Inspirasi Koleksi",
+  "judul": "Pilihan Format & Gaya Foto",
+  "deskripsi": "Eksplorasi ragam layout foto strip: dari format vertikal 4-kotak klasik sampai grid 2×2 modern minimalis.",
+  "tab": [
+    { "label": "Semua Frame", "value": "all" },
+    { "label": "Klasik 4-Cut", "value": "klasik" },
+    { "label": "Grid 2×2", "value": "grid" },
+    { "label": "Wide Duo", "value": "wide" }
+  ],
+  "frame": [
+    {
+      "judul": "Midnight Party",
+      "deskripsi": "Frame Noir • Grain +40",
+      "gambar": "/img/galeri/img-ilustration-party.png",
+      "kategori": "klasik"
+    },
+    {
+      "judul": "Classic Monochrome",
+      "deskripsi": "Frame Putih Salju • B&W Film",
+      "gambar": "/img/galeri/img-ilustration-partner.png",
+      "kategori": "klasik"
+    },
+    {
+      "judul": "Sunburst Mustard",
+      "deskripsi": "Frame Mustard • Golden Hour",
+      "gambar": "/img/galeri/img-ilustratrion-bestfreind.png",
+      "kategori": "grid"
+    },
+    {
+      "judul": "Pet & Companion",
+      "deskripsi": "Forest Green Frame • Warm Tungsten",
+      "gambar": "/img/galeri/img-ilustration-pet.png",
+      "kategori": "wide"
+    }
+  ]
+}
