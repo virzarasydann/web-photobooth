@@ -20,6 +20,11 @@ export default defineConfig({
       'prithalize.my.id',
       'www.prithalize.my.id',
       'localhost',
+      '.loca.lt',
+      '.trycloudflare.com',
+      '.ngrok-free.app',
+      '.ngrok.io',
+      '.ngrok.app',
     ],
   },
   preview: {
@@ -30,6 +35,11 @@ export default defineConfig({
       'prithalize.my.id',
       'www.prithalize.my.id',
       'localhost',
+      '.loca.lt',
+      '.trycloudflare.com',
+      '.ngrok-free.app',
+      '.ngrok.io',
+      '.ngrok.app',
     ],
   },
 })

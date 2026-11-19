@@ -1,7 +1,7 @@
 <template>
   <div
     class="photobooth-container flex flex-col bg-[#F5F6F8] text-[#1C2B22] font-sans selection:bg-[#EAF2EE] selection:text-[#2F523E]"
-    :class="isMember ? 'h-full max-h-full overflow-y-auto' : 'min-h-screen lg:h-screen overflow-y-auto lg:overflow-y-auto 2xl:overflow-hidden'"
+    :class="isMember ? 'h-full max-h-full overflow-y-auto is-member-container' : 'min-h-screen lg:h-screen overflow-y-auto lg:overflow-y-auto 2xl:overflow-hidden'"
   >
     <header
       v-if="!isMember"
@@ -11,7 +11,7 @@
         <button
           type="button"
           @click="kembali"
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#2F523E] bg-[#F4F8F8] border border-[#DCE7E8] hover:bg-[#2F523E] hover:text-white transition-all cursor-pointer active:scale-95 shadow-2xs"
+          class="photobooth-btn-back inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#2F523E] bg-[#F4F8F8] border border-[#DCE7E8] hover:bg-[#2F523E] hover:text-white transition-all cursor-pointer active:scale-95 shadow-2xs"
           title="Kembali ke Landing Page"
         >
           <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
@@ -131,30 +131,30 @@
       class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4"
       @click.self="modalKeluar = false"
     >
-      <div class="bg-white rounded-2xl max-w-sm w-full p-5 shadow-xl border border-[#DCE7E8] flex flex-col gap-3.5 text-center">
-        <div class="w-11 h-11 rounded-full bg-[#FAF0E8] text-[#CD692C] flex items-center justify-center mx-auto">
+      <div class="modal-keluar-box bg-white rounded-2xl max-w-sm w-full p-5 shadow-xl border border-[#DCE7E8] flex flex-col gap-3.5 text-center">
+        <div class="modal-keluar-icon w-11 h-11 rounded-full bg-[#FAF0E8] text-[#CD692C] flex items-center justify-center mx-auto">
           <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
           </svg>
         </div>
         <div>
-          <h3 class="font-bold text-base text-[#1C2B22]">Kembali ke Beranda?</h3>
-          <p class="text-xs text-gray-500 mt-1 leading-relaxed">
+          <h3 class="modal-keluar-title font-bold text-base text-[#1C2B22]">Kembali ke Beranda?</h3>
+          <p class="modal-keluar-desc text-xs text-gray-500 mt-1 leading-relaxed">
             Foto yang telah diambil dalam sesi ini akan direset. Yakin ingin keluar dari bilik foto?
           </p>
         </div>
-        <div class="flex items-center gap-2.5 mt-1">
+        <div class="modal-keluar-actions flex items-center gap-2.5 mt-1">
           <button
             type="button"
             @click="modalKeluar = false"
-            class="flex-1 px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
+            class="modal-keluar-btn flex-1 px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer"
           >
             Tetap di Booth
           </button>
           <button
             type="button"
             @click="konfirmasiKeluar"
-            class="flex-1 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-[#CD692C] hover:bg-[#B85820] transition-colors cursor-pointer shadow-xs"
+            class="modal-keluar-btn flex-1 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-[#CD692C] hover:bg-[#B85820] transition-colors cursor-pointer shadow-xs"
           >
             Ya, Keluar
           </button>
@@ -278,37 +278,103 @@ const konfirmasiKeluar = () => {
 @media (orientation: landscape) and (max-height: 520px) {
   .photobooth-container {
     height: 100vh !important;
-    max-height: 100vh !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    display: flex !important;
+    flex-direction: column !important;
     overflow: hidden !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  .photobooth-container.is-member-container {
+    height: 100% !important;
+    max-height: 100% !important;
   }
   .photobooth-header {
-    height: 38px !important;
+    height: 40px !important;
     padding-left: 0.75rem !important;
     padding-right: 0.75rem !important;
+    flex-shrink: 0 !important;
+    z-index: 30 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .photobooth-header button {
+    width: 30px !important;
+    height: 30px !important;
+  }
+  .photobooth-btn-back {
+    width: auto !important;
+    height: 30px !important;
+    padding: 0.2rem 0.6rem !important;
+    font-size: 0.72rem !important;
   }
   .photobooth-main {
-    padding: 0.25rem 0.5rem !important;
+    flex: 1 1 0% !important;
+    min-height: 0 !important;
+    height: 100% !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    padding: 0.25rem 0.5rem 4rem 0.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
   .photobooth-grid {
-    display: grid !important;
-    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
-    gap: 0.5rem !important;
-    min-height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
   }
   .photobooth-col-left {
-    grid-column: span 7 / span 7 !important;
-    height: 100% !important;
-    padding-right: 0.5rem !important;
-    border-right-width: 1px !important;
-    border-color: #DCE7E8 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    padding: 0 !important;
+    border-right-width: 0 !important;
   }
   .photobooth-col-right {
-    grid-column: span 5 / span 5 !important;
-    height: 100% !important;
-    padding-left: 0.5rem !important;
-    padding-top: 0 !important;
-    border-top-width: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    padding-left: 0 !important;
+    padding-top: 1rem !important;
+    border-top-width: 1px !important;
+    border-color: #DCE7E8 !important;
+  }
+  .modal-keluar-box {
+    padding: 0.75rem 1rem !important;
+    gap: 0.35rem !important;
+    max-width: 320px !important;
+  }
+  .modal-keluar-icon {
+    width: 2rem !important;
+    height: 2rem !important;
+  }
+  .modal-keluar-title {
+    font-size: 0.85rem !important;
+  }
+  .modal-keluar-desc {
+    font-size: 0.65rem !important;
+    line-height: 1.2 !important;
+  }
+  .modal-keluar-actions {
+    gap: 0.35rem !important;
+  }
+  .modal-keluar-btn {
+    padding: 0.35rem 0.5rem !important;
+    font-size: 0.72rem !important;
+    border-radius: 0.5rem !important;
   }
 }
 </style>

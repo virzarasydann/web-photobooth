@@ -1,6 +1,6 @@
 <template>
   <section
-    class="min-h-0 lg:h-full flex flex-col justify-between py-1"
+    class="template-section min-h-0 lg:h-full flex flex-col justify-between py-1"
   >
     <div
       class="template-header flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0"
@@ -54,7 +54,7 @@
     >
       <div
         v-if="daftarFoto.length > 0"
-        class="flex flex-col sm:flex-row items-center gap-2"
+        class="template-action-btn-row flex flex-col sm:flex-row items-center gap-2"
       >
         <button
           type="button"
@@ -74,7 +74,8 @@
               d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
             />
           </svg>
-          <span>Unduh Strip Foto (.PNG)</span>
+          <span class="btn-text-full">Unduh Strip Foto (.PNG)</span>
+          <span class="btn-text-short hidden">Unduh</span>
         </button>
 
         <button
@@ -521,37 +522,110 @@ onUnmounted(() => {
 
 <style scoped>
 @media (orientation: landscape) and (max-height: 520px) {
+  .template-section {
+    display: grid !important;
+    grid-template-columns: minmax(220px, 260px) 1fr !important;
+    grid-template-areas:
+      "canvas header"
+      "canvas footer" !important;
+    column-gap: 1rem !important;
+    row-gap: 0.5rem !important;
+    align-items: center !important;
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
   .template-header {
-    padding-bottom: 0.2rem !important;
+    grid-area: header !important;
+    border-bottom: 1px solid #DCE7E8 !important;
+    padding-bottom: 0.35rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
   .template-title {
-    font-size: 0.8rem !important;
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+    color: #1C2B22 !important;
   }
   .template-subtitle {
-    font-size: 0.65rem !important;
+    display: block !important;
+    font-size: 0.72rem !important;
+    color: #486153 !important;
+    margin-top: 0.1rem !important;
   }
   .template-btn-change {
-    padding: 0.15rem 0.45rem !important;
-    font-size: 0.65rem !important;
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    border-radius: 0.6rem !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
   }
   .template-canvas-wrapper {
-    min-height: 110px !important;
-    max-height: 220px !important;
-    padding: 0.15rem 0 !important;
+    grid-area: canvas !important;
+    min-height: 320px !important;
+    max-height: 400px !important;
+    height: 360px !important;
+    padding: 0 !important;
     margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    border: none !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
   .template-action-footer {
-    padding-top: 0.15rem !important;
-    gap: 0.15rem !important;
+    grid-area: footer !important;
+    border-top-width: 0 !important;
+    padding-top: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .template-action-btn-row {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 0.4rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
   .template-btn-action {
-    padding-top: 0.35rem !important;
-    padding-bottom: 0.35rem !important;
-    font-size: 0.7rem !important;
-    border-radius: 0.5rem !important;
+    flex: 1 1 0% !important;
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    border-radius: 0.6rem !important;
+    justify-content: center !important;
+  }
+  .template-btn-action .btn-text-full {
+    display: none !important;
+  }
+  .template-btn-action .btn-text-short {
+    display: inline !important;
   }
   .template-helper-text {
-    display: none !important;
+    display: block !important;
+    font-size: 0.68rem !important;
+    color: #6B7280 !important;
+    text-align: left !important;
   }
 }
 </style>

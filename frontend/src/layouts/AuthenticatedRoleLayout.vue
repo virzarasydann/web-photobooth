@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen w-screen max-h-screen overflow-hidden flex bg-[#F5F6F8] font-sans text-[#1C2B22]">
+  <div class="h-screen w-full max-w-full max-h-screen overflow-x-hidden overflow-y-hidden flex bg-[#F5F6F8] font-sans text-[#1C2B22]">
     <SideBar v-model:isMobileOpen="isMobileOpen" @open-chat="isChatOpen = true" />
     <ChatWidget v-if="isChatOpen" @close="isChatOpen = false" />
 
@@ -55,3 +55,11 @@ const isMobileOpen = ref(false)
 const isChatOpen = ref(false)
 const audioStore = usePhotoboothAudioStore()
 </script>
+
+<style scoped>
+@media (orientation: landscape) and (max-height: 520px) {
+  header {
+    height: 38px !important;
+  }
+}
+</style>
