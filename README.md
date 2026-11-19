@@ -2,6 +2,7 @@
 
 **Web Photo Booth** adalah aplikasi berbasis web yang mensimulasikan pengalaman menggunakan mesin fotobox (photo booth) tradisional langsung dari browser. Aplikasi ini memanfaatkan API kamera perangkat pengguna untuk mengambil foto secara real-time, menerapkan filter visual, menambahkan bingkai (frame), dan memungkinkan pengguna untuk mengunduh hasilnya secara instan tanpa perlu menginstal aplikasi tambahan.
 
+![Halaman Beranda](image/image.png)
 
 
 ##  Tech Stack
@@ -11,8 +12,8 @@ Proyek ini dibangun menggunakan teknologi modern untuk performa dan pengalaman p
 - **Framework Frontend:** [Vue 3](https://vuejs.org/) (Composition API & `<script setup>`)
 - **Framework Backend:** [Nest JS](https://nestjs.com) 
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/) untuk utility-first styling yang cepat dan responsif.
-- **Styling Template** [Konva JS](https://konvajs.org) untuk pembuatan custom template terhadap photobooth
-- **
+- **Styling Template:** [Konva JS](https://konvajs.org) untuk pembuatan custom template terhadap photobooth
+- **Database:** [PostgreSQL](https://www.postgresql.org) untuk menyimpan data seperti data foto, data template.
 
 
 ##  Inisialisasi Proyek
