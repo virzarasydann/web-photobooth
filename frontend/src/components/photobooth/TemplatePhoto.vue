@@ -41,7 +41,7 @@
 
     <div
       ref="canvasWrapperRef"
-      class="flex-1 min-h-0 w-full flex justify-center items-center py-2 overflow-hidden my-1"
+      class="flex-1 min-h-[360px] sm:min-h-[420px] lg:min-h-0 w-full flex justify-center items-center py-2 overflow-hidden my-1"
     >
       <div
         ref="containerRef"
@@ -293,9 +293,8 @@ const renderCanvas = async () => {
 
   stage.scale({ x: scale, y: scale })
 
-  // Background digambar lebih dulu, foto ditumpuk DI ATASNYA.
-  // Jadi foto tetap kelihatan walau gambar template tidak punya
-  // lubang transparan (misalnya kotak putih sudah menempel).
+  const isOverlay = currentTemplate.isOverlay === true
+
   const konvaBg = new Konva.Image({
     image: bgImgObj,
     x: 0,
@@ -303,7 +302,11 @@ const renderCanvas = async () => {
     width: nativeWidth,
     height: nativeHeight,
   })
-  layer.add(konvaBg)
+
+  // Jika bukan overlay (background solid), gambar template di dasar/bawah
+  if (!isOverlay) {
+    layer.add(konvaBg)
+  }
 
   const daftarSlot = ambilDaftarSlot(
     currentTemplate,
@@ -320,21 +323,33 @@ const renderCanvas = async () => {
     const tengahY = slot.y + slot.height / 2
     const radius = Math.min(slot.width, slot.height) / 2
 
+    // Skala tipografi dan garis proporsional terhadap ukuran slot (cocok untuk HD dan LD)
+    const fontSize = Math.max(12, Math.round(slot.height * 0.08))
+    const strokeWidth = Math.max(1.5, Math.round(slot.width * 0.008))
+    const dashLen = Math.max(4, Math.round(slot.width * 0.02))
+
     if (photoUrl) {
       try {
         const photoImgObj = await loadImage(photoUrl)
         if (myRenderId !== renderId) return
 
+        // Untuk template overlay transparan, beri sedikit bleed (2-4px) ke bawah bingkai agar tidak ada celah garis putih
+        const bleed = isOverlay ? Math.max(2, Math.round(slot.width * 0.01)) : 0
+        const photoX = slot.x - bleed
+        const photoY = slot.y - bleed
+        const photoW = slot.width + bleed * 2
+        const photoH = slot.height + bleed * 2
+
         const konvaPhoto = new Konva.Image({
           image: photoImgObj,
-          x: slot.x,
-          y: slot.y,
-          width: slot.width,
-          height: slot.height,
+          x: photoX,
+          y: photoY,
+          width: photoW,
+          height: photoH,
           crop: hitungCrop(
             photoImgObj,
-            slot.width,
-            slot.height,
+            photoW,
+            photoH,
           ),
         })
 
@@ -345,7 +360,7 @@ const renderCanvas = async () => {
               ctx.arc(
                 tengahX,
                 tengahY,
-                radius,
+                radius + (isOverlay ? bleed : 0),
                 0,
                 Math.PI * 2,
                 false,
@@ -372,8 +387,8 @@ const renderCanvas = async () => {
             radius: radius,
             fill: '#F4F7F7',
             stroke: '#D3E0E1',
-            strokeWidth: 1,
-            dash: [4, 4],
+            strokeWidth: strokeWidth,
+            dash: [dashLen, dashLen],
           })
         : new Konva.Rect({
             x: slot.x,
@@ -382,23 +397,30 @@ const renderCanvas = async () => {
             height: slot.height,
             fill: '#F4F7F7',
             stroke: '#D3E0E1',
-            strokeWidth: 1,
-            dash: [4, 4],
+            strokeWidth: strokeWidth,
+            dash: [dashLen, dashLen],
           })
       layer.add(penanda)
 
       const slotText = new Konva.Text({
         x: slot.x,
-        y: tengahY - 8,
+        y: Math.round(tengahY - fontSize / 2),
         width: slot.width,
         text: `Slot ${nomor}`,
-        fontSize: 12,
+        fontSize: fontSize,
         fontFamily: 'sans-serif',
+        fontStyle: 'bold',
         fill: '#94A3B8',
         align: 'center',
       })
       layer.add(slotText)
     }
+  }
+
+  // Jika overlay (PNG dengan lubang transparan), gambar bingkai DI ATAS foto
+  // sehingga stiker, ornamen, dan lengkungan bingkai template menutupi pinggir foto dengan rapi
+  if (isOverlay) {
+    layer.add(konvaBg)
   }
 
   layer.batchDraw()
@@ -411,8 +433,9 @@ const gantiTemplate = (obj) => {
 
 const unduhFoto = () => {
   if (!stage) return
+  const pr = Math.min(4, Math.max(0.5, skalaSekarang > 0 ? 1 / skalaSekarang : 1))
   const dataURL = stage.toDataURL({
-    pixelRatio: 1 / skalaSekarang,
+    pixelRatio: pr,
   })
   const link = document.createElement('a')
   link.download = `photobooth-strip-${Date.now()}.png`
@@ -424,8 +447,9 @@ const unduhFoto = () => {
 
 const cetakFoto = () => {
   if (!stage) return
+  const pr = Math.min(4, Math.max(0.5, skalaSekarang > 0 ? 1 / skalaSekarang : 1))
   const dataURL = stage.toDataURL({
-    pixelRatio: 1 / skalaSekarang,
+    pixelRatio: pr,
   })
   const win = window.open('', '_blank')
   if (win) {
@@ -464,6 +488,8 @@ watch(
   { deep: true },
 )
 
+let resizeTimer = null
+
 onMounted(() => {
   renderCanvas()
 
@@ -471,13 +497,19 @@ onMounted(() => {
     canvasWrapperRef.value || containerRef.value
   if (targetEl) {
     resizeObserver = new ResizeObserver(() => {
-      renderCanvas()
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        renderCanvas()
+      }, 50)
     })
     resizeObserver.observe(targetEl)
   }
 })
 
 onUnmounted(() => {
+  if (resizeTimer) {
+    clearTimeout(resizeTimer)
+  }
   if (resizeObserver) {
     resizeObserver.disconnect()
   }

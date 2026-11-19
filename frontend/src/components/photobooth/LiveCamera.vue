@@ -42,7 +42,7 @@
 
     <div class="flex-1 min-h-0 w-full flex items-center justify-center my-auto py-1 overflow-hidden">
       <div
-        class="relative w-auto h-full max-w-full max-h-[360px] md:max-h-[400px] lg:max-h-[440px] xl:max-h-[500px] 2xl:max-h-[560px] aspect-video flex items-center justify-center bg-black rounded-2xl overflow-hidden shadow-xl border border-black/20 transition-all duration-300 mx-auto"
+        class="relative w-auto h-full max-w-full max-h-[260px] sm:max-h-[300px] md:max-h-[340px] lg:max-h-[380px] xl:max-h-[440px] 2xl:max-h-[520px] aspect-video flex items-center justify-center bg-black rounded-2xl overflow-hidden shadow-xl border border-black/20 transition-all duration-300 mx-auto"
         :style="{ aspectRatio: cameraAspect || '16/9' }">
         <div v-if="snapshotError"
           class="absolute top-3 left-3 right-3 z-30 bg-red-600/90 backdrop-blur-sm text-white px-3 py-2 rounded-xl text-xs flex items-center justify-between shadow-lg border border-red-400/40">
@@ -173,11 +173,13 @@
         </span>
       </div>
 
-      <div class="grid grid-cols-4 gap-2 sm:gap-2.5 lg:gap-3 w-full">
+      <div
+        class="grid gap-2 sm:gap-2.5 lg:gap-3 w-full"
+        :style="{ gridTemplateColumns: `repeat(${maxPhotos || 4}, minmax(0, 1fr))` }">
         <button v-for="idx in maxPhotos" :key="idx" type="button"
           :disabled="!daftarFoto[idx - 1] && daftarFoto.length !== idx - 1"
           @click="daftarFoto[idx - 1] ? $emit('pilihSlot', idx - 1) : null"
-          class="relative h-20 sm:h-24 lg:h-26 xl:h-28 2xl:h-32 rounded-xl lg:rounded-2xl overflow-hidden border-2 transition-all flex flex-col items-center justify-center shadow-2xs group"
+          class="relative h-16 sm:h-18 lg:h-20 xl:h-22 rounded-xl lg:rounded-2xl overflow-hidden border-2 transition-all flex flex-col items-center justify-center shadow-2xs group"
           :class="[
             retakeIndex === idx - 1
               ? 'border-[#CD692C] ring-2 ring-[#CD692C] ring-offset-2 scale-102 shadow-md cursor-pointer bg-[#FAF0E8]'
@@ -193,8 +195,8 @@
 
           <div v-if="retakeIndex === idx - 1"
             class="absolute inset-0 bg-[#CD692C]/50 backdrop-blur-2xs flex flex-col items-center justify-center text-white font-bold">
-            <span class="text-base sm:text-lg font-black">↺</span>
-            <span class="text-[10px] tracking-tight uppercase">Ulang</span>
+            <span class="text-sm sm:text-base font-black">↺</span>
+            <span class="text-[9px] tracking-tight uppercase">Ulang</span>
           </div>
 
           <span v-if="daftarFoto[idx - 1] && retakeIndex !== idx - 1"
@@ -203,9 +205,9 @@
           </span>
 
           <div v-else-if="!daftarFoto[idx - 1] && daftarFoto.length === idx - 1"
-            class="flex flex-col items-center justify-center gap-1 text-[#2F523E]">
+            class="flex flex-col items-center justify-center gap-0.5 text-[#2F523E]">
             <div
-              class="w-6 h-6 rounded-full bg-[#EAF2EE] flex items-center justify-center font-bold text-xs shadow-2xs">
+              class="w-5 h-5 rounded-full bg-[#EAF2EE] flex items-center justify-center font-bold text-[11px] shadow-2xs">
               {{ idx }}
             </div>
             <span class="text-[9px] font-bold uppercase tracking-wider">Aktif</span>
