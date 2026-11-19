@@ -1,8 +1,8 @@
 <template>
   <section class="min-h-0 lg:h-full flex flex-col justify-between py-1">
-    <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0">
+    <div class="camera-header flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0">
       <div class="flex items-center gap-2">
-        <h2 class="font-bold text-base md:text-lg text-[#1C2B22]">Live Camera</h2>
+        <h2 class="camera-title font-bold text-base md:text-lg text-[#1C2B22]">Live Camera</h2>
         <span v-if="mediaStream"
           class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -23,7 +23,7 @@
       <div class="flex items-center gap-2">
         <div class="inline-flex items-center p-0.5 rounded-xl bg-white border border-[#DCE7E8] shadow-2xs gap-1">
           <button v-for="sec in [3, 5, 10]" :key="sec" type="button" @click="timerDuration = sec"
-            class="px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer"
+            class="camera-timer-btn px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer"
             :class="timerDuration === sec ? 'bg-[#2F523E] text-white shadow-2xs' : 'text-[#486153] hover:text-[#2F523E]'">
             {{ sec }}s
           </button>
@@ -31,22 +31,22 @@
       </div>
     </div>
 
-    <div class="flex items-center gap-1.5 overflow-x-auto py-1.5 text-xs no-scrollbar shrink-0">
+    <div class="camera-filter-bar flex items-center gap-1.5 overflow-x-auto py-1.5 text-xs no-scrollbar shrink-0">
       <span class="text-[11px] font-bold text-gray-500 uppercase tracking-wider mr-1 shrink-0">Filter:</span>
       <button v-for="filter in filterOptions" :key="filter.id" type="button" @click="selectedFilter = filter.id"
-        class="px-3 py-1 rounded-full text-xs font-semibold transition-all shrink-0 cursor-pointer shadow-2xs"
+        class="camera-filter-btn px-3 py-1 rounded-full text-xs font-semibold transition-all shrink-0 cursor-pointer shadow-2xs"
         :class="selectedFilter === filter.id ? 'bg-[#2F523E] text-white shadow-xs' : 'bg-white text-[#486153] hover:bg-gray-50 border border-[#DCE7E8]'">
         {{ filter.label }}
       </button>
     </div>
 
-    <div class="flex-1 min-h-[280px] sm:min-h-[340px] lg:min-h-0 w-full flex items-center justify-center my-auto py-1">
+    <div class="camera-viewfinder-wrapper flex-1 min-h-[260px] lg:min-h-0 w-full flex items-center justify-center my-auto py-1">
       <div
-        class="relative flex items-center justify-center rounded-2xl shadow-xl transition-all duration-300 mx-auto"
+        class="camera-viewfinder-box relative flex items-center justify-center rounded-2xl shadow-xl transition-all duration-300 mx-auto"
         :class="[
           mediaStream
             ? 'w-auto h-full max-w-full max-h-[360px] sm:max-h-[420px] md:max-h-[480px] lg:max-h-[520px] xl:max-h-[600px] 2xl:max-h-[700px] aspect-video bg-black overflow-hidden border border-black/20'
-            : 'w-full max-w-xl lg:max-w-2xl xl:max-w-3xl h-full min-h-[280px] sm:min-h-[340px] lg:min-h-[420px] max-h-[520px] xl:max-h-[600px] bg-[#111A15] border border-[#2F523E]/30 overflow-y-auto no-scrollbar p-4 sm:p-6 lg:p-8'
+            : 'w-full max-w-xl lg:max-w-2xl xl:max-w-3xl h-full min-h-[260px] sm:min-h-[320px] lg:min-h-[420px] max-h-[520px] xl:max-h-[600px] bg-[#111A15] border border-[#2F523E]/30 overflow-y-auto no-scrollbar p-4 sm:p-6 lg:p-8'
         ]"
         :style="mediaStream ? { aspectRatio: cameraAspect || '16/9' } : undefined">
         <div v-if="snapshotError"
@@ -92,24 +92,24 @@
         </div>
 
         <div v-else-if="cameraError && !mediaStream"
-          class="flex flex-col items-center justify-center text-center p-2 sm:p-4 max-w-md mx-auto z-10 w-full select-none my-auto">
+          class="camera-error-container flex flex-col items-center justify-center text-center p-2 sm:p-4 max-w-md mx-auto z-10 w-full select-none my-auto">
           <div
-            class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center mb-2 shadow-lg shrink-0">
+            class="camera-error-icon w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center mb-2 shadow-lg shrink-0">
             <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round"
                 d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
             </svg>
           </div>
-          <h3 class="text-white font-bold text-sm sm:text-base tracking-tight mb-1">
+          <h3 class="camera-error-title text-white font-bold text-sm sm:text-base tracking-tight mb-1">
             {{ cameraError.title }}
           </h3>
 
-          <p class="text-gray-300 text-xs leading-relaxed mb-2.5 max-w-xs sm:max-w-sm">
+          <p class="camera-error-desc text-gray-300 text-xs leading-relaxed mb-2.5 max-w-xs sm:max-w-sm">
             {{ cameraError.message }}
           </p>
 
           <div
-            class="w-full bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-2.5 mb-3 text-left flex items-start gap-2 shadow-xs">
+            class="camera-error-solution w-full bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-2.5 mb-3 text-left flex items-start gap-2 shadow-xs">
             <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
               stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -123,7 +123,7 @@
 
           <div class="flex items-center gap-2 flex-wrap justify-center shrink-0">
             <button type="button" @click="retryCamera" :disabled="isLoadingCamera"
-              class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#2F523E] hover:bg-[#233E2F] active:scale-95 transition-all shadow-md cursor-pointer disabled:opacity-50">
+              class="camera-error-btn inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#2F523E] hover:bg-[#233E2F] active:scale-95 transition-all shadow-md cursor-pointer disabled:opacity-50">
               <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" :class="{ 'animate-spin': isLoadingCamera }" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -169,8 +169,8 @@
       </div>
     </div>
 
-    <div class="flex flex-col gap-1.5 py-1.5 px-0.5 shrink-0 border-t border-[#DCE7E8]/70 mt-1">
-      <div class="flex items-center justify-between text-[11px] font-semibold text-gray-600 px-1">
+    <div class="camera-slot-row flex flex-col gap-1.5 py-1.5 px-0.5 shrink-0 border-t border-[#DCE7E8]/70 mt-1">
+      <div class="camera-slot-info flex items-center justify-between text-[11px] font-semibold text-gray-600 px-1">
         <span>
           {{ retakeIndex !== null ? 'Sedang Foto Ulang:' : 'Slot Foto Booth:' }}
         </span>
@@ -185,7 +185,7 @@
         <button v-for="idx in maxPhotos" :key="idx" type="button"
           :disabled="!daftarFoto[idx - 1] && daftarFoto.length !== idx - 1"
           @click="daftarFoto[idx - 1] ? $emit('pilihSlot', idx - 1) : null"
-          class="relative h-16 sm:h-18 lg:h-22 xl:h-24 2xl:h-28 rounded-xl lg:rounded-2xl overflow-hidden border-2 transition-all flex flex-col items-center justify-center shadow-2xs group"
+          class="camera-slot-btn relative h-16 sm:h-18 lg:h-22 xl:h-24 2xl:h-28 rounded-xl lg:rounded-2xl overflow-hidden border-2 transition-all flex flex-col items-center justify-center shadow-2xs group"
           :class="[
             retakeIndex === idx - 1
               ? 'border-[#CD692C] ring-2 ring-[#CD692C] ring-offset-2 scale-102 shadow-md cursor-pointer bg-[#FAF0E8]'
@@ -227,10 +227,10 @@
       </div>
     </div>
 
-    <div class="flex flex-col gap-1.5 pt-1 shrink-0">
+    <div class="camera-action-box flex flex-col gap-1.5 pt-1 shrink-0">
       <div v-if="retakeIndex !== null" class="flex items-center gap-2 w-full">
         <button type="button" @click="startCapture" :disabled="!mediaStream || isCounting || Boolean(cameraError)"
-          class="flex-1 py-2.5 md:py-3 px-4 rounded-xl font-bold text-xs md:text-sm text-white flex items-center justify-center gap-2 transition-all shadow-sm ring-2 ring-[#CD692C]/30 active:scale-98"
+          class="camera-capture-btn flex-1 py-2.5 md:py-3 px-4 rounded-xl font-bold text-xs md:text-sm text-white flex items-center justify-center gap-2 transition-all shadow-sm ring-2 ring-[#CD692C]/30 active:scale-98"
           :class="[
             !mediaStream || cameraError
               ? 'bg-gray-400 cursor-not-allowed opacity-75'
@@ -251,7 +251,7 @@
         </button>
 
         <button type="button" @click="$emit('cancelRetake')" :disabled="isCounting"
-          class="py-2.5 md:py-3 px-3.5 sm:px-4 rounded-xl font-bold text-xs md:text-sm text-[#486153] hover:text-[#1C2B22] bg-[#F4F8F8] hover:bg-[#E8F0EE] border border-[#DCE7E8] transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shrink-0 shadow-2xs disabled:opacity-50"
+          class="camera-cancel-retake-btn py-2.5 md:py-3 px-3.5 sm:px-4 rounded-xl font-bold text-xs md:text-sm text-[#486153] hover:text-[#1C2B22] bg-[#F4F8F8] hover:bg-[#E8F0EE] border border-[#DCE7E8] transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shrink-0 shadow-2xs disabled:opacity-50"
           title="Batalkan foto ulang slot ini">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -262,7 +262,7 @@
 
       <button v-else type="button" @click="startCapture"
         :disabled="!mediaStream || isCounting || totalFoto >= maxPhotos || Boolean(cameraError)"
-        class="w-full py-2.5 md:py-3 px-4 rounded-xl font-bold text-xs md:text-sm text-white flex items-center justify-center gap-2 transition-all shadow-sm active:scale-98"
+        class="camera-capture-btn w-full py-2.5 md:py-3 px-4 rounded-xl font-bold text-xs md:text-sm text-white flex items-center justify-center gap-2 transition-all shadow-sm active:scale-98"
         :class="[
           cameraError || !mediaStream
             ? 'bg-gray-400 cursor-not-allowed opacity-75'
@@ -774,5 +774,91 @@ onUnmounted(() => {
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+@media (orientation: landscape) and (max-height: 520px) {
+  .camera-header {
+    padding-bottom: 0.2rem !important;
+  }
+  .camera-title {
+    font-size: 0.8rem !important;
+  }
+  .camera-timer-btn {
+    padding: 0.1rem 0.35rem !important;
+    font-size: 0.65rem !important;
+  }
+  .camera-filter-bar {
+    padding-top: 0.1rem !important;
+    padding-bottom: 0.1rem !important;
+    font-size: 0.65rem !important;
+  }
+  .camera-filter-btn {
+    padding: 0.1rem 0.45rem !important;
+    font-size: 0.65rem !important;
+  }
+  .camera-viewfinder-wrapper {
+    min-height: 110px !important;
+    padding: 0.1rem 0 !important;
+    margin: 0 !important;
+  }
+  .camera-viewfinder-box {
+    max-height: 140px !important;
+    min-height: 110px !important;
+    padding: 0.25rem !important;
+  }
+  .camera-error-container {
+    padding: 0.25rem !important;
+  }
+  .camera-error-icon {
+    width: 2rem !important;
+    height: 2rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  .camera-error-title {
+    font-size: 0.75rem !important;
+    margin-bottom: 0.125rem !important;
+  }
+  .camera-error-desc {
+    font-size: 0.65rem !important;
+    margin-bottom: 0.25rem !important;
+    line-height: 1.2 !important;
+  }
+  .camera-error-solution {
+    padding: 0.25rem 0.5rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+  .camera-error-btn {
+    padding: 0.25rem 0.5rem !important;
+    font-size: 0.7rem !important;
+  }
+  .camera-slot-row {
+    padding-top: 0.1rem !important;
+    padding-bottom: 0.1rem !important;
+    margin-top: 0.1rem !important;
+    gap: 0.15rem !important;
+  }
+  .camera-slot-info {
+    font-size: 0.65rem !important;
+  }
+  .camera-slot-btn {
+    height: 38px !important;
+    border-radius: 0.5rem !important;
+  }
+  .camera-action-box {
+    padding-top: 0.1rem !important;
+    gap: 0.15rem !important;
+  }
+  .camera-capture-btn {
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 0.5rem !important;
+  }
+  .camera-cancel-retake-btn {
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 0.5rem !important;
+  }
 }
 </style>

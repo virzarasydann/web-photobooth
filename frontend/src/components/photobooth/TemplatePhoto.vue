@@ -3,15 +3,15 @@
     class="min-h-0 lg:h-full flex flex-col justify-between py-1"
   >
     <div
-      class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0"
+      class="template-header flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0"
     >
       <div>
         <h2
-          class="font-bold text-base md:text-lg text-[#1C2B22]"
+          class="template-title font-bold text-base md:text-lg text-[#1C2B22]"
         >
           Desain Strip Foto
         </h2>
-        <p class="text-[11px] md:text-xs text-gray-500">
+        <p class="template-subtitle text-[11px] md:text-xs text-gray-500">
           {{ template?.name || 'Template Desain' }} •
           {{ template?.slot || 4 }} Slot Foto
         </p>
@@ -20,7 +20,7 @@
       <button
         type="button"
         @click="modalTemplate = true"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-[#2F523E] hover:text-white transition-all cursor-pointer shadow-2xs active:scale-95"
+        class="template-btn-change inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-[#2F523E] hover:text-white transition-all cursor-pointer shadow-2xs active:scale-95"
       >
         <svg
           class="w-3.5 h-3.5"
@@ -41,7 +41,7 @@
 
     <div
       ref="canvasWrapperRef"
-      class="flex-1 min-h-[360px] sm:min-h-[420px] lg:min-h-0 w-full flex justify-center items-center py-2 overflow-hidden my-1"
+      class="template-canvas-wrapper flex-1 min-h-[260px] lg:min-h-0 w-full flex justify-center items-center py-2 overflow-hidden my-1"
     >
       <div
         ref="containerRef"
@@ -50,7 +50,7 @@
     </div>
 
     <div
-      class="flex flex-col gap-1.5 pt-2 border-t border-[#DCE7E8] shrink-0"
+      class="template-action-footer flex flex-col gap-1.5 pt-2 border-t border-[#DCE7E8] shrink-0"
     >
       <div
         v-if="daftarFoto.length > 0"
@@ -59,7 +59,7 @@
         <button
           type="button"
           @click="unduhFoto"
-          class="w-full sm:flex-1 py-2 sm:py-2.5 px-3.5 rounded-xl text-xs font-semibold text-white bg-[#CD692C] hover:bg-[#B85820] transition-all cursor-pointer shadow-xs flex items-center justify-center gap-1.5 active:scale-98"
+          class="template-btn-action w-full sm:flex-1 py-2 sm:py-2.5 px-3.5 rounded-xl text-xs font-semibold text-white bg-[#CD692C] hover:bg-[#B85820] transition-all cursor-pointer shadow-xs flex items-center justify-center gap-1.5 active:scale-98"
         >
           <svg
             class="w-4 h-4"
@@ -80,7 +80,7 @@
         <button
           type="button"
           @click="cetakFoto"
-          class="w-full sm:w-auto py-2 sm:py-2.5 px-3.5 rounded-xl text-xs font-semibold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-gray-50 transition-all cursor-pointer shadow-2xs flex items-center justify-center gap-1.5 active:scale-98"
+          class="template-btn-action w-full sm:w-auto py-2 sm:py-2.5 px-3.5 rounded-xl text-xs font-semibold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-gray-50 transition-all cursor-pointer shadow-2xs flex items-center justify-center gap-1.5 active:scale-98"
         >
           <svg
             class="w-4 h-4"
@@ -100,7 +100,7 @@
       </div>
 
       <p
-        class="text-[10px] md:text-[11px] text-gray-500 text-center"
+        class="template-helper-text text-[10px] md:text-[11px] text-gray-500 text-center"
       >
         {{
           daftarFoto.length > 0
@@ -264,11 +264,11 @@ const renderCanvas = async () => {
     canvasWrapperRef.value ||
     containerRef.value?.parentElement
   const availWidth = Math.max(
-    120,
+    60,
     (wrapper?.clientWidth || 260) - 16,
   )
   const availHeight = Math.max(
-    160,
+    80,
     (wrapper?.clientHeight || 360) - 16,
   )
 
@@ -518,3 +518,40 @@ onUnmounted(() => {
   }
 })
 </script>
+
+<style scoped>
+@media (orientation: landscape) and (max-height: 520px) {
+  .template-header {
+    padding-bottom: 0.2rem !important;
+  }
+  .template-title {
+    font-size: 0.8rem !important;
+  }
+  .template-subtitle {
+    font-size: 0.65rem !important;
+  }
+  .template-btn-change {
+    padding: 0.15rem 0.45rem !important;
+    font-size: 0.65rem !important;
+  }
+  .template-canvas-wrapper {
+    min-height: 110px !important;
+    max-height: 220px !important;
+    padding: 0.15rem 0 !important;
+    margin: 0 !important;
+  }
+  .template-action-footer {
+    padding-top: 0.15rem !important;
+    gap: 0.15rem !important;
+  }
+  .template-btn-action {
+    padding-top: 0.35rem !important;
+    padding-bottom: 0.35rem !important;
+    font-size: 0.7rem !important;
+    border-radius: 0.5rem !important;
+  }
+  .template-helper-text {
+    display: none !important;
+  }
+}
+</style>

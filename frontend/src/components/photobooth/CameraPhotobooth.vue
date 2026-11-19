@@ -1,11 +1,11 @@
 <template>
   <div
-    class="flex flex-col bg-[#F5F6F8] text-[#1C2B22] font-sans selection:bg-[#EAF2EE] selection:text-[#2F523E]"
+    class="photobooth-container flex flex-col bg-[#F5F6F8] text-[#1C2B22] font-sans selection:bg-[#EAF2EE] selection:text-[#2F523E]"
     :class="isMember ? 'h-full max-h-full overflow-y-auto' : 'min-h-screen lg:h-screen overflow-y-auto lg:overflow-y-auto 2xl:overflow-hidden'"
   >
     <header
       v-if="!isMember"
-      class="h-[54px] shrink-0 bg-[#F5F6F8]/95 backdrop-blur-md border-b border-[#DCE7E8] px-4 md:px-6 flex items-center justify-between shadow-2xs z-30"
+      class="photobooth-header h-[54px] shrink-0 bg-[#F5F6F8]/95 backdrop-blur-md border-b border-[#DCE7E8] px-4 md:px-6 flex items-center justify-between shadow-2xs z-30"
     >
       <div class="flex items-center gap-3">
         <button
@@ -58,9 +58,9 @@
       </div>
     </header>
 
-    <main class="flex-1 min-h-0 overflow-y-auto px-4 md:px-6 lg:pl-8 lg:pr-14 xl:pl-10 xl:pr-16 2xl:pl-12 2xl:pr-16 py-2 md:py-3 w-full">
-      <div class="min-h-0 lg:h-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-0 items-stretch">
-        <div class="lg:col-span-7 xl:col-span-8 2xl:col-span-8 min-h-0 lg:h-full lg:pr-6 xl:pr-10 lg:border-r border-[#DCE7E8]">
+    <main class="photobooth-main flex-1 min-h-0 overflow-y-auto px-4 md:px-6 lg:pl-8 lg:pr-14 xl:pl-10 xl:pr-16 2xl:pl-12 2xl:pr-16 py-2 md:py-3 w-full">
+      <div class="photobooth-grid min-h-0 lg:h-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-0 items-stretch">
+        <div class="photobooth-col-left lg:col-span-7 xl:col-span-8 2xl:col-span-8 min-h-0 lg:h-full lg:pr-6 xl:pr-10 lg:border-r border-[#DCE7E8]">
           <LiveCamera
             :daftarFoto="daftarFoto"
             :maxPhotos="templateAktif?.slot || 4"
@@ -78,7 +78,7 @@
           />
         </div>
 
-        <div class="lg:col-span-5 xl:col-span-4 2xl:col-span-4 min-h-0 lg:h-full lg:pl-6 xl:pl-10 border-t border-[#DCE7E8] pt-5 lg:pt-0 lg:border-t-0">
+        <div class="photobooth-col-right lg:col-span-5 xl:col-span-4 2xl:col-span-4 min-h-0 lg:h-full lg:pl-6 xl:pl-10 border-t border-[#DCE7E8] pt-5 lg:pt-0 lg:border-t-0">
           <TemplatePhoto
             :daftarFoto="daftarFoto"
             :templateAktif="templateAktif"
@@ -273,3 +273,42 @@ const konfirmasiKeluar = () => {
   router.push('/')
 }
 </script>
+
+<style scoped>
+@media (orientation: landscape) and (max-height: 520px) {
+  .photobooth-container {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+  }
+  .photobooth-header {
+    height: 38px !important;
+    padding-left: 0.75rem !important;
+    padding-right: 0.75rem !important;
+  }
+  .photobooth-main {
+    padding: 0.25rem 0.5rem !important;
+    overflow-y: auto !important;
+  }
+  .photobooth-grid {
+    display: grid !important;
+    grid-template-columns: repeat(12, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+    min-height: 100% !important;
+  }
+  .photobooth-col-left {
+    grid-column: span 7 / span 7 !important;
+    height: 100% !important;
+    padding-right: 0.5rem !important;
+    border-right-width: 1px !important;
+    border-color: #DCE7E8 !important;
+  }
+  .photobooth-col-right {
+    grid-column: span 5 / span 5 !important;
+    height: 100% !important;
+    padding-left: 0.5rem !important;
+    padding-top: 0 !important;
+    border-top-width: 0 !important;
+  }
+}
+</style>
