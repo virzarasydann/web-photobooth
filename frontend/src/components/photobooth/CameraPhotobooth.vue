@@ -57,6 +57,8 @@
             @reset="resetFoto"
             @pilihSlot="pilihSlot"
             @cancelRetake="retakeIndex = null"
+            @cameraError="tanganiErrorKamera"
+            @cameraReady="tanganiKameraSiap"
           />
         </div>
 
@@ -164,6 +166,18 @@ const isFullscreen = ref(false)
 const modalKeluar = ref(false)
 const templateAktif = ref(TemplateJson[0] || null)
 const retakeIndex = ref(null)
+const kameraError = ref(null)
+const kameraSiap = ref(false)
+
+const tanganiErrorKamera = (err) => {
+  kameraError.value = err
+  kameraSiap.value = false
+}
+
+const tanganiKameraSiap = () => {
+  kameraError.value = null
+  kameraSiap.value = true
+}
 
 const toggleFullscreen = () => {
   if (!document.fullscreenElement) {
