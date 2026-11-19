@@ -46,11 +46,7 @@ const router = createRouter({
       name: 'photobooth-guest',
       component: PhotoboothGuest,
     },
-    {
-      path: '/editor',
-      name: 'editor-view',
-      component: EditorView,
-    },
+
     {
       path: '/',
       component: AuthenticatedRoleLayout,
@@ -59,6 +55,11 @@ const router = createRouter({
           path: 'member',
           name: 'photobooth-member',
           component: PhotoboothMember,
+        },
+        {
+          path: 'editor',
+          name: 'editor-view',
+          component: EditorView,
         },
         {
           path: 'user',

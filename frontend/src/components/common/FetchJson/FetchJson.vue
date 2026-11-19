@@ -1,4 +1,3 @@
-
 <script setup>
 import { ref, watch, onMounted } from 'vue'
 
@@ -6,7 +5,7 @@ const props = defineProps({
   src: {
     type: String,
     required: true,
-  }
+  },
 })
 
 const data = ref(null)
@@ -21,7 +20,6 @@ async function load() {
   isLoading.value = true
   loadError.value = ''
   try {
-    
     const res = await fetch(
       `${import.meta.env.VITE_DATASOURCE_BASE_URL}${props.src}`,
     )
@@ -29,7 +27,6 @@ async function load() {
       throw new Error(`gagal memuat ${props.src}`)
     }
 
-    
     data.value = await res.json()
     model.value = data.value
   } catch {
@@ -51,15 +48,12 @@ watch(
 )
 
 onMounted(() => {
-  
-    load()
-  
+  load()
 })
 </script>
 
 <template>
   <slot
-    
     :is-loading="isLoading"
     :load-error="loadError"
     :reload="reload"

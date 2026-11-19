@@ -143,7 +143,7 @@ function klikMenuMobile(id) {
       </RouterLink>
 
       <div class="flex items-center gap-2">
-        <ButtonStart size="sm" />
+        <!-- <ButtonStart size="sm" /> -->
         <MenuMobile
           :menu-aktif="menuAktif"
           @pilih="klikMenuMobile"
