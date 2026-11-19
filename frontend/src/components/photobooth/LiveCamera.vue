@@ -40,13 +40,13 @@
       </button>
     </div>
 
-    <div class="flex-1 min-h-[280px] sm:min-h-[310px] lg:min-h-0 w-full flex items-center justify-center my-auto py-1">
+    <div class="flex-1 min-h-[280px] sm:min-h-[340px] lg:min-h-0 w-full flex items-center justify-center my-auto py-1">
       <div
         class="relative flex items-center justify-center rounded-2xl shadow-xl transition-all duration-300 mx-auto"
         :class="[
           mediaStream
-            ? 'w-auto h-full max-w-full max-h-[260px] sm:max-h-[300px] md:max-h-[340px] lg:max-h-[380px] xl:max-h-[440px] 2xl:max-h-[520px] aspect-video bg-black overflow-hidden border border-black/20'
-            : 'w-full max-w-lg min-h-[280px] sm:min-h-[310px] max-h-[390px] sm:max-h-[430px] lg:max-h-[450px] bg-[#111A15] border border-[#2F523E]/30 overflow-y-auto no-scrollbar p-3 sm:p-5'
+            ? 'w-auto h-full max-w-full max-h-[360px] sm:max-h-[420px] md:max-h-[480px] lg:max-h-[520px] xl:max-h-[600px] 2xl:max-h-[700px] aspect-video bg-black overflow-hidden border border-black/20'
+            : 'w-full max-w-xl lg:max-w-2xl xl:max-w-3xl h-full min-h-[280px] sm:min-h-[340px] lg:min-h-[420px] max-h-[520px] xl:max-h-[600px] bg-[#111A15] border border-[#2F523E]/30 overflow-y-auto no-scrollbar p-4 sm:p-6 lg:p-8'
         ]"
         :style="mediaStream ? { aspectRatio: cameraAspect || '16/9' } : undefined">
         <div v-if="snapshotError"
@@ -185,7 +185,7 @@
         <button v-for="idx in maxPhotos" :key="idx" type="button"
           :disabled="!daftarFoto[idx - 1] && daftarFoto.length !== idx - 1"
           @click="daftarFoto[idx - 1] ? $emit('pilihSlot', idx - 1) : null"
-          class="relative h-16 sm:h-18 lg:h-20 xl:h-22 rounded-xl lg:rounded-2xl overflow-hidden border-2 transition-all flex flex-col items-center justify-center shadow-2xs group"
+          class="relative h-16 sm:h-18 lg:h-22 xl:h-24 2xl:h-28 rounded-xl lg:rounded-2xl overflow-hidden border-2 transition-all flex flex-col items-center justify-center shadow-2xs group"
           :class="[
             retakeIndex === idx - 1
               ? 'border-[#CD692C] ring-2 ring-[#CD692C] ring-offset-2 scale-102 shadow-md cursor-pointer bg-[#FAF0E8]'
