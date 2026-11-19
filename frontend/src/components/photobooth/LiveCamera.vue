@@ -1,5 +1,5 @@
 <template>
-  <section class="h-full min-h-0 flex flex-col justify-between py-1">
+  <section class="min-h-0 lg:h-full flex flex-col justify-between py-1">
     <div class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0">
       <div class="flex items-center gap-2">
         <h2 class="font-bold text-base md:text-lg text-[#1C2B22]">Live Camera</h2>
@@ -40,10 +40,15 @@
       </button>
     </div>
 
-    <div class="flex-1 min-h-0 w-full flex items-center justify-center my-auto py-1 overflow-hidden">
+    <div class="flex-1 min-h-[280px] sm:min-h-[310px] lg:min-h-0 w-full flex items-center justify-center my-auto py-1">
       <div
-        class="relative w-auto h-full max-w-full max-h-[260px] sm:max-h-[300px] md:max-h-[340px] lg:max-h-[380px] xl:max-h-[440px] 2xl:max-h-[520px] aspect-video flex items-center justify-center bg-black rounded-2xl overflow-hidden shadow-xl border border-black/20 transition-all duration-300 mx-auto"
-        :style="{ aspectRatio: cameraAspect || '16/9' }">
+        class="relative flex items-center justify-center rounded-2xl shadow-xl transition-all duration-300 mx-auto"
+        :class="[
+          mediaStream
+            ? 'w-auto h-full max-w-full max-h-[260px] sm:max-h-[300px] md:max-h-[340px] lg:max-h-[380px] xl:max-h-[440px] 2xl:max-h-[520px] aspect-video bg-black overflow-hidden border border-black/20'
+            : 'w-full max-w-lg min-h-[280px] sm:min-h-[310px] max-h-[390px] sm:max-h-[430px] lg:max-h-[450px] bg-[#111A15] border border-[#2F523E]/30 overflow-y-auto no-scrollbar p-3 sm:p-5'
+        ]"
+        :style="mediaStream ? { aspectRatio: cameraAspect || '16/9' } : undefined">
         <div v-if="snapshotError"
           class="absolute top-3 left-3 right-3 z-30 bg-red-600/90 backdrop-blur-sm text-white px-3 py-2 rounded-xl text-xs flex items-center justify-between shadow-lg border border-red-400/40">
           <div class="flex items-center gap-2">
@@ -71,9 +76,9 @@
         </div>
 
         <div v-if="isLoadingCamera && !mediaStream && !cameraError"
-          class="flex flex-col items-center justify-center text-gray-300 gap-3 p-6 text-center select-none">
+          class="flex flex-col items-center justify-center text-gray-300 gap-3 p-4 sm:p-6 text-center select-none my-auto">
           <div class="relative flex items-center justify-center">
-            <div class="w-12 h-12 rounded-full border-2 border-emerald-500/30 border-t-emerald-400 animate-spin"></div>
+            <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-full border-2 border-emerald-500/30 border-t-emerald-400 animate-spin"></div>
             <svg class="w-5 h-5 text-emerald-400 absolute" fill="none" viewBox="0 0 24 24" stroke="currentColor"
               stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -81,16 +86,16 @@
             </svg>
           </div>
           <div>
-            <span class="text-sm font-semibold text-white block">Menghubungkan ke Kamera...</span>
-            <span class="text-xs text-gray-400 mt-0.5 block">Meminta izin dan menyiapkan webcam</span>
+            <span class="text-xs sm:text-sm font-semibold text-white block">Menghubungkan ke Kamera...</span>
+            <span class="text-[11px] sm:text-xs text-gray-400 mt-0.5 block">Meminta izin dan menyiapkan webcam</span>
           </div>
         </div>
 
         <div v-else-if="cameraError && !mediaStream"
-          class="flex flex-col items-center justify-center text-center p-4 sm:p-6 max-w-md mx-auto z-10 w-full select-none">
+          class="flex flex-col items-center justify-center text-center p-2 sm:p-4 max-w-md mx-auto z-10 w-full select-none my-auto">
           <div
-            class="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center mb-2.5 shadow-lg">
-            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            class="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center mb-2 shadow-lg shrink-0">
+            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round"
                 d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
             </svg>
@@ -99,12 +104,12 @@
             {{ cameraError.title }}
           </h3>
 
-          <p class="text-gray-300 text-xs leading-relaxed mb-3 max-w-xs sm:max-w-sm">
+          <p class="text-gray-300 text-xs leading-relaxed mb-2.5 max-w-xs sm:max-w-sm">
             {{ cameraError.message }}
           </p>
 
           <div
-            class="w-full bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-2.5 mb-3.5 text-left flex items-start gap-2 shadow-xs">
+            class="w-full bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-2.5 mb-3 text-left flex items-start gap-2 shadow-xs">
             <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
               stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -116,10 +121,10 @@
             </div>
           </div>
 
-          <div class="flex items-center gap-2 flex-wrap justify-center">
+          <div class="flex items-center gap-2 flex-wrap justify-center shrink-0">
             <button type="button" @click="retryCamera" :disabled="isLoadingCamera"
-              class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#2F523E] hover:bg-[#233E2F] active:scale-95 transition-all shadow-md cursor-pointer disabled:opacity-50">
-              <svg class="w-4 h-4" :class="{ 'animate-spin': isLoadingCamera }" fill="none" viewBox="0 0 24 24"
+              class="inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#2F523E] hover:bg-[#233E2F] active:scale-95 transition-all shadow-md cursor-pointer disabled:opacity-50">
+              <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" :class="{ 'animate-spin': isLoadingCamera }" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -134,7 +139,7 @@
           </div>
 
           <div v-if="showTechDetails && cameraError.details"
-            class="mt-2.5 w-full p-2 bg-black/60 rounded-lg text-left text-[10px] font-mono text-red-300 border border-red-500/20 break-all select-all">
+            class="mt-2.5 w-full p-2.5 bg-black/60 rounded-xl text-left text-[10px] font-mono text-red-300 border border-red-500/20 break-all select-all max-h-32 overflow-y-auto">
             {{ cameraError.details }}
           </div>
         </div>
@@ -150,6 +155,7 @@
           :class="isFlash ? 'opacity-95' : 'opacity-0'"></div>
 
         <div
+          v-if="mediaStream"
           class="absolute inset-3 pointer-events-none border border-white/20 rounded-xl flex flex-col justify-between p-2">
           <div class="flex justify-between">
             <span class="w-2.5 h-2.5 border-t-2 border-l-2 border-white/70"></span>
@@ -283,7 +289,10 @@
           <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
         </svg>
 
-        <span v-if="cameraError">Kamera Tidak Tersedia (Periksa Izin/Perangkat)</span>
+        <span v-if="cameraError" class="truncate">
+          <span class="sm:hidden">Kamera Tidak Tersedia</span>
+          <span class="hidden sm:inline">Kamera Tidak Tersedia (Periksa Izin/Perangkat)</span>
+        </span>
         <span v-else-if="isLoadingCamera">Menyiapkan Kamera...</span>
         <span v-else-if="isCounting">Menghitung Mundur ({{ countdown }}s)...</span>
         <span v-else-if="totalFoto < maxPhotos">Ambil Foto (Foto {{ totalFoto + 1 }} dari {{ maxPhotos }})</span>

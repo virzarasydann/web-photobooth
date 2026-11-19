@@ -95,8 +95,8 @@
     </div>
 
     <main class="flex-1 min-h-0 overflow-y-auto px-4 md:px-6 lg:pl-8 lg:pr-14 xl:pl-10 xl:pr-16 2xl:pl-12 2xl:pr-16 py-2 md:py-3 w-full">
-      <div class="h-full min-h-[500px] lg:min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-0 items-stretch">
-        <div class="lg:col-span-7 xl:col-span-8 2xl:col-span-8 h-full min-h-0 lg:pr-6 xl:pr-10 lg:border-r border-[#DCE7E8]">
+      <div class="min-h-0 lg:h-full grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-0 items-stretch">
+        <div class="lg:col-span-7 xl:col-span-8 2xl:col-span-8 min-h-0 lg:h-full lg:pr-6 xl:pr-10 lg:border-r border-[#DCE7E8]">
           <LiveCamera
             :daftarFoto="daftarFoto"
             :maxPhotos="templateAktif?.slot || 4"
@@ -114,7 +114,7 @@
           />
         </div>
 
-        <div class="lg:col-span-5 xl:col-span-4 2xl:col-span-4 h-full min-h-0 lg:pl-6 xl:pl-10 border-t border-[#DCE7E8] pt-5 lg:pt-0 lg:border-t-0">
+        <div class="lg:col-span-5 xl:col-span-4 2xl:col-span-4 min-h-0 lg:h-full lg:pl-6 xl:pl-10 border-t border-[#DCE7E8] pt-5 lg:pt-0 lg:border-t-0">
           <TemplatePhoto
             :daftarFoto="daftarFoto"
             :templateAktif="templateAktif"

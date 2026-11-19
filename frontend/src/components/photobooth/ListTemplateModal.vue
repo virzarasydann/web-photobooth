@@ -71,12 +71,12 @@
           </button>
         </div>
 
-        <div class="flex-1 w-full min-h-[220px] max-h-[440px] flex items-center justify-center p-3 bg-[#F9FBFA] rounded-xl border border-dashed border-[#DCE7E8] overflow-hidden my-3">
+        <div class="flex-1 w-full min-h-[140px] max-h-[220px] md:min-h-[220px] md:max-h-[440px] flex items-center justify-center p-3 bg-[#F9FBFA] rounded-xl border border-dashed border-[#DCE7E8] overflow-hidden my-2 md:my-3">
           <img
             v-if="preview?.backgroundUrl"
             :src="preview.backgroundUrl"
             :alt="preview.name"
-            class="max-h-[380px] w-auto max-w-full object-contain rounded-lg drop-shadow-md transition-all duration-200"
+            class="max-h-[180px] md:max-h-[380px] w-auto max-w-full object-contain rounded-lg drop-shadow-md transition-all duration-200"
           />
           <p v-else class="text-gray-400 text-xs">Pilih template untuk melihat preview</p>
         </div>

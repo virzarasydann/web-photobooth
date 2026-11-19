@@ -1,6 +1,6 @@
 <template>
   <section
-    class="h-full min-h-0 flex flex-col justify-between py-1"
+    class="min-h-0 lg:h-full flex flex-col justify-between py-1"
   >
     <div
       class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0"
