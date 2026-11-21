@@ -40,13 +40,13 @@
       </button>
     </div>
 
-    <div class="camera-viewfinder-wrapper flex-1 min-h-[260px] lg:min-h-0 w-full flex items-center justify-center my-auto py-1">
+    <div class="camera-viewfinder-wrapper flex-1 min-h-[220px] lg:min-h-0 w-full flex items-center justify-center my-auto py-1">
       <div
         class="camera-viewfinder-box relative flex items-center justify-center rounded-2xl shadow-xl transition-all duration-300 mx-auto"
         :class="[
           mediaStream
             ? 'w-auto h-full max-w-full max-h-[360px] sm:max-h-[420px] md:max-h-[480px] lg:max-h-[520px] xl:max-h-[600px] 2xl:max-h-[700px] aspect-video bg-black overflow-hidden border border-black/20'
-            : 'w-full max-w-xl lg:max-w-2xl xl:max-w-3xl h-full min-h-[260px] sm:min-h-[320px] lg:min-h-[420px] max-h-[520px] xl:max-h-[600px] bg-[#111A15] border border-[#2F523E]/30 overflow-y-auto no-scrollbar p-4 sm:p-6 lg:p-8'
+            : 'w-auto h-full max-w-full max-h-[360px] sm:max-h-[420px] md:max-h-[480px] lg:max-h-[520px] xl:max-h-[600px] 2xl:max-h-[700px] aspect-video bg-[#111A15] border border-[#2F523E]/30 overflow-y-auto no-scrollbar p-2 sm:p-3 lg:p-4'
         ]"
         :style="mediaStream ? { aspectRatio: '16/9' } : undefined">
         <div v-if="snapshotError"
@@ -117,24 +117,24 @@
         </div>
 
         <div v-else-if="cameraError && !mediaStream"
-          class="camera-error-container flex flex-col items-center justify-center text-center p-2 sm:p-4 max-w-md mx-auto z-10 w-full select-none my-auto">
+          class="camera-error-container flex flex-col items-center justify-center text-center p-2 sm:p-3 max-w-md mx-auto z-10 w-full select-none my-auto">
           <div
-            class="camera-error-icon w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center mb-2 shadow-lg shrink-0">
-            <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            class="camera-error-icon w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-red-500/15 border border-red-500/30 text-red-400 flex items-center justify-center mb-1.5 shadow-lg shrink-0">
+            <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round"
                 d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
             </svg>
           </div>
-          <h3 class="camera-error-title text-white font-bold text-sm sm:text-base tracking-tight mb-1">
+          <h3 class="camera-error-title text-white font-bold text-xs sm:text-sm md:text-base tracking-tight mb-1">
             {{ cameraError.title }}
           </h3>
 
-          <p class="camera-error-desc text-gray-300 text-xs leading-relaxed mb-2.5 max-w-xs sm:max-w-sm">
+          <p class="camera-error-desc text-gray-300 text-[11px] sm:text-xs leading-relaxed mb-2 max-w-xs sm:max-w-sm">
             {{ cameraError.message }}
           </p>
 
           <div
-            class="camera-error-solution w-full bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-2.5 mb-3 text-left flex items-start gap-2 shadow-xs">
+            class="camera-error-solution w-full bg-white/10 backdrop-blur-sm border border-white/15 rounded-xl p-2 sm:p-2.5 mb-2 text-left flex items-start gap-2 shadow-xs">
             <svg class="w-4 h-4 text-amber-400 shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"
               stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -148,8 +148,8 @@
 
           <div class="flex items-center gap-2 flex-wrap justify-center shrink-0">
             <button type="button" @click="retryCamera" :disabled="isLoadingCamera"
-              class="camera-error-btn inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-bold text-white bg-[#2F523E] hover:bg-[#233E2F] active:scale-95 transition-all shadow-md cursor-pointer disabled:opacity-50">
-              <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" :class="{ 'animate-spin': isLoadingCamera }" fill="none" viewBox="0 0 24 24"
+              class="camera-error-btn inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs font-bold text-white bg-[#2F523E] hover:bg-[#233E2F] active:scale-95 transition-all shadow-md cursor-pointer disabled:opacity-50">
+              <svg class="w-3.5 h-3.5" :class="{ 'animate-spin': isLoadingCamera }" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
                   d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -158,7 +158,7 @@
             </button>
 
             <button type="button" @click="showTechDetails = !showTechDetails"
-              class="inline-flex items-center gap-1 px-3 py-2 rounded-xl text-[11px] font-medium text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 transition-all cursor-pointer">
+              class="inline-flex items-center gap-1 px-2.5 sm:px-3 py-1.5 sm:py-2 rounded-xl text-[11px] font-medium text-gray-400 hover:text-white bg-white/5 hover:bg-white/10 transition-all cursor-pointer">
               <span>{{ showTechDetails ? 'Tutup Detail' : 'Detail Error' }}</span>
             </button>
           </div>
