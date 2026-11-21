@@ -1,17 +1,17 @@
 <template>
   <section
-    class="h-full min-h-0 flex flex-col justify-between py-1"
+    class="template-section min-h-0 lg:h-full flex flex-col justify-between py-1"
   >
     <div
-      class="flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0"
+      class="template-header flex items-center justify-between flex-wrap gap-2 pb-2 border-b border-[#DCE7E8] shrink-0"
     >
       <div>
         <h2
-          class="font-bold text-base md:text-lg text-[#1C2B22]"
+          class="template-title font-bold text-base md:text-lg text-[#1C2B22]"
         >
           Desain Strip Foto
         </h2>
-        <p class="text-[11px] md:text-xs text-gray-500">
+        <p class="template-subtitle text-[11px] md:text-xs text-gray-500">
           {{ template?.name || 'Template Desain' }} •
           {{ template?.slot || 4 }} Slot Foto
         </p>
@@ -20,7 +20,7 @@
       <button
         type="button"
         @click="modalTemplate = true"
-        class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-[#2F523E] hover:text-white transition-all cursor-pointer shadow-2xs active:scale-95"
+        class="template-btn-change inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-[#2F523E] hover:text-white transition-all cursor-pointer shadow-2xs active:scale-95"
       >
         <svg
           class="w-3.5 h-3.5"
@@ -41,7 +41,7 @@
 
     <div
       ref="canvasWrapperRef"
-      class="flex-1 min-h-0 w-full flex justify-center items-center py-2 overflow-hidden my-1"
+      class="template-canvas-wrapper flex-1 min-h-[260px] lg:min-h-0 w-full flex justify-center items-center py-2 overflow-hidden my-1"
     >
       <div
         ref="containerRef"
@@ -50,16 +50,16 @@
     </div>
 
     <div
-      class="flex flex-col gap-1.5 pt-2 border-t border-[#DCE7E8] shrink-0"
+      class="template-action-footer flex flex-col gap-1.5 pt-2 border-t border-[#DCE7E8] shrink-0"
     >
       <div
         v-if="daftarFoto.length > 0"
-        class="flex flex-col sm:flex-row items-center gap-2"
+        class="template-action-btn-row flex flex-col sm:flex-row items-center gap-2"
       >
         <button
           type="button"
           @click="unduhFoto"
-          class="w-full sm:flex-1 py-2 sm:py-2.5 px-3.5 rounded-xl text-xs font-semibold text-white bg-[#CD692C] hover:bg-[#B85820] transition-all cursor-pointer shadow-xs flex items-center justify-center gap-1.5 active:scale-98"
+          class="template-btn-action w-full sm:flex-1 py-2 sm:py-2.5 px-3.5 rounded-xl text-xs font-semibold text-white bg-[#CD692C] hover:bg-[#B85820] transition-all cursor-pointer shadow-xs flex items-center justify-center gap-1.5 active:scale-98"
         >
           <svg
             class="w-4 h-4"
@@ -74,13 +74,14 @@
               d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
             />
           </svg>
-          <span>Unduh Strip Foto (.PNG)</span>
+          <span class="btn-text-full">Unduh Strip Foto (.PNG)</span>
+          <span class="btn-text-short hidden">Unduh</span>
         </button>
 
         <button
           type="button"
           @click="cetakFoto"
-          class="w-full sm:w-auto py-2 sm:py-2.5 px-3.5 rounded-xl text-xs font-semibold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-gray-50 transition-all cursor-pointer shadow-2xs flex items-center justify-center gap-1.5 active:scale-98"
+          class="template-btn-action w-full sm:w-auto py-2 sm:py-2.5 px-3.5 rounded-xl text-xs font-semibold text-[#2F523E] bg-white border border-[#DCE7E8] hover:bg-gray-50 transition-all cursor-pointer shadow-2xs flex items-center justify-center gap-1.5 active:scale-98"
         >
           <svg
             class="w-4 h-4"
@@ -100,7 +101,7 @@
       </div>
 
       <p
-        class="text-[10px] md:text-[11px] text-gray-500 text-center"
+        class="template-helper-text text-[10px] md:text-[11px] text-gray-500 text-center"
       >
         {{
           daftarFoto.length > 0
@@ -264,11 +265,11 @@ const renderCanvas = async () => {
     canvasWrapperRef.value ||
     containerRef.value?.parentElement
   const availWidth = Math.max(
-    120,
+    60,
     (wrapper?.clientWidth || 260) - 16,
   )
   const availHeight = Math.max(
-    160,
+    80,
     (wrapper?.clientHeight || 360) - 16,
   )
 
@@ -293,9 +294,8 @@ const renderCanvas = async () => {
 
   stage.scale({ x: scale, y: scale })
 
-  // Background digambar lebih dulu, foto ditumpuk DI ATASNYA.
-  // Jadi foto tetap kelihatan walau gambar template tidak punya
-  // lubang transparan (misalnya kotak putih sudah menempel).
+  const isOverlay = currentTemplate.isOverlay === true
+
   const konvaBg = new Konva.Image({
     image: bgImgObj,
     x: 0,
@@ -303,7 +303,11 @@ const renderCanvas = async () => {
     width: nativeWidth,
     height: nativeHeight,
   })
-  layer.add(konvaBg)
+
+  // Jika bukan overlay (background solid), gambar template di dasar/bawah
+  if (!isOverlay) {
+    layer.add(konvaBg)
+  }
 
   const daftarSlot = ambilDaftarSlot(
     currentTemplate,
@@ -320,21 +324,33 @@ const renderCanvas = async () => {
     const tengahY = slot.y + slot.height / 2
     const radius = Math.min(slot.width, slot.height) / 2
 
+    // Skala tipografi dan garis proporsional terhadap ukuran slot (cocok untuk HD dan LD)
+    const fontSize = Math.max(12, Math.round(slot.height * 0.08))
+    const strokeWidth = Math.max(1.5, Math.round(slot.width * 0.008))
+    const dashLen = Math.max(4, Math.round(slot.width * 0.02))
+
     if (photoUrl) {
       try {
         const photoImgObj = await loadImage(photoUrl)
         if (myRenderId !== renderId) return
 
+        // Untuk template overlay transparan, beri sedikit bleed (2-4px) ke bawah bingkai agar tidak ada celah garis putih
+        const bleed = isOverlay ? Math.max(2, Math.round(slot.width * 0.01)) : 0
+        const photoX = slot.x - bleed
+        const photoY = slot.y - bleed
+        const photoW = slot.width + bleed * 2
+        const photoH = slot.height + bleed * 2
+
         const konvaPhoto = new Konva.Image({
           image: photoImgObj,
-          x: slot.x,
-          y: slot.y,
-          width: slot.width,
-          height: slot.height,
+          x: photoX,
+          y: photoY,
+          width: photoW,
+          height: photoH,
           crop: hitungCrop(
             photoImgObj,
-            slot.width,
-            slot.height,
+            photoW,
+            photoH,
           ),
         })
 
@@ -345,7 +361,7 @@ const renderCanvas = async () => {
               ctx.arc(
                 tengahX,
                 tengahY,
-                radius,
+                radius + (isOverlay ? bleed : 0),
                 0,
                 Math.PI * 2,
                 false,
@@ -372,8 +388,8 @@ const renderCanvas = async () => {
             radius: radius,
             fill: '#F4F7F7',
             stroke: '#D3E0E1',
-            strokeWidth: 1,
-            dash: [4, 4],
+            strokeWidth: strokeWidth,
+            dash: [dashLen, dashLen],
           })
         : new Konva.Rect({
             x: slot.x,
@@ -382,23 +398,30 @@ const renderCanvas = async () => {
             height: slot.height,
             fill: '#F4F7F7',
             stroke: '#D3E0E1',
-            strokeWidth: 1,
-            dash: [4, 4],
+            strokeWidth: strokeWidth,
+            dash: [dashLen, dashLen],
           })
       layer.add(penanda)
 
       const slotText = new Konva.Text({
         x: slot.x,
-        y: tengahY - 8,
+        y: Math.round(tengahY - fontSize / 2),
         width: slot.width,
         text: `Slot ${nomor}`,
-        fontSize: 12,
+        fontSize: fontSize,
         fontFamily: 'sans-serif',
+        fontStyle: 'bold',
         fill: '#94A3B8',
         align: 'center',
       })
       layer.add(slotText)
     }
+  }
+
+  // Jika overlay (PNG dengan lubang transparan), gambar bingkai DI ATAS foto
+  // sehingga stiker, ornamen, dan lengkungan bingkai template menutupi pinggir foto dengan rapi
+  if (isOverlay) {
+    layer.add(konvaBg)
   }
 
   layer.batchDraw()
@@ -411,8 +434,9 @@ const gantiTemplate = (obj) => {
 
 const unduhFoto = () => {
   if (!stage) return
+  const pr = Math.min(4, Math.max(0.5, skalaSekarang > 0 ? 1 / skalaSekarang : 1))
   const dataURL = stage.toDataURL({
-    pixelRatio: 1 / skalaSekarang,
+    pixelRatio: pr,
   })
   const link = document.createElement('a')
   link.download = `photobooth-strip-${Date.now()}.png`
@@ -424,8 +448,9 @@ const unduhFoto = () => {
 
 const cetakFoto = () => {
   if (!stage) return
+  const pr = Math.min(4, Math.max(0.5, skalaSekarang > 0 ? 1 / skalaSekarang : 1))
   const dataURL = stage.toDataURL({
-    pixelRatio: 1 / skalaSekarang,
+    pixelRatio: pr,
   })
   const win = window.open('', '_blank')
   if (win) {
@@ -464,6 +489,8 @@ watch(
   { deep: true },
 )
 
+let resizeTimer = null
+
 onMounted(() => {
   renderCanvas()
 
@@ -471,13 +498,19 @@ onMounted(() => {
     canvasWrapperRef.value || containerRef.value
   if (targetEl) {
     resizeObserver = new ResizeObserver(() => {
-      renderCanvas()
+      clearTimeout(resizeTimer)
+      resizeTimer = setTimeout(() => {
+        renderCanvas()
+      }, 50)
     })
     resizeObserver.observe(targetEl)
   }
 })
 
 onUnmounted(() => {
+  if (resizeTimer) {
+    clearTimeout(resizeTimer)
+  }
   if (resizeObserver) {
     resizeObserver.disconnect()
   }
@@ -486,3 +519,113 @@ onUnmounted(() => {
   }
 })
 </script>
+
+<style scoped>
+@media (orientation: landscape) and (max-height: 520px) {
+  .template-section {
+    display: grid !important;
+    grid-template-columns: minmax(220px, 260px) 1fr !important;
+    grid-template-areas:
+      "canvas header"
+      "canvas footer" !important;
+    column-gap: 1rem !important;
+    row-gap: 0.5rem !important;
+    align-items: center !important;
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
+  }
+  .template-header {
+    grid-area: header !important;
+    border-bottom: 1px solid #DCE7E8 !important;
+    padding-bottom: 0.35rem !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 0.5rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .template-title {
+    font-size: 0.95rem !important;
+    font-weight: 800 !important;
+    color: #1C2B22 !important;
+  }
+  .template-subtitle {
+    display: block !important;
+    font-size: 0.72rem !important;
+    color: #486153 !important;
+    margin-top: 0.1rem !important;
+  }
+  .template-btn-change {
+    padding: 0.35rem 0.75rem !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    border-radius: 0.6rem !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+  }
+  .template-canvas-wrapper {
+    grid-area: canvas !important;
+    min-height: 320px !important;
+    max-height: 400px !important;
+    height: 360px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: transparent !important;
+    border-radius: 0 !important;
+    border: none !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .template-action-footer {
+    grid-area: footer !important;
+    border-top-width: 0 !important;
+    padding-top: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.35rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .template-action-btn-row {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 0.4rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .template-btn-action {
+    flex: 1 1 0% !important;
+    padding: 0.45rem 0.65rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+    border-radius: 0.6rem !important;
+    justify-content: center !important;
+  }
+  .template-btn-action .btn-text-full {
+    display: none !important;
+  }
+  .template-btn-action .btn-text-short {
+    display: inline !important;
+  }
+  .template-helper-text {
+    display: block !important;
+    font-size: 0.68rem !important;
+    color: #6B7280 !important;
+    text-align: left !important;
+  }
+}
+</style>
