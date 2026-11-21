@@ -98,7 +98,7 @@
                 </tr>
               </template>
 
-              <!-- gagal memuat -->
+              <!-- eror state -->
               <tr v-else-if="loadError" role="alert">
                 <td
                   colspan="5"

@@ -425,7 +425,6 @@
           title="Buka Bantuan AI"
           aria-label="Buka Bantuan AI"
         >
-      
           <svg
             class="h-7 w-7 shrink-0"
             fill="none"
@@ -569,7 +568,8 @@ const activeRole = computed(() => {
     path === '/manajemen-akun' ||
     path === '/paket-view' ||
     path === '/management-paket' ||
-    path === '/riwayat'
+    path === '/riwayat' ||
+    path === '/editor'
   ) {
     return 'superadmin'
   }

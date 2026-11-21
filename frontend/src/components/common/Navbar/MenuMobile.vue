@@ -51,8 +51,6 @@ function tutupSidebar() {
   tombolBuka.value?.focus()
 }
 
-// Tutup sidebar dulu, baru minta TopBarV2 pindah/scroll.
-// nextTick memastikan scroll halaman sudah dibuka lagi.
 async function pilihMenu(id) {
   buka.value = false
   await nextTick()
@@ -69,7 +67,6 @@ function cekUkuranLayar() {
 }
 
 watch(buka, (nilai) => {
-  // Saat sidebar terbuka, halaman di belakangnya tidak bisa di-scroll
   document.body.style.overflow = nilai ? 'hidden' : ''
 
   if (nilai) {
@@ -97,7 +94,6 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <!-- Tombol hamburger -->
   <button
     ref="tombolBuka"
     type="button"

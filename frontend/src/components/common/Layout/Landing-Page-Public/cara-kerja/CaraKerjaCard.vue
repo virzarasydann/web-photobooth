@@ -89,7 +89,6 @@ const tema = computed(() =>
         'mt-auto border-t-2 border-dashed pt-4',
       ]"
     >
-      <!-- Kalau fitur punya link, tampil sebagai RouterLink -->
       <component
         :is="fitur.link ? RouterLink : 'span'"
         :to="fitur.link"
