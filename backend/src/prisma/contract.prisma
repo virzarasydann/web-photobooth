@@ -1,0 +1,75 @@
+// use prisma-8
+// Contract inferred from the live database schema. Edit as needed, then run `prisma contract emit`.
+
+namespace public {
+  model Templates {
+    id            Uuid                                        @id(map: "templates_pkey") @default(sql`gen_random_uuid()`)
+    name          String(storage: varchar, length: 20)?
+    description   String?
+    backgroundUrl String?                                     @map("background_url")
+    slot          Int?
+    slotConfigs   Json?                                       @map("slot_configs")
+    createdAt     DateTime(storage: timestamp, precision: 6)? @default(now()) @map("created_at")
+    updatedAt DateTime(storage: timestamp, precision: 6)? @default(now()) @onUpdate(now()) @map("updated_at")
+
+    galleries     Galleries[]
+
+    @@map("templates")
+  }
+
+  model Roles {
+    id Uuid                                        @id(map: "roles_pkey") @default(sql`gen_random_uuid()`)
+    name      String(storage: varchar, length: 20)?
+    status    pg.enum(StatusEnum)?
+    createdAt DateTime(storage: timestamp, precision: 6)? @default(now()) @map("created_at")
+    updatedAt DateTime(storage: timestamp, precision: 6)? @default(now()) @onUpdate(now()) @map("updated_at")
+
+    users     Users[]
+
+    @@map("roles")
+  }
+
+  model Users {
+    id        Uuid                                        @id(map: "users_pkey") @default(sql`gen_random_uuid()`)
+    name      String(storage: varchar, length: 20)?
+    email     String?
+    password  String?
+    idRole    Uuid?                                       @map("id_role")
+    isActive  Boolean?                                    @map("is_active")
+    createdAt DateTime(storage: timestamp, precision: 6)? @default(now()) @map("created_at")
+    updatedAt DateTime(storage: timestamp, precision: 6)? @default(now()) @onUpdate(now()) @map("updated_at")
+
+    galleries Galleries[]
+    roles     Roles?                                      @relation(fields: [idRole], references: [id], map: "users_id_role_fkey", index: false)
+
+    @@map("users")
+  }
+
+  model Galleries {
+    id          Uuid                                        @id(map: "galleries_pkey") @default(sql`gen_random_uuid()`)
+    idUsers     Uuid?                                       @map("id_users")
+    idTemplates Uuid?                                       @map("id_templates")
+    path        String?
+    createdAt   DateTime(storage: timestamp, precision: 6)? @default(now()) @map("created_at")
+    updatedAt DateTime(storage: timestamp, precision: 6)? @default(now()) @onUpdate(now()) @map("updated_at")
+
+    templates   Templates?                                  @relation(fields: [idTemplates], references: [id], map: "galleries_id_templates_fkey", index: false)
+    users       Users?                                      @relation(fields: [idUsers], references: [id], map: "galleries_id_users_fkey", index: false)
+
+    @@map("galleries")
+  }
+
+  model PlayingWithNeon {
+    id    Int                     @id(map: "playing_with_neon_pkey") @default(autoincrement())
+    name  String
+    value Float(storage: float4)?
+
+    @@map("playing_with_neon")
+  }
+
+  native_enum StatusEnum {
+    Aktif = "Aktif"
+    tidakAktif = "Tidak Aktif"
+    @@map("status_enum")
+  }
+}
