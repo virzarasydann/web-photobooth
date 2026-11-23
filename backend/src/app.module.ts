@@ -4,12 +4,13 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { RolesModule } from './roles/roles.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
+import { HistoriesLogAiModule } from './histories-log-ai/histories-log-ai.module.js';
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
 @Module({
   imports: [
     
-    RolesModule, PrismaModule
+    RolesModule, PrismaModule, HistoriesLogAiModule
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -8,6 +8,10 @@
       "model": "Galleries",
       "namespace": "public"
     },
+    "histories_log_ai": {
+      "model": "HistoriesLogAi",
+      "namespace": "public"
+    },
     "playing_with_neon": {
       "model": "PlayingWithNeon",
       "namespace": "public"
@@ -137,6 +141,87 @@
               },
               "namespaceId": "public",
               "table": "galleries"
+            }
+          },
+          "HistoriesLogAi": {
+            "fields": {
+              "createdAt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/timestamptz-date@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "precision": 6
+                  }
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "prompt": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "responses": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "userId": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              }
+            },
+            "relations": {
+              "user": {
+                "cardinality": "N:1",
+                "nullable": false,
+                "on": {
+                  "localFields": [
+                    "userId"
+                  ],
+                  "targetFields": [
+                    "id"
+                  ]
+                },
+                "to": {
+                  "model": "Users",
+                  "namespace": "public"
+                }
+              }
+            },
+            "storage": {
+              "fields": {
+                "createdAt": {
+                  "column": "created_at"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "prompt": {
+                  "column": "prompt"
+                },
+                "responses": {
+                  "column": "responses"
+                },
+                "userId": {
+                  "column": "user_id"
+                }
+              },
+              "namespaceId": "public",
+              "table": "histories_log_ai"
             }
           },
           "PlayingWithNeon": {
@@ -469,6 +554,21 @@
                   "namespace": "public"
                 }
               },
+              "historiesLogAis": {
+                "cardinality": "1:N",
+                "on": {
+                  "localFields": [
+                    "id"
+                  ],
+                  "targetFields": [
+                    "userId"
+                  ]
+                },
+                "to": {
+                  "model": "HistoriesLogAi",
+                  "namespace": "public"
+                }
+              },
               "roles": {
                 "cardinality": "N:1",
                 "nullable": true,
@@ -629,6 +729,85 @@
                   "id"
                 ],
                 "name": "galleries_pkey"
+              },
+              "uniques": []
+            },
+            "histories_log_ai": {
+              "columns": {
+                "created_at": {
+                  "codecId": "pg/timestamptz-date@1",
+                  "dataType": "pg/timestamptz",
+                  "default": {
+                    "expression": "now()",
+                    "kind": "function"
+                  },
+                  "nullable": false,
+                  "typeParams": {
+                    "precision": 6
+                  }
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "dataType": "pg/uuid",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "prompt": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": false
+                },
+                "responses": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": true
+                },
+                "user_id": {
+                  "codecId": "pg/uuid@1",
+                  "dataType": "pg/uuid",
+                  "nullable": false
+                }
+              },
+              "foreignKeys": [
+                {
+                  "index": {
+                    "name": "idx_histories_log_ai_user_id"
+                  },
+                  "name": "histories_log_ai_user_id_fkey",
+                  "onDelete": "cascade",
+                  "source": {
+                    "columns": [
+                      "user_id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "histories_log_ai"
+                  },
+                  "target": {
+                    "columns": [
+                      "id"
+                    ],
+                    "namespaceId": "public",
+                    "tableName": "users"
+                  }
+                }
+              ],
+              "indexes": [
+                {
+                  "columns": [
+                    "user_id"
+                  ],
+                  "name": "idx_histories_log_ai_user_id",
+                  "unique": false
+                }
+              ],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "histories_log_ai_pkey"
               },
               "uniques": []
             },
@@ -913,70 +1092,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "3f46159989918192612fec0a4609ef32fc1adcff25620724e09b2aba23e160ac"
-  },
-  "execution": {
-    "executionHash": "df6d05daa689cf192b815aae81ba3f34f4c983ca31ec37826ec6368d273a8b78",
-    "mutations": {
-      "defaults": [
-        {
-          "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 6
-            }
-          },
-          "ref": {
-            "entry": "galleries",
-            "field": "updated_at",
-            "namespace": "public"
-          }
-        },
-        {
-          "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 6
-            }
-          },
-          "ref": {
-            "entry": "roles",
-            "field": "updated_at",
-            "namespace": "public"
-          }
-        },
-        {
-          "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 6
-            }
-          },
-          "ref": {
-            "entry": "templates",
-            "field": "updated_at",
-            "namespace": "public"
-          }
-        },
-        {
-          "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator",
-            "params": {
-              "precision": 6
-            }
-          },
-          "ref": {
-            "entry": "users",
-            "field": "updated_at",
-            "namespace": "public"
-          }
-        }
-      ]
-    }
+    "storageHash": "191e002ef4efbfd2ac4cff54f0a7953fc39846d568dc449b67102c3e88092005"
   },
   "capabilities": {
     "postgres": {
