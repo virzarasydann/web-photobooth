@@ -10,37 +10,35 @@ namespace public {
     slot          Int?
     slotConfigs   Json?                                       @map("slot_configs")
     createdAt     DateTime(storage: timestamp, precision: 6)? @default(now()) @map("created_at")
-    updatedAt DateTime(storage: timestamp, precision: 6)? @default(now()) @onUpdate(now()) @map("updated_at")
-
+    updatedAt     DateTime(storage: timestamp, precision: 6)? @default(now()) @map("updated_at")
     galleries     Galleries[]
 
     @@map("templates")
   }
 
   model Roles {
-    id Uuid                                        @id(map: "roles_pkey") @default(sql`gen_random_uuid()`)
+    id        Uuid                                        @id(map: "roles_pkey") @default(sql`gen_random_uuid()`)
     name      String(storage: varchar, length: 20)?
     status    pg.enum(StatusEnum)?
     createdAt DateTime(storage: timestamp, precision: 6)? @default(now()) @map("created_at")
-    updatedAt DateTime(storage: timestamp, precision: 6)? @default(now()) @onUpdate(now()) @map("updated_at")
-
+    updatedAt DateTime(storage: timestamp, precision: 6)? @default(now()) @map("updated_at")
     users     Users[]
 
     @@map("roles")
   }
 
   model Users {
-    id        Uuid                                        @id(map: "users_pkey") @default(sql`gen_random_uuid()`)
-    name      String(storage: varchar, length: 20)?
-    email     String?
-    password  String?
-    idRole    Uuid?                                       @map("id_role")
-    isActive  Boolean?                                    @map("is_active")
-    createdAt DateTime(storage: timestamp, precision: 6)? @default(now()) @map("created_at")
-    updatedAt DateTime(storage: timestamp, precision: 6)? @default(now()) @onUpdate(now()) @map("updated_at")
-
-    galleries Galleries[]
-    roles     Roles?                                      @relation(fields: [idRole], references: [id], map: "users_id_role_fkey", index: false)
+    id              Uuid                                        @id(map: "users_pkey") @default(sql`gen_random_uuid()`)
+    name            String(storage: varchar, length: 20)?
+    email           String?
+    password        String?
+    idRole          Uuid?                                       @map("id_role")
+    isActive        Boolean?                                    @map("is_active")
+    createdAt       DateTime(storage: timestamp, precision: 6)? @default(now()) @map("created_at")
+    updatedAt       DateTime(storage: timestamp, precision: 6)? @default(now()) @map("updated_at")
+    galleries       Galleries[]
+    historiesLogAis HistoriesLogAi[]
+    roles           Roles?                                      @relation(fields: [idRole], references: [id], map: "users_id_role_fkey", index: false)
 
     @@map("users")
   }
@@ -51,12 +49,23 @@ namespace public {
     idTemplates Uuid?                                       @map("id_templates")
     path        String?
     createdAt   DateTime(storage: timestamp, precision: 6)? @default(now()) @map("created_at")
-    updatedAt DateTime(storage: timestamp, precision: 6)? @default(now()) @onUpdate(now()) @map("updated_at")
-
+    updatedAt   DateTime(storage: timestamp, precision: 6)? @default(now()) @map("updated_at")
     templates   Templates?                                  @relation(fields: [idTemplates], references: [id], map: "galleries_id_templates_fkey", index: false)
     users       Users?                                      @relation(fields: [idUsers], references: [id], map: "galleries_id_users_fkey", index: false)
 
     @@map("galleries")
+  }
+
+  model HistoriesLogAi {
+    id        Uuid                   @id(map: "histories_log_ai_pkey") @default(sql`gen_random_uuid()`)
+    userId    Uuid                   @map("user_id")
+    prompt    String
+    responses String?
+    createdAt DateTime(precision: 6) @default(now()) @map("created_at")
+    user      Users                  @relation(fields: [userId], references: [id], onDelete: Cascade, map: "histories_log_ai_user_id_fkey")
+
+    @@index([userId], map: "idx_histories_log_ai_user_id")
+    @@map("histories_log_ai")
   }
 
   model PlayingWithNeon {

@@ -23,9 +23,8 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'3f46159989918192612fec0a4609ef32fc1adcff25620724e09b2aba23e160ac'>;
-export type ExecutionHash =
-  ExecutionHashBase<'df6d05daa689cf192b815aae81ba3f34f4c983ca31ec37826ec6368d273a8b78'>;
+  StorageHashBase<'191e002ef4efbfd2ac4cff54f0a7953fc39846d568dc449b67102c3e88092005'>;
+export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -340,6 +339,15 @@ export namespace Models {
     users: public_Users | null;
     readonly [RelationKeys]?: 'templates' | 'users';
   };
+  export type public_HistoriesLogAi = {
+    createdAt: FieldOutputTypes['public']['HistoriesLogAi']['createdAt'];
+    id: FieldOutputTypes['public']['HistoriesLogAi']['id'];
+    prompt: FieldOutputTypes['public']['HistoriesLogAi']['prompt'];
+    responses: FieldOutputTypes['public']['HistoriesLogAi']['responses'];
+    userId: FieldOutputTypes['public']['HistoriesLogAi']['userId'];
+    user: public_Users;
+    readonly [RelationKeys]?: 'user';
+  };
   export type public_PlayingWithNeon = {
     id: FieldOutputTypes['public']['PlayingWithNeon']['id'];
     name: FieldOutputTypes['public']['PlayingWithNeon']['name'];
@@ -377,14 +385,16 @@ export namespace Models {
     password: FieldOutputTypes['public']['Users']['password'];
     updatedAt: FieldOutputTypes['public']['Users']['updatedAt'];
     galleries: public_Galleries[];
+    historiesLogAis: public_HistoriesLogAi[];
     roles: public_Roles | null;
-    readonly [RelationKeys]?: 'galleries' | 'roles';
+    readonly [RelationKeys]?: 'galleries' | 'historiesLogAis' | 'roles';
   };
 }
 
 export declare const models: {
   public: {
     Galleries: Models.public_Galleries;
+    HistoriesLogAi: Models.public_HistoriesLogAi;
     PlayingWithNeon: Models.public_PlayingWithNeon;
     Roles: Models.public_Roles;
     Templates: Models.public_Templates;
@@ -486,6 +496,73 @@ type ContractBase = Omit<
                     readonly columns: readonly ['id'];
                   };
                   readonly name: 'galleries_id_users_fkey';
+                },
+              ];
+            };
+            readonly histories_log_ai: {
+              columns: {
+                readonly created_at: {
+                  readonly dataType: 'pg/timestamptz';
+                  readonly codecId: 'pg/timestamptz-date@1';
+                  readonly nullable: false;
+                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
+                  readonly typeParams: { readonly precision: 6 };
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                  readonly many: false;
+                };
+                readonly prompt: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly responses: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly user_id: {
+                  readonly dataType: 'pg/uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+              };
+              primaryKey: {
+                readonly columns: readonly ['id'];
+                readonly name: 'histories_log_ai_pkey';
+              };
+              uniques: readonly [];
+              indexes: readonly [
+                {
+                  readonly name: 'idx_histories_log_ai_user_id';
+                  readonly columns: readonly ['user_id'];
+                  readonly unique: false;
+                },
+              ];
+              foreignKeys: readonly [
+                {
+                  readonly source: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'histories_log_ai';
+                    readonly columns: readonly ['user_id'];
+                  };
+                  readonly target: {
+                    readonly namespaceId: 'public' & NamespaceId;
+                    readonly tableName: 'users';
+                    readonly columns: readonly ['id'];
+                  };
+                  readonly name: 'histories_log_ai_user_id_fkey';
                 },
               ];
             };
@@ -732,6 +809,10 @@ type ContractBase = Omit<
   readonly targetFamily: 'sql';
   readonly roots: {
     readonly galleries: { readonly namespace: 'public' & NamespaceId; readonly model: 'Galleries' };
+    readonly histories_log_ai: {
+      readonly namespace: 'public' & NamespaceId;
+      readonly model: 'HistoriesLogAi';
+    };
     readonly playing_with_neon: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'PlayingWithNeon';
@@ -815,6 +896,59 @@ type ContractBase = Omit<
                 readonly idUsers: { readonly column: 'id_users' };
                 readonly path: { readonly column: 'path' };
                 readonly updatedAt: { readonly column: 'updated_at' };
+              };
+            };
+          };
+          readonly HistoriesLogAi: {
+            readonly fields: {
+              readonly createdAt: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/timestamptz-date@1';
+                  readonly typeParams: { readonly precision: 6 };
+                };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly prompt: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly responses: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly userId: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+            };
+            readonly relations: {
+              readonly user: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'Users';
+                };
+                readonly cardinality: 'N:1';
+                readonly nullable: false;
+                readonly on: {
+                  readonly localFields: readonly ['userId'];
+                  readonly targetFields: readonly ['id'];
+                };
+              };
+            };
+            readonly storage: {
+              readonly table: 'histories_log_ai';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly createdAt: { readonly column: 'created_at' };
+                readonly id: { readonly column: 'id' };
+                readonly prompt: { readonly column: 'prompt' };
+                readonly responses: { readonly column: 'responses' };
+                readonly userId: { readonly column: 'user_id' };
               };
             };
           };
@@ -1042,6 +1176,17 @@ type ContractBase = Omit<
                   readonly targetFields: readonly ['idUsers'];
                 };
               };
+              readonly historiesLogAis: {
+                readonly to: {
+                  readonly namespace: 'public' & NamespaceId;
+                  readonly model: 'HistoriesLogAi';
+                };
+                readonly cardinality: '1:N';
+                readonly on: {
+                  readonly localFields: readonly ['id'];
+                  readonly targetFields: readonly ['userId'];
+                };
+              };
               readonly roles: {
                 readonly to: {
                   readonly namespace: 'public' & NamespaceId;
@@ -1103,61 +1248,6 @@ type ContractBase = Omit<
     };
   };
   readonly extensions: {};
-  readonly execution: {
-    readonly executionHash: ExecutionHash;
-    readonly mutations: {
-      readonly defaults: readonly [
-        {
-          readonly onUpdate: {
-            readonly id: 'timestampNow';
-            readonly kind: 'generator';
-            readonly params: { readonly precision: 6 };
-          };
-          readonly ref: {
-            readonly entry: 'galleries';
-            readonly field: 'updated_at';
-            readonly namespace: 'public';
-          };
-        },
-        {
-          readonly onUpdate: {
-            readonly id: 'timestampNow';
-            readonly kind: 'generator';
-            readonly params: { readonly precision: 6 };
-          };
-          readonly ref: {
-            readonly entry: 'roles';
-            readonly field: 'updated_at';
-            readonly namespace: 'public';
-          };
-        },
-        {
-          readonly onUpdate: {
-            readonly id: 'timestampNow';
-            readonly kind: 'generator';
-            readonly params: { readonly precision: 6 };
-          };
-          readonly ref: {
-            readonly entry: 'templates';
-            readonly field: 'updated_at';
-            readonly namespace: 'public';
-          };
-        },
-        {
-          readonly onUpdate: {
-            readonly id: 'timestampNow';
-            readonly kind: 'generator';
-            readonly params: { readonly precision: 6 };
-          };
-          readonly ref: {
-            readonly entry: 'users';
-            readonly field: 'updated_at';
-            readonly namespace: 'public';
-          };
-        },
-      ];
-    };
-  };
   readonly meta: {};
   readonly profileHash: ProfileHash;
 };
