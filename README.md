@@ -48,3 +48,11 @@ Pastikan untuk menginstall keduanya (frontend dan backend)
 1. **Backend**
    ```bash
    lakukan npm run dev
+
+#  Photobooth
+
+##  Tata Cara Pemakaian
+
+1.  **Masuk Url:**
+   ```bash
+   photobooth/guest
