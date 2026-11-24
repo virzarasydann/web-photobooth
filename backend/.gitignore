@@ -59,3 +59,10 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 node_modules/
 dist/
+
+# Uploaded files
+uploads/*
+!uploads/galleries/
+uploads/galleries/*
+!uploads/galleries/.gitkeep
+
