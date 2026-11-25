@@ -12,6 +12,10 @@
       "model": "HistoriesLogAi",
       "namespace": "public"
     },
+    "package": {
+      "model": "Package",
+      "namespace": "public"
+    },
     "playing_with_neon": {
       "model": "PlayingWithNeon",
       "namespace": "public"
@@ -222,6 +226,106 @@
               },
               "namespaceId": "public",
               "table": "histories_log_ai"
+            }
+          },
+          "Package": {
+            "fields": {
+              "catatan": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "description": {
+                "nullable": true,
+                "type": {
+                  "codecId": "pg/text@1",
+                  "kind": "scalar"
+                }
+              },
+              "harga": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/int4@1",
+                  "kind": "scalar"
+                }
+              },
+              "id": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/uuid@1",
+                  "kind": "scalar"
+                }
+              },
+              "name": {
+                "nullable": false,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 100
+                  }
+                }
+              },
+              "populer": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/bool@1",
+                  "kind": "scalar"
+                }
+              },
+              "satuan": {
+                "nullable": true,
+                "type": {
+                  "codecId": "sql/varchar@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "length": 50
+                  }
+                }
+              },
+              "status": {
+                "nullable": false,
+                "type": {
+                  "codecId": "pg/enum@1",
+                  "kind": "scalar",
+                  "typeParams": {
+                    "typeName": "status_data"
+                  }
+                }
+              }
+            },
+            "relations": {},
+            "storage": {
+              "fields": {
+                "catatan": {
+                  "column": "catatan"
+                },
+                "description": {
+                  "column": "description"
+                },
+                "harga": {
+                  "column": "harga"
+                },
+                "id": {
+                  "column": "id"
+                },
+                "name": {
+                  "column": "name"
+                },
+                "populer": {
+                  "column": "populer"
+                },
+                "satuan": {
+                  "column": "satuan"
+                },
+                "status": {
+                  "column": "status"
+                }
+              },
+              "namespaceId": "public",
+              "table": "package"
             }
           },
           "PlayingWithNeon": {
@@ -626,6 +730,14 @@
       "public": {
         "entries": {
           "native_enum": {
+            "status_data": {
+              "kind": "postgres-enum",
+              "members": [
+                "AKTIF",
+                "NON_AKTIF"
+              ],
+              "typeName": "status_data"
+            },
             "status_enum": {
               "kind": "postgres-enum",
               "members": [
@@ -808,6 +920,92 @@
                   "id"
                 ],
                 "name": "histories_log_ai_pkey"
+              },
+              "uniques": []
+            },
+            "package": {
+              "checks": [
+                {
+                  "expression": "(harga >= 0)",
+                  "name": "package_harga_check"
+                }
+              ],
+              "columns": {
+                "catatan": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": true
+                },
+                "description": {
+                  "codecId": "pg/text@1",
+                  "dataType": "pg/text",
+                  "nullable": true
+                },
+                "harga": {
+                  "codecId": "pg/int4@1",
+                  "dataType": "pg/int4",
+                  "nullable": false
+                },
+                "id": {
+                  "codecId": "pg/uuid@1",
+                  "dataType": "pg/uuid",
+                  "default": {
+                    "expression": "gen_random_uuid()",
+                    "kind": "function"
+                  },
+                  "nullable": false
+                },
+                "name": {
+                  "codecId": "sql/varchar@1",
+                  "dataType": "pg/varchar",
+                  "nullable": false,
+                  "typeParams": {
+                    "length": 100
+                  }
+                },
+                "populer": {
+                  "codecId": "pg/bool@1",
+                  "dataType": "pg/bool",
+                  "default": {
+                    "kind": "literal",
+                    "value": false
+                  },
+                  "nullable": false
+                },
+                "satuan": {
+                  "codecId": "sql/varchar@1",
+                  "dataType": "pg/varchar",
+                  "nullable": true,
+                  "typeParams": {
+                    "length": 50
+                  }
+                },
+                "status": {
+                  "codecId": "pg/enum@1",
+                  "dataType": "pg/enum",
+                  "default": {
+                    "kind": "literal",
+                    "value": "AKTIF"
+                  },
+                  "nullable": false,
+                  "typeParams": {
+                    "typeName": "status_data"
+                  },
+                  "valueSet": {
+                    "entityKind": "valueSet",
+                    "entityName": "StatusData",
+                    "namespaceId": "public",
+                    "plane": "storage"
+                  }
+                }
+              },
+              "foreignKeys": [],
+              "indexes": [],
+              "primaryKey": {
+                "columns": [
+                  "id"
+                ],
+                "name": "package_pkey"
               },
               "uniques": []
             },
@@ -1079,6 +1277,13 @@
             }
           },
           "valueSet": {
+            "StatusData": {
+              "kind": "valueSet",
+              "values": [
+                "AKTIF",
+                "NON_AKTIF"
+              ]
+            },
             "StatusEnum": {
               "kind": "valueSet",
               "values": [
@@ -1092,7 +1297,7 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "191e002ef4efbfd2ac4cff54f0a7953fc39846d568dc449b67102c3e88092005"
+    "storageHash": "fd04438f400c43073c48ab3773bdabe8a1aae92fb9a7765b042a8322ba806243"
   },
   "capabilities": {
     "postgres": {
