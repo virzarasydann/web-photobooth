@@ -23,7 +23,7 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'191e002ef4efbfd2ac4cff54f0a7953fc39846d568dc449b67102c3e88092005'>;
+  StorageHashBase<'fd04438f400c43073c48ab3773bdabe8a1aae92fb9a7765b042a8322ba806243'>;
 export type ExecutionHash = ExecutionHashBase<string>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
@@ -277,6 +277,12 @@ type ParameterizedOutputTypeFunctions = PgParameterizedOutputTypes;
 type FieldTypeOverrides = {
   readonly public: {
     readonly models: {
+      readonly Package: {
+        readonly status: {
+          readonly output: 'AKTIF' | 'NON_AKTIF';
+          readonly input: 'AKTIF' | 'NON_AKTIF';
+        };
+      };
       readonly Roles: {
         readonly status: {
           readonly output: 'Aktif' | 'Tidak Aktif';
@@ -304,6 +310,12 @@ export type FieldInputTypes = FieldTypesFromDomain<
 >;
 type ColumnTypeOverrides = {
   readonly public: {
+    readonly package: {
+      readonly status: {
+        readonly output: 'AKTIF' | 'NON_AKTIF';
+        readonly input: 'AKTIF' | 'NON_AKTIF';
+      };
+    };
     readonly roles: {
       readonly status: {
         readonly output: 'Aktif' | 'Tidak Aktif';
@@ -347,6 +359,17 @@ export namespace Models {
     userId: FieldOutputTypes['public']['HistoriesLogAi']['userId'];
     user: public_Users;
     readonly [RelationKeys]?: 'user';
+  };
+  export type public_Package = {
+    catatan: FieldOutputTypes['public']['Package']['catatan'];
+    description: FieldOutputTypes['public']['Package']['description'];
+    harga: FieldOutputTypes['public']['Package']['harga'];
+    id: FieldOutputTypes['public']['Package']['id'];
+    name: FieldOutputTypes['public']['Package']['name'];
+    populer: FieldOutputTypes['public']['Package']['populer'];
+    satuan: FieldOutputTypes['public']['Package']['satuan'];
+    status: FieldOutputTypes['public']['Package']['status'];
+    readonly [RelationKeys]?: never;
   };
   export type public_PlayingWithNeon = {
     id: FieldOutputTypes['public']['PlayingWithNeon']['id'];
@@ -395,6 +418,7 @@ export declare const models: {
   public: {
     Galleries: Models.public_Galleries;
     HistoriesLogAi: Models.public_HistoriesLogAi;
+    Package: Models.public_Package;
     PlayingWithNeon: Models.public_PlayingWithNeon;
     Roles: Models.public_Roles;
     Templates: Models.public_Templates;
@@ -565,6 +589,77 @@ type ContractBase = Omit<
                   readonly name: 'histories_log_ai_user_id_fkey';
                 },
               ];
+            };
+            readonly package: {
+              columns: {
+                readonly catatan: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly description: {
+                  readonly dataType: 'pg/text';
+                  readonly codecId: 'pg/text@1';
+                  readonly nullable: true;
+                  readonly many: false;
+                };
+                readonly harga: {
+                  readonly dataType: 'pg/int4';
+                  readonly codecId: 'pg/int4@1';
+                  readonly nullable: false;
+                  readonly many: false;
+                };
+                readonly id: {
+                  readonly dataType: 'pg/uuid';
+                  readonly codecId: 'pg/uuid@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'function';
+                    readonly expression: 'gen_random_uuid()';
+                  };
+                  readonly many: false;
+                };
+                readonly name: {
+                  readonly dataType: 'pg/varchar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: false;
+                  readonly typeParams: { readonly length: 100 };
+                  readonly many: false;
+                };
+                readonly populer: {
+                  readonly dataType: 'pg/bool';
+                  readonly codecId: 'pg/bool@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/bool@1', false>;
+                  };
+                  readonly many: false;
+                };
+                readonly satuan: {
+                  readonly dataType: 'pg/varchar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly nullable: true;
+                  readonly typeParams: { readonly length: 50 };
+                  readonly many: false;
+                };
+                readonly status: {
+                  readonly dataType: 'pg/enum';
+                  readonly codecId: 'pg/enum@1';
+                  readonly nullable: false;
+                  readonly default: {
+                    readonly kind: 'literal';
+                    readonly value: DefaultLiteralValue<'pg/enum@1', 'AKTIF'>;
+                  };
+                  readonly typeParams: { readonly typeName: 'status_data' };
+                  readonly many: false;
+                };
+              };
+              primaryKey: { readonly columns: readonly ['id']; readonly name: 'package_pkey' };
+              uniques: readonly [];
+              indexes: readonly [];
+              foreignKeys: readonly [];
             };
             readonly playing_with_neon: {
               columns: {
@@ -793,6 +888,10 @@ type ContractBase = Omit<
             };
           };
           readonly valueSet: {
+            readonly StatusData: {
+              readonly kind: 'valueSet';
+              readonly values: readonly ['AKTIF', 'NON_AKTIF'];
+            };
             readonly StatusEnum: {
               readonly kind: 'valueSet';
               readonly values: readonly ['Aktif', 'Tidak Aktif'];
@@ -813,6 +912,7 @@ type ContractBase = Omit<
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'HistoriesLogAi';
     };
+    readonly package: { readonly namespace: 'public' & NamespaceId; readonly model: 'Package' };
     readonly playing_with_neon: {
       readonly namespace: 'public' & NamespaceId;
       readonly model: 'PlayingWithNeon';
@@ -949,6 +1049,69 @@ type ContractBase = Omit<
                 readonly prompt: { readonly column: 'prompt' };
                 readonly responses: { readonly column: 'responses' };
                 readonly userId: { readonly column: 'user_id' };
+              };
+            };
+          };
+          readonly Package: {
+            readonly fields: {
+              readonly catatan: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly description: {
+                readonly nullable: true;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
+              };
+              readonly harga: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/int4@1' };
+              };
+              readonly id: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/uuid@1' };
+              };
+              readonly name: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 100 };
+                };
+              };
+              readonly populer: {
+                readonly nullable: false;
+                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/bool@1' };
+              };
+              readonly satuan: {
+                readonly nullable: true;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'sql/varchar@1';
+                  readonly typeParams: { readonly length: 50 };
+                };
+              };
+              readonly status: {
+                readonly nullable: false;
+                readonly type: {
+                  readonly kind: 'scalar';
+                  readonly codecId: 'pg/enum@1';
+                  readonly typeParams: { readonly typeName: 'status_data' };
+                };
+              };
+            };
+            readonly relations: Record<string, never>;
+            readonly storage: {
+              readonly table: 'package';
+              readonly namespaceId: 'public';
+              readonly fields: {
+                readonly catatan: { readonly column: 'catatan' };
+                readonly description: { readonly column: 'description' };
+                readonly harga: { readonly column: 'harga' };
+                readonly id: { readonly column: 'id' };
+                readonly name: { readonly column: 'name' };
+                readonly populer: { readonly column: 'populer' };
+                readonly satuan: { readonly column: 'satuan' };
+                readonly status: { readonly column: 'status' };
               };
             };
           };

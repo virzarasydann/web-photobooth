@@ -68,12 +68,32 @@ namespace public {
     @@map("histories_log_ai")
   }
 
+  model Package {
+    id          Uuid                                  @id(map: "package_pkey") @default(sql`gen_random_uuid()`)
+    name        String(storage: varchar, length: 100)
+    description String?
+    status      pg.enum(StatusData)                   @default("AKTIF")
+    populer     Boolean                               @default(false)
+    harga       Int
+    satuan      String(storage: varchar, length: 50)?
+    catatan     String?
+
+    @@check(expression: sql`(harga >= 0)`, map: "package_harga_check")
+    @@map("package")
+  }
+
   model PlayingWithNeon {
     id    Int                     @id(map: "playing_with_neon_pkey") @default(autoincrement())
     name  String
     value Float(storage: float4)?
 
     @@map("playing_with_neon")
+  }
+
+  native_enum StatusData {
+    AKTIF = "AKTIF"
+    NON_AKTIF = "NON_AKTIF"
+    @@map("status_data")
   }
 
   native_enum StatusEnum {
